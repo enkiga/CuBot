@@ -12,10 +12,33 @@ try:
         password="K1pk0r1r!",
         database="cueabot"
     )
-    print("Connection Successful")
+    print("Connection Successful at Operations.py")
     mycursor = mydb.cursor()
 except mysql.connector.Error as err:
     print("Error: ", err)
+
+
+def view_code(environ):
+    userAgent = environ.get("HTTP_USER_AGENT")
+    return userAgent.encode('utf-8')
+
+
+def login(environ):
+    f = open("pages/login.html", "rb")
+    data = f.read()
+    return data
+
+
+def profile(environ):
+    f = open("pages/profile.html", "rb")
+    data = f.read()
+    return data
+
+
+def chat(environ):
+    f = open("pages/chat.html", "rb")
+    data = f.read()
+    return data
 
 
 # Process user input function
@@ -125,29 +148,59 @@ def signup(request):
                     "full_name, dob, mobile_no, campus, faculty, program, email, school_id, date_joined, " \
                     "recovery_question, recovery_answer,hashlib.md5(password).hexdigest()) "
 
-        try:
-            mycursor.execute(signUpSql)
-            mydb.commit()
-            return generate_js_warning("Sign up successful")
-        except mysql.connector.Error as sqlErr:
-            return generate_js_warning("Error: ", sqlErr)
+        mycursor.executemany(signUpSql)
+        mydb.commit()
+        mydb.close()
+        while True:
+            try:
+                with open("temp.txt", "ab") as temp_store:
+                    temp_store.write(f"\n {hashlib.md5(view_code(request)).hexdigest()}users".encode("utf-8"))
+            except AssertionError:
+                print("Error writing to file")
+                pass
 
+            f = open("pages/login.html", "rb")
+            data = f.read()
+            data = data.decode("utf-8")
+            return data.encode("utf-8")
     else:
-        return generate_js_warning("Invalid request method")
-
-    while True:
-        try:
-            with open("temp.txt", "ab") as temp_store:
-                temp_store.write(f"\n {hashlib.md5(view_code(request)).hexdigest()}users".encode("utf-8"))
-        except AssertionError:
-            pass
-
-        f = open("pages/signup.html", "rb")
-        data = f.read()
-        data = data.decode("utf-8")
-        return data.encode("utf-8")
-    else:
-        f = open("pages/signup.html", "rb")
+        f = open("pages/signUp.html", "rb")
         data = f.read()
         f.close()
         return data
+
+
+def home(environ):
+    f = open("pages/home.html", "rb")
+    data = f.read()
+    return data
+
+
+def mainCss(environ):
+    with open("pages/styling/main.css", "rb") as f:
+        data = f.read()
+    return data
+
+
+def authCss(environ):
+    with open("pages/styling/auth.css", "rb") as f:
+        data = f.read()
+    return data
+
+
+def mainJs(environ):
+    with open("pages/styling/main.js", "rb") as f:
+        data = f.read()
+    return data
+
+
+def notFoundCss(environ):
+    with open("pages/styling/404.css", "rb") as f:
+        data = f.read()
+    return data
+
+
+def iconsCss(environ):
+    with open("pages/styling/boxicons.min.css", "rb") as f:
+        data = f.read()
+    return data

@@ -10,7 +10,7 @@ try:
         password="K1pk0r1r!",
         database="cueabot"
     )
-    print("Connection Successful")
+    print("Connection Successful at Model.py")
     mycursor = mydb.cursor()
 except mysql.connector.Error as err:
     print("Error: ", err)
@@ -277,5 +277,3 @@ def createTables():
     mydb.close()
 
 
-# call the function to create the tables
-createTables()
