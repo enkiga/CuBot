@@ -88,7 +88,7 @@ def createTables():
     )"""
 
     # execute table creation
-    # try except block to catch errors
+    # tries except block to catch errors
     try:
         mycursor.execute(usersTB)
         mycursor.execute(conversationsTB)
@@ -99,7 +99,7 @@ def createTables():
     except mysql.connector.Error as sqlerror:
         print("Error Creating Tables: {}".format(sqlerror))
 
-    # insert dummy data into lectures table
+    # insert test double data into lectures table
     lecturer_sql = "INSERT IGNORE INTO lecturers (lecturer_no, lecturer_name, lecturer_email, lecturer_phone, " \
                    "lecturer_campus, lecturer_office, lecturer_department, lecturer_faculty) " \
                    "VALUES (NULL, %(lecturer_name)s, %(lecturer_email)s, %(lecturer_phone)s, %(lecturer_campus)s, " \
@@ -263,17 +263,43 @@ def createTables():
         },
     ]
 
+    users_sql = "INSERT IGNORE INTO users(full_name, dob, mobile_no, campus, faculty,program, email, school_id, " \
+                "date_joined, recovery_question, recovery_answer, password) VALUES (%(full_name)s, %(dob)s, " \
+                "%(mobile_no)s, %(campus)s, %(faculty)s, %(program)s, %(email)s, %(school_id)s, %(date_joined)s, " \
+                "%(recovery_question)s, %(recovery_answer)s, %(password)s)"
+
+    users_val = [
+        {
+            'full_name': 'John Doe',
+            'dob': '1998-01-01',
+            'mobile_no': '+254721345589',
+            'campus': 'Langata',
+            'faculty': 'Science',
+            'program': 'Computer Science',
+            'email': 'johndoe@cuea.edu',
+            'school_id': '12345678',
+            'date_joined': '2021-01-01',
+            'recovery_question': 'What is your favourite color?',
+            'recovery_answer': 'Blue',
+            'password': '1234567'
+        }
+    ]
+
     # try except block to insert data into the tables
     try:
         for lecturer in lecturer_val:
             mycursor.execute(lecturer_sql, lecturer)
         for timetable in timetable_val:
             mycursor.execute(timetable_sql, timetable)
-        mycursor.executemany(events_sql, events_val)
+        for events in events_val:
+            mycursor.execute(events_sql, events)
+        for users in users_val:
+            mycursor.execute(users_sql, users)
+
+        print("Data Inserted Successfully")
+
     except mysql.connector.Error as sqlerror:
         print("Error Inserting Data: {}".format(sqlerror))
 
     mydb.commit()
     mydb.close()
-
-

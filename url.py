@@ -1,15 +1,9 @@
 from operations import *
 
 url_patterns = [
-    ('/', login),
-    ('/signUp', signup),
-    ('/home', home),
-    ('/home/profile', profile),
-    ('/home/chat', chat),
-    ('/pages/styling/main.css', mainCss),
-    ('/pages/styling/signUp.css', signUpCss),
-    ('/pages/styling/main.js', mainJs),
-    ('/pages/styling/404Error.css', notFoundCss),
-    ('/pages/styling/boxicons.min.css', iconsCss),
-
+    ('/', login_page),
+    ('/home', home_page),
+    ('/signup', signup_page),
+    ('/front_end/root.css', root_css),
+    ('/front_end/root.js', root_js),
 ]

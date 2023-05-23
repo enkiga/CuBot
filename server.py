@@ -30,7 +30,7 @@ class WebApp:
 
         else:
             start_response('404 Not Found', [('Content-Type', content_type(environ.get('PATH_INFO')))])
-            with open('Pages/404Error.html', 'rb') as file:
+            with open('front_end/html/404_error.html', 'rb') as file:
                 data = file.read()
             return [data]
 
