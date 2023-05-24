@@ -230,12 +230,6 @@ def signup_css(environ):
     return data
 
 
-def box_icon_css(environ):
-    with open('front_end/boxicons.min.css', 'rb') as file:
-        data = file.read()
-    return data
-
-
 def root_js(environ):
     with open('front_end/root.js', 'rb') as file:
         data = file.read()
