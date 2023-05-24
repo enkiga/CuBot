@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cuea Assistant Bot</title>
+
+    <!-- Link Css-->
+    <link rel="stylesheet" href="/front_end/root.css">
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Box Icon-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+<header>
+    <a href="/home" class="logo">
+        <i class="bx bxs-bot"></i>
+        <span>Cuea Assistant Bot</span>
+    </a>
+
+
+    <ul class="navbar">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/chat" class="active">Chat Page</a></li>
+    </ul>
+
+    <div class="profile">
+        <a href="/profile" class="user"><i class="bx bxs-user"></i>Profile</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+    </div>
+</header>
+
+<div class="chatbox-wrapper">
+    <div class="chatbox-message-wrapper">
+        <div class="chatbox-message-date">
+            <span class="timeline">Today</span>
+        </div>
+        <div class="chatbox-message-content">
+            <div class="chatbox-message-item sent">
+                <span class="chatbox-message-item-text">
+                    Hey Cu Bot, I need to replace my School ID. What is the procedure should I follow?
+                </span>
+                <span class="chatbox-message-item-time"> 08:00</span>
+            </div>
+            <div class="chatbox-message-item received">
+                <span class="chatbox-message-item-text">
+                    Hey {user_name}, you first have to send a formal letter to the dean of students...
+                </span>
+                <span class="chatbox-message-item-time"> 08:01</span>
+            </div>
+        </div>
+        <div class="chatbox-message-bottom">
+            <form action="#" class="chatbox-message-form">
+                <label class="chat-message-input">
+                    <textarea rows="1" placeholder="Type message..." class="chat-message-input"></textarea>
+                </label>
+                <button type="submit" class="chatbox-message-submit">
+                    <i class="bx bxs-send"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/front_end/root.js"></script>
+</body>
+</html>

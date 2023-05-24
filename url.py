@@ -4,6 +4,8 @@ url_patterns = [
     ('/', login_page),
     ('/home', home_page),
     ('/signup', signup_page),
+    ('/chat', chat_page),
+    ('/profile', profile_page),
     ('/front_end/root.css', root_css),
     ('/front_end/login.css', login_css),
     ('/front_end/signup.css', signup_css),

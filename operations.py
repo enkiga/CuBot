@@ -212,6 +212,18 @@ def signup_page(request):
         return data
 
 
+def profile_page(environ):
+    with open('front_end/html/profile_page.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def chat_page(environ):
+    with open('front_end/html/chat_page.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
 def root_css(environ):
     with open('front_end/root.css', 'rb') as file:
         data = file.read()
