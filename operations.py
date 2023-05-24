@@ -73,9 +73,11 @@ def login_page(request):
 
         # perform login authentication
         if isFieldEmpty(email) or isFieldEmpty(password):
-            error = generate_js_warning("Please fill in all fields")
-            data += error.encode('utf-8')
-            return data
+            f = open('front_end/html/login_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning("Please fill in all fields").encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
 
         # Reference the database using a parameterized query
         ref_sql = "SELECT * FROM users WHERE email = %s AND password = %s"
@@ -95,9 +97,11 @@ def login_page(request):
             data = data.decode('utf-8')
             return data.encode('utf-8')
         else:
-            with open('front_end/html/login_page.html', 'rb') as file:
-                data = file.read()
-            return data
+            f = open('front_end/html/login_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning("Invalid Login Credentials").encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
 
     else:
         f = open('front_end/html/login_page.html', 'rb')
@@ -106,6 +110,7 @@ def login_page(request):
         return data
 
 
+@check_for_login
 def home_page(environ):
     with open('front_end/html/home_page.html', 'rb') as file:
         data = file.read()
@@ -130,6 +135,85 @@ def login_css(environ):
     return data
 
 
+def signup_css(request):
+    if request.get("REQUEST_METHOD") == "POST":
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get user input data
+        # Personal Details
+        fullname = data.get(b'full-name', [b''])[0].decode('utf-8')
+        dob = data.get(b'dob', [b''])[0].decode('utf-8')
+        mobileNo = data.get(b'mobileNo', [b''])[0].decode('utf-8')
+
+        # Education Details
+        campus = data.get(b'campus', [b''])[0].decode('utf-8')
+        faculty = data.get(b'faculty', [b''])[0].decode('utf-8')
+        program = data.get(b'program', [b''])[0].decode('utf-8')
+        email = data.get(b'email', [b''])[0].decode('utf-8')
+        studentID = data.get(b'studentID', [b''])[0].decode('utf-8')
+        joinDate = data.get(b'join-date', [b''])[0].decode('utf-8')
+
+        # Authentication Details
+        password = data.get(b'password', [b''])[0].decode('utf-8')
+
+        # Recovery Details
+        question = data.get(b'question', [b''])[0].decode('utf-8')
+        answer = data.get(b'answer', [b''])[0].decode('utf-8')
+
+        # Hash the password
+        hash_password = hashlib.md5(password.encode('utf-8')).hexdigest()
+
+        # store user data in the database
+        signup_sql = "INSERT INTO users (fullname, dob, mobileNo, campus, faculty, program, email, studentID, " \
+                     "joinDate, password, question, answer) VALUES( % s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+        val = (
+            fullname, dob, mobileNo,
+            campus, faculty, program, email, studentID, joinDate,
+            hash_password,
+            question, answer)
+
+        # check if user data is already in the database
+        ref_sql = "SELECT * FROM users WHERE email = %s AND studentID = %s AND mobileNo = %s"
+        mycursor.execute(ref_sql, (email, studentID, mobileNo))
+
+        if mycursor.fetchone():
+            f = open('front_end/html/signup_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning("User already exists").encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+        else:
+            mycursor.execute(signup_sql, val)
+            mydb.commit()
+
+        while True:
+            try:
+                with open("temp.txt", "ab") as logged_in:
+                    logged_in.write(f"\n {hashlib.md5(view_code(request)).hexdigest()} user".encode('utf-8'))
+            except AssertionError:
+                pass
+
+            # Redirect to home page
+            f = open('front_end/html/login_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning("Signup Successful").encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+    else:
+        f = open('front_end/html/signup_page.html', 'rb')
+        data = f.read()
+        f.close()
+        return data
+
+
 def box_icon_css(environ):
     with open('front_end/boxicons.min.css', 'rb') as file:
         data = file.read()
@@ -138,5 +222,11 @@ def box_icon_css(environ):
 
 def root_js(environ):
     with open('front_end/root.js', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def signup_js(environ):
+    with open('front_end/signup.js', 'rb') as file:
         data = file.read()
     return data

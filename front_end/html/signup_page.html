@@ -2,9 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cuea Assistant Bot</title>
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Sign Up Form CSS -->
+    <link rel="stylesheet" href="/front_end/signup.css">
 </head>
 <body>
-sign up
+<div class="container">
+    <header>Sign Up Form</header>
+
+    <form method="POST" id="form" onsubmit="return inputValidator()">
+        <div class="details personal">
+            <span class="title"> Personal Details</span>
+
+            <div class="fields">
+                <div class="input-field">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name">
+                </div>
+
+                <div class="input-field">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob">
+                </div>
+
+                <div class="input-field">
+                    <label for="mobileNo">Mobile Number</label>
+                    <input type="text" id="mobileNo" placeholder="+25400000000">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="details personal">
+            <span class="title"> Education Details</span>
+
+            <div class="fields">
+                <div class="input-field">
+                    <label for="campus">Campus</label>
+                    <select id="campus">
+                        <option value="GABA">GABA</option>
+                        <option value="LANGATA">LANGATA</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <input type="text" id="faculty">
+                </div>
+
+                <div class="input-field">
+                    <label for="program">Program</label>
+                    <input type="text" id="program">
+                </div>
+
+                <div class="input-field">
+                    <label for="email">Student Email</label>
+                    <input type="email" id="email" placeholder="john@cuea.edu">
+                </div>
+
+                <div class="input-field">
+                    <label for="studentID">Student ID Number</label>
+                    <input type="number" id="studentID">
+                </div>
+
+                <div class="input-field">
+                    <label for="join-date">Date Joined</label>
+                    <input type="date" id="join-date">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="details personal">
+            <span class="title"> Authentication Details</span>
+
+            <div class="fields recovery">
+                <div class="input-field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password">
+                </div>
+
+                <div class="input-field">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword">
+                </div>
+
+                <div class="visiblePass">
+                    <input type="checkbox" id="viewPass" onchange="return togglePasswordVisibility()">
+                    <label for="viewPass">Make Password Visible</label>
+                </div>
+
+                <script>
+                    function togglePasswordVisibility() {
+                        const passwordField = document.getElementById("password");
+                        const confirmPasswordField = document.getElementById("confirmPassword");
+                        const toggleButton = document.querySelector(".toggle-button");
+
+                        if (passwordField.type === "password" && confirmPasswordField.type === "password") {
+                            passwordField.type = "text";
+                            confirmPasswordField.type = "text";
+                            toggleButton.textContent = "Hide";
+                        } else {
+                            passwordField.type = "password";
+                            confirmPasswordField.type = "password";
+                            toggleButton.textContent = "Show";
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="details personal">
+            <span class="title"> Recovery Details</span>
+
+            <div class="fields recovery">
+                <div class="input-field">
+                    <label for="question">Question</label>
+                    <select id="question">
+                        <option value="What is your mother's maiden name?">What is your mother's birth name?
+                        </option>
+                        <option value="What is your favorite color?">What is your favorite color?</option>
+                        <option value="What is your favorite food?">What is your favorite food?</option>
+                        <option value="What is your favorite movie?">What is your favorite movie?</option>
+                        <option value="What is your favorite song?">What is your favorite song?</option>
+                        <option value="What is your favorite sport?">What is your favorite sport?</option>
+                        <option value="What is your favorite animal?">What is your favorite animal?</option>
+                        <option value="What is your favorite book?">What is your favorite book?</option>
+                        <option value="What is your favorite TV show?">What is your favorite TV show?</option>
+                        <option value="What is your favorite hobby?">What is your favorite hobby?</option>
+                        <option value="What is your favorite place to visit?">What is your favorite place to
+                            visit?
+                        </option>
+                        <option value="What is your favorite subject?">What is your favorite subject?</option>
+                        <option value="What is your favorite game?">What is your favorite game?</option>
+                        <option value="What is your favorite drink?">What is your favorite drink?</option>
+                        <option value="What is your favorite restaurant?">What is your favorite restaurant?</option>
+                        <option value="What is your favorite store?">What is your favorite store?</option>
+                        <option value="What is your favorite flower?">What is your favorite flower?</option>
+                        <option value="What is your favorite fruit?">What is your favorite fruit?</option>
+                        <option value="What is your favorite vegetable?">What is your favorite vegetable?</option>
+                        <option value="What is your favorite candy?">What is your favorite candy?</option>
+                        <option value="What is your favorite ice cream flavor?">What is your favorite ice cream
+                            flavor?
+                        </option>
+                        <option value="What is your favorite snack?">What is your favorite snack?</option>
+                        <option value="What is your favorite cereal?">What is your favorite cereal?</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="answer">Answer</label>
+                    <input type="text" id="answer">
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="nextBtn">
+                    <span class="btnTxt">Continue</span>
+                    <i class='bx bxs-chevron-right'></i>
+                </button>
+            </div>
+
+        </div>
+
+
+    </form>
+</div>
+<script src="/front_end/signup.js"></script>
 </body>
 </html>

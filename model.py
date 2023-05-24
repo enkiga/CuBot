@@ -23,7 +23,6 @@ except mysql.connector.Error as err:
 def createTables():
     usersTB = """
     CREATE TABLE IF NOT EXISTS users (
-        username VARCHAR(20) NOT NULL UNIQUE,
         full_name VARCHAR(100) NOT NULL,
         dob DATE NOT NULL,
         mobile_no VARCHAR(13) NOT NULL UNIQUE,
