@@ -2,16 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cuea Assistant Bot</title>
+
+    <link rel="stylesheet" href="/front_end/login.css">
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+
 </head>
 <body>
-login page
-<a href="/home">Home Page</a>
-
 <div class="container">
-
-    <form method="POST" id="login_form">
-
+    <form method="POST" id="form">
         <h1>Login</h1>
 
         <div class="form-group">
@@ -21,25 +28,39 @@ login page
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input class="form-control" id="password" type="text" name="password">
+            <input class="form-control" id="password" type="password" name="password">
         </div>
 
         <div class="form-group">
-            <input type="checkbox" id="view_password" name="view_password">
+            <input type="checkbox" id="view_password" onchange="return togglePasswordVisibility()">
             <label for="view_password">View Password</label>
         </div>
 
-        <div class="form-group">
-            <input type="submit" value="Continue">
-        </div>
+        <script>
+            function togglePasswordVisibility() {
+                const passwordField = document.getElementById("password");
+                const toggleButton = document.querySelector(".view-password");
+
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    toggleButton.textContent = "Hide";
+                } else {
+                    passwordField.type = "password";
+                    toggleButton.textContent = "Show";
+                }
+            }
+        </script>
+
+
+        <input type="submit" class="form-button" value="Continue">
+
 
         <div class="link-referral">
-            <a href="/signup_page">Don't have an account ?</a>
+            <a href="/signup">Don't have an account ?</a>
             <a href="#">Forgot Password ?</a>
-
         </div>
-
     </form>
 </div>
+<script src="/front_end/root.js"></script>
 </body>
 </html>

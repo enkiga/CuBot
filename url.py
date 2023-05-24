@@ -5,5 +5,6 @@ url_patterns = [
     ('/home', home_page),
     ('/signup', signup_page),
     ('/front_end/root.css', root_css),
+    ('/front_end/login.css', login_css),
     ('/front_end/root.js', root_js),
 ]
