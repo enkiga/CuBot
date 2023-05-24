@@ -71,6 +71,9 @@ def login_page(request):
         email = data.get(b'email', [b''])[0].decode('utf-8')
         password = data.get(b'password', [b''])[0].decode('utf-8')
 
+        # Hash the password
+        hashed_password = hashlib.md5(password.encode('utf-8')).hexdigest()
+
         # perform login authentication
         if isFieldEmpty(email) or isFieldEmpty(password):
             f = open('front_end/html/login_page.html', 'rb')
@@ -81,8 +84,9 @@ def login_page(request):
 
         # Reference the database using a parameterized query
         ref_sql = "SELECT * FROM users WHERE email = %s AND password = %s"
-        mycursor.execute(ref_sql, (email, password))
+        mycursor.execute(ref_sql, (email, hashed_password))
 
+        # Check if the user exists
         if mycursor.fetchone():
             try:
                 with open("temp.txt", "ab") as logged_in:
@@ -117,25 +121,7 @@ def home_page(environ):
     return data
 
 
-def signup_page(environ):
-    with open('front_end/html/signup_page.html', 'rb') as file:
-        data = file.read()
-    return data
-
-
-def root_css(environ):
-    with open('front_end/root.css', 'rb') as file:
-        data = file.read()
-    return data
-
-
-def login_css(environ):
-    with open('front_end/login.css', 'rb') as file:
-        data = file.read()
-    return data
-
-
-def signup_css(request):
+def signup_page(request):
     if request.get("REQUEST_METHOD") == "POST":
         try:
             # Get the data from the request
@@ -170,17 +156,29 @@ def signup_css(request):
         hash_password = hashlib.md5(password.encode('utf-8')).hexdigest()
 
         # store user data in the database
-        signup_sql = "INSERT INTO users (fullname, dob, mobileNo, campus, faculty, program, email, studentID, " \
-                     "joinDate, password, question, answer) VALUES( % s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        signup_sql = "INSERT INTO users (full_name, dob, mobile_no, campus, faculty, program, email, school_id, " \
+                     "date_joined, password, recovery_question, recovery_answer) " \
+                     "VALUES( %(fullname)s, %(dob)s, %(mobileNo)s, %(campus)s, %(faculty)s, %(program)s, " \
+                     "%(email)s, %(studentID)s, %(joinDate)s, %(hash_password)s, %(question)s, %(answer)s)"
 
-        val = (
-            fullname, dob, mobileNo,
-            campus, faculty, program, email, studentID, joinDate,
-            hash_password,
-            question, answer)
+        # create a dictionary of the user data
+        user_data = {
+            'fullname': fullname,
+            'dob': dob,
+            'mobileNo': mobileNo,
+            'campus': campus,
+            'faculty': faculty,
+            'program': program,
+            'email': email,
+            'studentID': studentID,
+            'joinDate': joinDate,
+            'hash_password': hash_password,
+            'question': question,
+            'answer': answer
+        }
 
         # check if user data is already in the database
-        ref_sql = "SELECT * FROM users WHERE email = %s AND studentID = %s AND mobileNo = %s"
+        ref_sql = "SELECT * FROM users WHERE email = %s AND school_id = %s AND mobile_no = %s"
         mycursor.execute(ref_sql, (email, studentID, mobileNo))
 
         if mycursor.fetchone():
@@ -190,7 +188,7 @@ def signup_css(request):
             data = data.decode('utf-8')
             return data.encode('utf-8')
         else:
-            mycursor.execute(signup_sql, val)
+            mycursor.execute(signup_sql, user_data)
             mydb.commit()
 
         while True:
@@ -201,7 +199,7 @@ def signup_css(request):
                 pass
 
             # Redirect to home page
-            f = open('front_end/html/login_page.html', 'rb')
+            f = open('front_end/html/home_page.html', 'rb')
             data = f.read()
             data += generate_js_warning("Signup Successful").encode('utf-8')
             data = data.decode('utf-8')
@@ -212,6 +210,24 @@ def signup_css(request):
         data = f.read()
         f.close()
         return data
+
+
+def root_css(environ):
+    with open('front_end/root.css', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def login_css(environ):
+    with open('front_end/login.css', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def signup_css(environ):
+    with open('front_end/signup.css', 'rb') as file:
+        data = file.read()
+    return data
 
 
 def box_icon_css(environ):
