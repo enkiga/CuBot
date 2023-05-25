@@ -2,9 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cuea Assistant Bot</title>
+
+    <!-- Link Css-->
+    <link rel="stylesheet" href="/front_end/root.css">
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Box Icon-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-Profile Page
+<header>
+    <a href="/home" class="logo">
+        <i class="bx bxs-bot"></i>
+        <span>Cuea Assistant Bot</span>
+    </a>
+
+
+    <ul class="navbar">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/chat">Chat Page</a></li>
+    </ul>
+
+    <div class="profile">
+        <a href="/profile" class="user active"><i class="bx bxs-user"></i>Profile</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+    </div>
+</header>
+
+<div class="profileCard">
+    <div class="section">
+        <span class="profile-title">Personal Details</span>
+        <div class="details">
+            <div class="detail">
+                <span class="detail-title">Name: </span>
+                <span class="detail-value">{{name}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Date of Birth: </span>
+                <span class="detail-value">{{dob}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Mobile Number: </span>
+                <span class="detail-value">{{mobileNo}}</span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="section">
+        <span class="profile-title">Educational Details</span>
+
+        <div class="details">
+            <div class="detail">
+                <span class="detail-title">Campus: </span>
+
+                <span class="detail-value">{{campus}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Faculty: </span>
+                <span class="detail-value">{{faculty}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Program: </span>
+                <span class="detail-value">{{program}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Email Address: </span>
+                <span class="detail-value">{{email}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Student's ID: </span>
+                <span class="detail-value">{{studentID}}</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-title">Date Joined: </span>
+                <span class="detail-value">{{joinDate}}</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <span class="profile-title">Password Details</span>
+
+        <div class="passwordReset">
+            <button class="resetBtn">Reset Password</button>
+            <button class="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="/front_end/root.js"></script>
 </body>
 </html>

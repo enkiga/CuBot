@@ -45,7 +45,7 @@ def check_for_login(func):
         hashes = temp_store.readlines()
         for i in hashes:
             hashU = i.split()
-            if f"{hashlib.sha256(view_code(*args)).hexdigest()}user" in hashU:
+            if f"{hashlib.md5(view_code(*args)).hexdigest()}user" in hashU:
                 print("found", count, ":", i)
                 return func(*args, **kwargs)
             count += 1
