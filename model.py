@@ -65,12 +65,12 @@ def createTables():
     timetableTB = """
     CREATE TABLE IF NOT EXISTS timetable (
         timetable_no INT AUTO_INCREMENT,
-        course_code VARCHAR(10) NOT NULL,
-        course_title VARCHAR(100) NOT NULL,
+        course_code VARCHAR(10) NOT NULL UNIQUE,
+        course_title VARCHAR(100) NOT NULL UNIQUE,
         course_lecturer VARCHAR(100) NOT NULL,
         course_venue VARCHAR(100) NOT NULL,
         course_day VARCHAR(10) NOT NULL,
-        course_time VARCHAR(10) NOT NULL,
+        course_time VARCHAR(20) NOT NULL,
         PRIMARY KEY(timetable_no),
         FOREIGN KEY(course_lecturer) REFERENCES lecturers(lecturer_name)
     )"""
@@ -78,7 +78,7 @@ def createTables():
     eventsTB = """
     CREATE TABLE IF NOT EXISTS events (
         event_no INT AUTO_INCREMENT,
-        event_name VARCHAR(100) NOT NULL,
+        event_name VARCHAR(100) NOT NULL UNIQUE,
         event_venue VARCHAR(100) NOT NULL,
         event_date DATE NOT NULL,
         event_time TIME NOT NULL,
@@ -140,61 +140,53 @@ def createTables():
 
     timetable_val = [
         {
-            'course_code': 'CSC 101',
+            'course_code': 'CS 101',
             'course_title': 'Introduction to Computer Science',
             'course_lecturer': 'Mr. Kioko',
             'course_venue': 'OH 12',
             'day': 'Monday',
-            'time': '8:00 AM'
+            'time': '8:00 AM - 11:00 AM'
         },
         {
-            'course_code': 'CSC 101',
-            'course_title': 'Introduction to Computer Science',
-            'course_lecturer': 'Mr. Kioko',
-            'course_venue': 'OH 12',
+            'course_code': 'CS 102',
+            'course_title': 'Introduction to Database Systems',
+            'course_lecturer': 'Mrs. Doreen',
+            'course_venue': 'TH 12',
             'day': 'Wednesday',
-            'time': '8:00 AM'
+            'time': '8:00 AM - 11:00 AM'
         },
         {
-            'course_code': 'CSC 101',
-            'course_title': 'Introduction to Computer Science',
-            'course_lecturer': 'Mr. Kioko',
-            'course_venue': 'OH 12',
-            'day': 'Friday',
-            'time': '8:00 AM'
+            'course_code': 'CS 103',
+            'course_title': 'Data Structures and Algorithms',
+            'course_lecturer': 'Mr. Kamau',
+            'course_venue': 'TH Lab A',
+            'day': 'Tuesday',
+            'time': '8:00 AM - 2:00 PM'
         },
         {
-            'course_code': 'CSC 102',
-            'course_title': 'Introduction to Programming',
-            'course_lecturer': 'Mr. Mwangi',
-            'course_venue': 'OH 15',
+            'course_code': 'CS 104',
+            'course_title': 'Systems Analysis and Design',
+            'course_lecturer': 'Mr. Nichodemus',
+            'course_venue': 'OH 02',
             'day': 'Monday',
-            'time': '10:00 AM'
+            'time': '11:00 AM - 2:00 PM'
         },
         {
-            'course_code': 'CSC 102',
-            'course_title': 'Introduction to Programming',
+            'course_code': 'CS 105',
+            'course_title': 'Object Oriented Programming',
             'course_lecturer': 'Mr. Mwangi',
             'course_venue': 'OH 15',
             'day': 'Wednesday',
-            'time': '10:00 AM'
+            'time': '11:00 AM - 4:00 PM'
         },
         {
-            'course_code': 'CSC 102',
-            'course_title': 'Introduction to Programming',
-            'course_lecturer': 'Mr. Mwangi',
-            'course_venue': 'OH 15',
-            'day': 'Friday',
-            'time': '10:00 AM'
-        },
-        {
-            'course_code': 'CSC 103',
-            'course_title': 'Introduction to Computer Systems',
-            'course_lecturer': 'Mr. Mirugi',
-            'course_venue': 'OH 12',
+            'course_code': 'CS 106',
+            'course_title': 'Mobile Application Development',
+            'course_lecturer': 'Mr. Kibet',
+            'course_venue': 'TH Lab B',
             'day': 'Monday',
-            'time': '2:00 PM'
-        },
+            'time': '11:00 AM - 4:00 PM'
+        }
     ]
 
     events_sql = "INSERT IGNORE INTO events (event_no, event_name, event_venue, event_date, event_time, " \

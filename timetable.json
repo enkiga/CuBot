@@ -1,0 +1,104 @@
+{
+    "intents": [
+        {
+            "tag": "timetable",
+            "patterns": [
+                "When is CS 101 on my timetable?",
+                "When is Introduction to Computer Science on my timetable?",
+                "Which classes do i have on Monday?",
+                "Which classes do i have on Monday by Mr. Kioko?",
+                "Which classes do i have on Monday at 8:00 AM - 11:00 AM?",
+                "Which classes do i have on Monday at 8:00 AM - 11:00 AM by Mr. Kioko?",
+                "Which classes are in OH 12?",
+                "Which classes are in OH 12 by Mr. Kioko?",
+                "Which classes are in OH 12 at 8:00 AM - 11:00 AM?",
+                "Which classes are in OH 12 at 8:00 AM - 11:00 AM by Mr. Kioko?",
+                "Which classes do i have on Monday in OH 12?"
+            ],
+            "responses": [
+                "The class for CS 101: Introduction to Computer Science is at  8:00 AM - 11:00 AM on Monday at OH 12 by Mr. Kioko"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "timetable",
+            "patterns": [
+                "When is CS 102 on my timetable?",
+                "When is Introduction to Database Systems on my timetable?",
+                "Which classes do i have on Wednesday?",
+                "Which classes do i have on Wednesday by Mrs. Doreen?",
+                "Which classes do i have on Wednesday at 8:00 AM - 11:00 AM?",
+                "Which classes do i have on Wednesday at 8:00 AM - 11:00 AM by Mrs. Doreen?",
+                "Which classes are in TH 12?",
+                "Which classes are in TH 12 by Mrs. Doreen?",
+                "Which classes are in TH 12 at 8:00 AM - 11:00 AM?",
+                "Which classes are in TH 12 at 8:00 AM - 11:00 AM by Mrs. Doreen?",
+                "Which classes do i have on Wednesday in TH 12?"
+            ],
+            "responses": [
+                "The class for CS 102: Introduction to Database Systems is at  8:00 AM - 11:00 AM on Wednesday at TH 12 by Mrs. Doreen"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "timetable",
+            "patterns": [
+                "When is CS 104 on my timetable?",
+                "When is Systems Analysis and Design on my timetable?",
+                "Which classes do i have on Monday?",
+                "Which classes do i have on Monday by Mr. Nichodemus?",
+                "Which classes do i have on Monday at 11:00 AM - 2:00 PM?",
+                "Which classes do i have on Monday at 11:00 AM - 2:00 PM by Mr. Nichodemus?",
+                "Which classes are in OH 02?",
+                "Which classes are in OH 02 by Mr. Nichodemus?",
+                "Which classes are in OH 02 at 11:00 AM - 2:00 PM?",
+                "Which classes are in OH 02 at 11:00 AM - 2:00 PM by Mr. Nichodemus?",
+                "Which classes do i have on Monday in OH 02?"
+            ],
+            "responses": [
+                "The class for CS 104: Systems Analysis and Design is at  11:00 AM - 2:00 PM on Monday at OH 02 by Mr. Nichodemus"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "timetable",
+            "patterns": [
+                "When is CS 105 on my timetable?",
+                "When is Object Oriented Programming on my timetable?",
+                "Which classes do i have on Wednesday?",
+                "Which classes do i have on Wednesday by Mr. Mwangi?",
+                "Which classes do i have on Wednesday at 11:00 AM - 4:00 PM?",
+                "Which classes do i have on Wednesday at 11:00 AM - 4:00 PM by Mr. Mwangi?",
+                "Which classes are in OH 15?",
+                "Which classes are in OH 15 by Mr. Mwangi?",
+                "Which classes are in OH 15 at 11:00 AM - 4:00 PM?",
+                "Which classes are in OH 15 at 11:00 AM - 4:00 PM by Mr. Mwangi?",
+                "Which classes do i have on Wednesday in OH 15?"
+            ],
+            "responses": [
+                "The class for CS 105: Object Oriented Programming is at  11:00 AM - 4:00 PM on Wednesday at OH 15 by Mr. Mwangi"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "timetable",
+            "patterns": [
+                "When is CS 106 on my timetable?",
+                "When is Mobile Application Development on my timetable?",
+                "Which classes do i have on Monday?",
+                "Which classes do i have on Monday by Mr. Kibet?",
+                "Which classes do i have on Monday at 11:00 AM - 4:00 PM?",
+                "Which classes do i have on Monday at 11:00 AM - 4:00 PM by Mr. Kibet?",
+                "Which classes are in TH Lab B?",
+                "Which classes are in TH Lab B by Mr. Kibet?",
+                "Which classes are in TH Lab B at 11:00 AM - 4:00 PM?",
+                "Which classes are in TH Lab B at 11:00 AM - 4:00 PM by Mr. Kibet?",
+                "Which classes do i have on Monday in TH Lab B?"
+            ],
+            "responses": [
+                "The class for CS 106: Mobile Application Development is at  11:00 AM - 4:00 PM on Monday at TH Lab B by Mr. Kibet"
+            ],
+            "context_set": ""
+        }
+    ]
+}
