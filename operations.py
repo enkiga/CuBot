@@ -95,7 +95,7 @@ def login_page(request):
             # Check if the user is already logged in
             if email in session.values():
                 # Redirect to home page
-                f = open('front_end/html/home_page.html', 'rb')
+                f = open('front_end/html/loading_homepage.html', 'rb')
                 data = f.read()
                 data += generate_js_warning("Already Logged In").encode('utf-8')
                 data = data.decode('utf-8')
@@ -116,10 +116,9 @@ def login_page(request):
                 with open('temp.txt', 'w') as file:
                     file.write(response_headers[1][1].split('=')[1].split(';')[0])
 
-            # Redirect to home page
-            f = open('front_end/html/home_page.html', 'rb')
+            # Redirect to loading page
+            f = open('front_end/html/loading_homepage.html', 'rb')
             data = f.read()
-            data += generate_js_warning("Login Successful").encode('utf-8')
             data = data.decode('utf-8')
             return data.encode('utf-8')
         else:
@@ -137,10 +136,44 @@ def login_page(request):
 
 
 @check_for_login
-def home_page(environ, request):
-    with open('front_end/html/home_page.html', 'rb') as file:
+def loading_page(environ, request):
+    with open('front_end/html/loading_page.html', 'rb') as file:
         data = file.read()
     return data
+
+
+def home_page(environ):
+    # Get the session ID from temp.txt
+    with open('temp.txt', 'r') as file:
+        session_id = file.read()
+
+    if session_id:
+        # check if session id exists in the session dictionary
+        if session_id in session:
+            session_data = session[session_id]
+
+            # get user from database
+            sql = "SELECT * FROM users WHERE email = %s"
+            mycursor.execute(sql, (session_data['username'],))
+            user = mycursor.fetchone()
+
+            # get user lastname
+            lastname = user[0].split(' ')[-1]
+
+            # open the home page
+            with open('front_end/html/home_page.html', 'rb') as file:
+                data = file.read()
+
+            # replace the username with the last name
+            data = data.replace(b'{{lastname}}', lastname.encode('utf-8'))
+
+        return data
+
+    else:
+        with open('front_end/html/home_page.html', 'rb') as file:
+            data = file.read()
+
+        return data
 
 
 def signup_page(request):
@@ -173,6 +206,8 @@ def signup_page(request):
         # Recovery Details
         question = data.get(b'question', [b''])[0].decode('utf-8')
         answer = data.get(b'answer', [b''])[0].decode('utf-8')
+        # make answer lowercase
+        answer = answer.lower()
 
         # Hash the password
         hash_password = hashlib.md5(password.encode('utf-8')).hexdigest()
@@ -204,7 +239,6 @@ def signup_page(request):
         mycursor.execute(ref_sql, (email, studentID, mobileNo))
 
         if mycursor.fetchone():
-
             f = open('front_end/html/signup_page.html', 'rb')
             data = f.read()
             data += generate_js_warning("User already exists").encode('utf-8')
@@ -214,10 +248,24 @@ def signup_page(request):
             mycursor.execute(signup_sql, user_data)
             mydb.commit()
 
-            # Redirect to login page
-            f = open('front_end/html/login_page.html', 'rb')
+            # Generate a session ID
+            session_id = hashlib.md5(email.encode('utf-8')).hexdigest()
+            # check if session id exists in the dictionary
+            if session_id not in session:
+                # add the session id to the dictionary
+                session[session_id] = {
+                    'username': email,
+                }
+            # Set the session ID as a cookie
+            response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id={session_id}; path=/')]
+
+            # store the session ID in temp.txt
+            with open('temp.txt', 'w') as file:
+                file.write(response_headers[1][1].split('=')[1].split(';')[0])
+
+            # Redirect to home page
+            f = open('front_end/html/loading_homepage.html', 'rb')
             data = f.read()
-            data += generate_js_warning("Signup Successful").encode('utf-8')
             data = data.decode('utf-8')
             return data.encode('utf-8')
 

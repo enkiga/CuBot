@@ -1,8 +1,7 @@
 from waitress import serve
-
-from operations import login_page
-from url import url_patterns
 from model import createTables
+from operations import login_page, signup_page, home_page
+from url import url_patterns
 
 # Port & Thread Variable
 HOST = 'localhost'
@@ -31,9 +30,18 @@ class WebApp:
         if func:
             if environ.get('PATH_INFO') == '/':
                 response = login_page(environ)
+                response, headers = self.prevent_cache(response)
+            elif environ.get('PATH_INFO') == '/signup':
+                response = signup_page(environ)
+                response, headers = self.prevent_cache(response)
+            elif environ.get('PATH_INFO') == '/home':
+                response = home_page(environ)
+                response, headers = self.prevent_cache(response)
             else:
                 response = func(environ, self.session)
-            start_response('200 OK', [('Content-Type', content_type(environ.get('PATH_INFO')))])
+                headers = []
+
+            start_response('200 OK', [('Content-Type', content_type(environ.get('PATH_INFO')))] + headers)
             return [response]
 
         else:
@@ -41,6 +49,13 @@ class WebApp:
             with open('front_end/html/404_error.html', 'rb') as file:
                 data = file.read()
             return [data]
+
+    @staticmethod
+    def prevent_cache(response):
+        headers = [('Cache-Control', 'no-cache, no-store, must-revalidate'),
+                   ('Pragma', 'no-cache'),
+                   ('Expires', '0')]
+        return response, headers
 
 
 app = WebApp()

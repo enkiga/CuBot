@@ -2,6 +2,7 @@ from operations import *
 
 url_patterns = [
     ('/', login_page),
+    ('/loading', loading_page),
     ('/home', home_page),
     ('/signup', signup_page),
     ('/chat', chat_page),

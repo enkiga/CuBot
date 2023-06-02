@@ -38,9 +38,16 @@
     </div>
 </header>
 <div class="column-header">
-    <h1>Hello There</h1>
+    <h1>Hello There <span id="lastname"></span></h1>
     <h2>I am Cu Bot, I will help you with inquiries that include:</h2>
 </div>
+
+<script>
+    const user_data = {
+        lastname: "{{lastname}}"
+    };
+    document.getElementById("lastname").textContent = user_data.lastname;
+</script>
 <section class="columns">
 
     <div class="column">
@@ -80,7 +87,6 @@
         <span>Chat with Cu Bot</span>
     </a>
 </div>
-
 
 <script src="/front_end/root.js"></script>
 </body>
