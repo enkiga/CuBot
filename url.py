@@ -7,6 +7,8 @@ url_patterns = [
     ('/signup', signup_page),
     ('/chat', chat_page),
     ('/profile', profile_page),
+    ('/logout', logout),
+    ('loading_logout', loading_logout),
     ('/front_end/root.css', root_css),
     ('/front_end/login.css', login_css),
     ('/front_end/signup.css', signup_css),

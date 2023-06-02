@@ -51,12 +51,7 @@ def check_for_login(func):
             # user is logged in
             return func(*args, **kwargs)
         else:
-            # user is not logged in
-            f = open('front_end/html/login_page.html', 'rb')
-            data = f.read()
-            data += generate_js_warning("Please Login").encode('utf-8')
-            data = data.decode('utf-8')
-            return data.encode('utf-8')
+            return login_page(*args, **kwargs)
 
     return wrapper
 
@@ -142,8 +137,10 @@ def loading_page(environ, request):
     return data
 
 
+@check_for_login
 def home_page(environ):
     # Get the session ID from temp.txt
+    data = b''
     with open('temp.txt', 'r') as file:
         session_id = file.read()
 
@@ -321,6 +318,37 @@ def profile_page(environ, request):
     with open('front_end/html/profile_page.html', 'rb') as file:
         data = file.read()
     return data
+
+
+def logout(environ, request):
+    # get session id from temp.txt
+    with open('temp.txt', 'r') as file:
+        session_id = file.read()
+
+    # check if session id exists in the dictionary
+    if session_id in session:
+        # remove the session id from the dictionary
+        session.pop(session_id)
+
+    # clear the session id from the cookie
+    response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id=; path=/')]
+
+    # store the session ID in temp.txt
+    with open('temp.txt', 'w') as file:
+        file.write('')
+
+    # Redirect to login page
+    f = open('front_end/html/loading_logout.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
+
+
+def loading_logout(environ, request):
+    f = open('front_end/html/loading_logout.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
 
 
 def chat_page(environ, request):
