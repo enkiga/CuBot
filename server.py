@@ -1,4 +1,6 @@
 from waitress import serve
+
+from operations import login_page
 from url import url_patterns
 from model import createTables
 
@@ -8,6 +10,9 @@ PORT = 3000
 
 
 class WebApp:
+    def __init__(self):
+        self.session = {}
+
     def __call__(self, environ, start_response):
         def content_type(pathfile):
             if pathfile.endswith('.js'):
@@ -24,9 +29,12 @@ class WebApp:
                 break
 
         if func:
+            if environ.get('PATH_INFO') == '/':
+                response = login_page(environ)
+            else:
+                response = func(environ, self.session)
             start_response('200 OK', [('Content-Type', content_type(environ.get('PATH_INFO')))])
-            data = func(environ)
-            return [data]
+            return [response]
 
         else:
             start_response('404 Not Found', [('Content-Type', content_type(environ.get('PATH_INFO')))])

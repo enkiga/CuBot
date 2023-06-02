@@ -1,6 +1,7 @@
 import hashlib
 from urllib.parse import parse_qs
 import mysql.connector
+from datetime import date
 
 # Connect to Database try catch
 try:
@@ -15,6 +16,9 @@ try:
     mycursor = mydb.cursor()
 except mysql.connector.Error as err:
     print("Error: ", err)
+
+# session dictionary
+session = {}
 
 
 def isFieldEmpty(field_value):
@@ -33,26 +37,26 @@ def generate_js_warning(message):
     return js_script
 
 
-def view_code(environ):
+def view_code(environ, request):
     userAgent = environ.get("HTTP_USER_AGENT")
     return userAgent.encode('utf-8')
 
 
 def check_for_login(func):
     def wrapper(*args, **kwargs):
-        temp_store = open("temp.txt", "r")
-        count = 1
-        hashes = temp_store.readlines()
-        for i in hashes:
-            hashU = i.split()
-            if f"{hashlib.md5(view_code(*args)).hexdigest()}user" in hashU:
-                print("found", count, ":", i)
-                return func(*args, **kwargs)
-            count += 1
+        # check if the user is logged in from temp.txt
+        with open('temp.txt', 'r') as f:
+            email = f.read()
+        if email:
+            # user is logged in
+            return func(*args, **kwargs)
         else:
-            with open("front_end/html/home_page.html", "rb") as f:
-                data = f.read()
-            return data
+            # user is not logged in
+            f = open('front_end/html/login_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning("Please Login").encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
 
     return wrapper
 
@@ -88,11 +92,29 @@ def login_page(request):
 
         # Check if the user exists
         if mycursor.fetchone():
-            try:
-                with open("temp.txt", "ab") as logged_in:
-                    logged_in.write(f"\n {hashlib.md5(view_code(request)).hexdigest()} user".encode('utf-8'))
-            except AssertionError:
-                pass
+            # Check if the user is already logged in
+            if email in session.values():
+                # Redirect to home page
+                f = open('front_end/html/home_page.html', 'rb')
+                data = f.read()
+                data += generate_js_warning("Already Logged In").encode('utf-8')
+                data = data.decode('utf-8')
+                return data.encode('utf-8')
+            else:
+                # Generate a session ID
+                session_id = hashlib.md5(email.encode('utf-8')).hexdigest()
+
+                # Store session data
+                session[session_id] = {
+                    'username': email,
+                }
+
+                # Set the session ID as a cookie
+                response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id={session_id}; path=/')]
+
+                # store the session ID in temp.txt
+                with open('temp.txt', 'w') as file:
+                    file.write(response_headers[1][1].split('=')[1].split(';')[0])
 
             # Redirect to home page
             f = open('front_end/html/home_page.html', 'rb')
@@ -115,7 +137,7 @@ def login_page(request):
 
 
 @check_for_login
-def home_page(environ):
+def home_page(environ, request):
     with open('front_end/html/home_page.html', 'rb') as file:
         data = file.read()
     return data
@@ -182,6 +204,7 @@ def signup_page(request):
         mycursor.execute(ref_sql, (email, studentID, mobileNo))
 
         if mycursor.fetchone():
+
             f = open('front_end/html/signup_page.html', 'rb')
             data = f.read()
             data += generate_js_warning("User already exists").encode('utf-8')
@@ -191,15 +214,8 @@ def signup_page(request):
             mycursor.execute(signup_sql, user_data)
             mydb.commit()
 
-        while True:
-            try:
-                with open("temp.txt", "ab") as logged_in:
-                    logged_in.write(f"\n {hashlib.md5(view_code(request)).hexdigest()} user".encode('utf-8'))
-            except AssertionError:
-                pass
-
-            # Redirect to home page
-            f = open('front_end/html/home_page.html', 'rb')
+            # Redirect to login page
+            f = open('front_end/html/login_page.html', 'rb')
             data = f.read()
             data += generate_js_warning("Signup Successful").encode('utf-8')
             data = data.decode('utf-8')
@@ -212,43 +228,84 @@ def signup_page(request):
         return data
 
 
-def profile_page(environ):
+def profile_page(environ, request):
+    # get session id from temp.txt
+    with open('temp.txt', 'r') as file:
+        session_id = file.read()
+
+    if session_id:
+        # check if session id exists in the dictionary
+        if session_id in session:
+            session_data = session[session_id]
+
+            # get user data from the database
+            mycursor.execute("SELECT * FROM users WHERE email = %s", (session_data['username'],))
+            user_data = mycursor.fetchone()
+
+            # personalize the profile page
+            with open('front_end/html/profile_page.html', 'r') as file:
+                data = file.read()
+
+                # convert the date to string
+                user_data = list(user_data)
+                if isinstance(user_data[2], date):
+                    user_data[2] = user_data[2].strftime('%d/%m/%Y')
+                if isinstance(user_data[9], date):
+                    user_data[9] = user_data[9].strftime('%d/%m/%Y')
+
+                # personal details
+                data = data.replace('{{fullname}}', str(user_data[0]))
+                data = data.replace('{{dob}}', str(user_data[1]))
+                data = data.replace('{{mobileNo}}', str(user_data[2]))
+
+                # education details
+                data = data.replace('{{campus}}', str(user_data[3]))
+                data = data.replace('{{faculty}}', str(user_data[4]))
+                data = data.replace('{{program}}', str(user_data[5]))
+                data = data.replace('{{email}}', str(user_data[6]))
+                data = data.replace('{{studentID}}', str(user_data[7]))
+                data = data.replace('{{joinDate}}', str(user_data[8]))
+
+            # return the profile page
+            return data.encode('utf-8')
+
+    # if session id does not exist or user is not authenticated
     with open('front_end/html/profile_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
-def chat_page(environ):
+def chat_page(environ, request):
     with open('front_end/html/chat_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
-def root_css(environ):
+def root_css(environ, request):
     with open('front_end/root.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def login_css(environ):
+def login_css(environ, request):
     with open('front_end/login.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def signup_css(environ):
+def signup_css(environ, request):
     with open('front_end/signup.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def root_js(environ):
+def root_js(environ, request):
     with open('front_end/root.js', 'rb') as file:
         data = file.read()
     return data
 
 
-def signup_js(environ):
+def signup_js(environ, request):
     with open('front_end/signup.js', 'rb') as file:
         data = file.read()
     return data

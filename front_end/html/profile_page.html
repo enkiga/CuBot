@@ -43,17 +43,17 @@
         <div class="details">
             <div class="detail">
                 <span class="detail-title">Name: </span>
-                <span class="detail-value">{{name}}</span>
+                <span class="detail-value" id="fullname"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Date of Birth: </span>
-                <span class="detail-value">{{dob}}</span>
+                <span class="detail-value" id="dob"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Mobile Number: </span>
-                <span class="detail-value">{{mobileNo}}</span>
+                <span class="detail-value" id="mobileNo"></span>
             </div>
 
         </div>
@@ -67,32 +67,32 @@
             <div class="detail">
                 <span class="detail-title">Campus: </span>
 
-                <span class="detail-value">{{campus}}</span>
+                <span class="detail-value" id="campus"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Faculty: </span>
-                <span class="detail-value">{{faculty}}</span>
+                <span class="detail-value" id="faculty"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Program: </span>
-                <span class="detail-value">{{program}}</span>
+                <span class="detail-value" id="program"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Email Address: </span>
-                <span class="detail-value">{{email}}</span>
+                <span class="detail-value" id="email"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Student's ID: </span>
-                <span class="detail-value">{{studentID}}</span>
+                <span class="detail-value" id="studentID"></span>
             </div>
 
             <div class="detail">
                 <span class="detail-title">Date Joined: </span>
-                <span class="detail-value">{{joinDate}}</span>
+                <span class="detail-value" id="joinDate"></span>
             </div>
 
         </div>
@@ -109,6 +109,34 @@
 
 
 </div>
+<script>
+    // Retrieve the data from the backend or server-side
+    // and replace the placeholders with actual values
+
+    // Example data
+    const user_data = {
+        fullname: "{{fullname}}",
+        dob: "{{dob}}",
+        mobileNo: "{{mobileNo}}",
+        campus: "{{campus}}",
+        faculty: "{{faculty}}",
+        program: "{{program}}",
+        email: "{{email}}",
+        studentID: "{{studentID}}",
+        joinDate: "{{joinDate}}"
+    };
+
+    // Replace the placeholders with actual values
+    document.getElementById("fullname").textContent = user_data.fullname;
+    document.getElementById("dob").textContent = user_data.dob;
+    document.getElementById("mobileNo").textContent = user_data.mobileNo;
+    document.getElementById("campus").textContent = user_data.campus;
+    document.getElementById("faculty").textContent = user_data.faculty;
+    document.getElementById("program").textContent = user_data.program;
+    document.getElementById("email").textContent = user_data.email;
+    document.getElementById("studentID").textContent = user_data.studentID;
+    document.getElementById("joinDate").textContent = user_data.joinDate;
+</script>
 
 <script src="/front_end/root.js"></script>
 </body>
