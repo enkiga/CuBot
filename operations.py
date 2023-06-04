@@ -430,7 +430,8 @@ def recovery_page(request):
                 # replace recovery question holder
                 data = data.replace('{{recovery_question}}', str(user_data[9]))
                 print(user_data[10])
-                # return the recovery page
+
+                # check if the recovery answer is correct
                 return data.encode('utf-8')
 
     else:
