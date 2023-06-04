@@ -351,11 +351,117 @@ def loading_logout(environ, request):
     return data.encode('utf-8')
 
 
+def forgot_password_page(request):
+    if request.get("REQUEST_METHOD") == "POST":
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get the user input
+        email = data.get(b'email', [b''])[0].decode('utf-8')
+
+        # Check if the email exists in the database
+        ref_sql = "SELECT * FROM users WHERE email = %s"
+        mycursor.execute(ref_sql, (email,))
+        user_data = mycursor.fetchone()
+
+        if user_data:
+            # generate an email session id
+            session_id = hashlib.md5(email.encode('utf-8')).hexdigest()
+            # check if session id exists in the dictionary
+            if session_id not in session:
+                # add the session id to the dictionary
+                session[session_id] = {
+                    'username': email,
+                }
+            # Set the session ID as a cookie
+            response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id={session_id}; path=/')]
+            # store the session ID in temp.txt
+            with open('temp.txt', 'w') as file:
+                file.write(response_headers[1][1].split('=')[1].split(';')[0])
+            # Redirect to recovery page
+            return recovery_page(request)
+        else:
+            # Redirect to forget password page
+            f = open('front_end/html/forgot_password_page_one.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Email does not exist!\nCreate account!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+    else:
+        # Redirect to forget password page
+        f = open('front_end/html/forgot_password_page_one.html', 'rb')
+        data = f.read()
+        data = data.decode('utf-8')
+        return data.encode('utf-8')
+
+
+def recovery_page(request):
+    if request.get("REQUEST_METHOD") == "POST":
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get the user input
+        recovery_answer = data.get(b'recovery_answer', [b''])[0].decode('utf-8')
+
+        # get session id from temp.txt
+        with open('temp.txt', 'r') as file:
+            session_id = file.read()
+
+        # check if session id exists in the dictionary
+        if session_id in session:
+            # get user data from the database
+            mycursor.execute("SELECT * FROM users WHERE email = %s", (session[session_id]['username'],))
+            user_data = mycursor.fetchone()
+
+            # personalize the recovery page
+            with open('front_end/html/forgot_password_page_two.html', 'r') as file:
+                data = file.read()
+
+                # replace recovery question holder
+                data = data.replace('{{recovery_question}}', str(user_data[9]))
+                print(user_data[10])
+                # return the recovery page
+                return data.encode('utf-8')
+
+    else:
+        # Redirect to forget password page
+        f = open('front_end/html/forgot_password_page_two.html', 'rb')
+        data = f.read()
+        data = data.decode('utf-8')
+        return data.encode('utf-8')
+
+
+def reset_password_page(environ, request):
+    f = open('front_end/html/forgot_password_page_final.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
+
+
+def change_password_page(environ, request):
+    f = open('front_end/html/change_password_page.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
+
+
 def chat_page(environ, request):
     with open('front_end/html/chat_page.html', 'rb') as file:
         data = file.read()
     return data
 
+
+# CSS and JS files
 
 def root_css(environ, request):
     with open('front_end/root.css', 'rb') as file:
