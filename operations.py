@@ -590,11 +590,72 @@ def loading_login_page(environ, request):
     return data.encode('utf-8')
 
 
-def change_password_page(environ, request):
-    f = open('front_end/html/change_password_page.html', 'rb')
-    data = f.read()
-    data = data.decode('utf-8')
-    return data.encode('utf-8')
+def change_password_page(request):
+    if request.get('REQUEST_METHOD') == 'POST':
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get the user input
+        old_password = data.get(b'old_password', [b''])[0].decode('utf-8')
+        new_password = data.get(b'new_password', [b''])[0].decode('utf-8')
+        confirm_password = data.get(b'confirm_new_password', [b''])[0].decode('utf-8')
+
+        # Get session ID from temp.txt
+        with open('temp.txt', 'r') as file:
+            session_id = file.read()
+
+        # Get email from session
+        email = session[session_id]['username']
+
+        # Reference the database using the email
+        ref_sql = "SELECT * FROM users WHERE email = %s"
+        mycursor.execute(ref_sql, (email,))
+
+        # Check if the email exists
+        user_data = mycursor.fetchone()
+        if user_data:
+            # Check if the passwords match
+            if user_data[11] == hashlib.md5(old_password.encode('utf-8')).hexdigest():
+                # Check if the passwords match
+                if new_password == confirm_password and new_password != old_password:
+                    # Hash the password
+                    new_password = hashlib.md5(new_password.encode('utf-8')).hexdigest()
+
+                    # Update the database
+                    update_sql = "UPDATE users SET password = %s WHERE email = %s"
+                    mycursor.execute(update_sql, (new_password, email))
+                    mydb.commit()
+
+                    # Redirect to login page
+                    f = open('front_end/html/loading_login_page.html', 'rb')
+                    data = f.read()
+                    data += generate_js_warning('Password changed successfully!').encode('utf-8')
+                    data = data.decode('utf-8')
+                    return data.encode('utf-8')
+                else:
+                    # Redirect to change password page with warning
+                    f = open('front_end/html/change_password.html', 'rb')
+                    data = f.read()
+                    data += generate_js_warning('New and Confirm New Passwords do not match! or '
+                                                'New password cannot be the same as Old Password').encode('utf-8')
+                    data = data.decode('utf-8')
+                    return data.encode('utf-8')
+            else:
+                # Redirect to change password page with warning
+                f = open('front_end/html/change_password.html', 'rb')
+                data = f.read()
+                data += generate_js_warning('Old password is incorrect').encode('utf-8')
+                data = data.decode('utf-8')
+                return data.encode('utf-8')
+    else:
+        with open('front_end/html/change_password.html', 'rb') as file:
+            data = file.read()
+        return data
 
 
 def chat_page(environ, request):

@@ -103,7 +103,7 @@
         <span class="profile-title">Password Details</span>
 
         <div class="passwordReset">
-            <button class="resetBtn">Reset Password</button>
+            <button class="resetBtn" id="reset_button">Reset Password</button>
             <button class="logoutBtn" id="logout">Logout</button>
         </div>
     </div>
@@ -127,6 +127,7 @@
         joinDate: "{{joinDate}}"
     };
     const logoutBtn = document.getElementById("logout");
+    const resetBtn = document.getElementById("reset_button");
 
     // Replace the placeholders with actual values
     document.getElementById("fullname").textContent = user_data.fullname;
@@ -142,6 +143,10 @@
     // Logout the user using logout function in a python script
     logoutBtn.addEventListener("click", () => {
         window.location.href = "/logout";
+    });
+
+    resetBtn.addEventListener("click", () => {
+        window.location.href = "/change_password";
     });
 </script>
 
