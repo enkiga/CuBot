@@ -169,6 +169,7 @@ def home_page(environ):
     else:
         with open('front_end/html/home_page.html', 'rb') as file:
             data = file.read()
+            data = data.replace(b'{{lastname}}', b'')
 
         return data
 
@@ -330,9 +331,6 @@ def logout(environ, request):
         # remove the session id from the dictionary
         session.pop(session_id)
 
-    # clear the session id from the cookie
-    response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id=; path=/')]
-
     # store the session ID in temp.txt
     with open('temp.txt', 'w') as file:
         file.write('')
@@ -340,6 +338,7 @@ def logout(environ, request):
     # Redirect to login page
     f = open('front_end/html/loading_logout.html', 'rb')
     data = f.read()
+
     data = data.decode('utf-8')
     return data.encode('utf-8')
 
@@ -372,24 +371,32 @@ def forgot_password_page(request):
         if user_data:
             # generate an email session id
             session_id = hashlib.md5(email.encode('utf-8')).hexdigest()
+
             # check if session id exists in the dictionary
             if session_id not in session:
                 # add the session id to the dictionary
                 session[session_id] = {
                     'username': email,
                 }
+
             # Set the session ID as a cookie
             response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id={session_id}; path=/')]
+
             # store the session ID in temp.txt
             with open('temp.txt', 'w') as file:
                 file.write(response_headers[1][1].split('=')[1].split(';')[0])
+
             # Redirect to recovery page
-            return recovery_page(request)
+            f = open('front_end/html/loading_recovery_page.html', 'rb')
+            data = f.read()
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
         else:
             # Redirect to forget password page
             f = open('front_end/html/forgot_password_page_one.html', 'rb')
             data = f.read()
-            data += generate_js_warning('Email does not exist!\nCreate account!').encode('utf-8')
+            data += generate_js_warning('Email does not exist! Create account!').encode('utf-8')
             data = data.decode('utf-8')
             return data.encode('utf-8')
     else:
@@ -400,7 +407,52 @@ def forgot_password_page(request):
         return data.encode('utf-8')
 
 
-def recovery_page(request):
+def loading_recovery_page(environ, request):
+    f = open('front_end/html/loading_recovery_page.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
+
+
+def check_recovery_question(func):
+    def wrapper(*args, **kwargs):
+        # Get the session ID from temp.txt
+        with open('temp.txt', 'r') as file:
+            session_id = file.read()
+
+        # Get user email from session ID
+        email = session[session_id]['username']
+
+        # Get the user data from the database
+        mycursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user_data = mycursor.fetchone()
+
+        if user_data:
+            recovery_question = user_data[9]
+            html_path = 'front_end/html/forgot_password_page_two.html'
+
+            with open(html_path, 'rb') as file:
+                data = file.read()
+
+            # Replace the recovery_question placeholder with the user's recovery question
+            data = data.decode('utf-8')
+            data = data.replace('{{recovery_question}}', recovery_question)
+            data = data.encode('utf-8')
+
+            return func(*args, data=data, **kwargs)  # Pass email and data as keyword arguments
+        else:
+            # Redirect to forget password page
+            f = open('front_end/html/forgot_password_page_one.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Email does not exist! Create account!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+    return wrapper
+
+
+@check_recovery_question
+def recovery_page(request, data):
     if request.get("REQUEST_METHOD") == "POST":
         try:
             # Get the data from the request
@@ -411,39 +463,128 @@ def recovery_page(request):
         data = parse_qs(data)
 
         # Get the user input
-        recovery_answer = data.get(b'recovery_answer', [b''])[0].decode('utf-8')
+        answer = data.get(b'recovery_answer', [b''])[0].decode('utf-8')
 
-        # get session id from temp.txt
+        # Get session ID from temp.txt
         with open('temp.txt', 'r') as file:
             session_id = file.read()
 
-        # check if session id exists in the dictionary
-        if session_id in session:
-            # get user data from the database
-            mycursor.execute("SELECT * FROM users WHERE email = %s", (session[session_id]['username'],))
-            user_data = mycursor.fetchone()
+        # Get email from session
+        email = session[session_id]['username']
 
-            # personalize the recovery page
-            with open('front_end/html/forgot_password_page_two.html', 'r') as file:
-                data = file.read()
+        # Reference the database using the email and answer
+        ref_sql = "SELECT * FROM users WHERE email = %s AND recovery_answer = %s"
+        mycursor.execute(ref_sql, (email, answer))
 
-                # replace recovery question holder
-                data = data.replace('{{recovery_question}}', str(user_data[9]))
-                print(user_data[10])
+        # Check if the answer is correct
+        user_data = mycursor.fetchone()
+        if user_data:
+            # Generate a recovery session ID
+            session_id = hashlib.md5(email.encode('utf-8')).hexdigest()
 
-                # check if the recovery answer is correct
-                return data.encode('utf-8')
+            # Check if session ID exists in the dictionary
+            if session_id not in session:
+                # Add the session ID to the dictionary
+                session[session_id] = {
+                    'username': email,
+                }
 
+            # Set the session ID as a cookie
+            response_headers = [('Content-Type', 'text/html'), ('Set-Cookie', f'session_id={session_id}; path=/')]
+
+            # Store the session ID in temp.txt
+            with open('temp.txt', 'w') as file:
+                file.write(response_headers[1][1].split('=')[1].split(';')[0])
+
+            # Redirect to change password page
+            f = open('front_end/html/loading_reset_password_page.html', 'rb')
+            data = f.read()
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+        else:
+            # redirect back to forget password page with warning
+            f = open('front_end/html/loading_recovery_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Incorrect answer!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
     else:
-        # Redirect to forget password page
-        f = open('front_end/html/forgot_password_page_two.html', 'rb')
-        data = f.read()
-        data = data.decode('utf-8')
-        return data.encode('utf-8')
+        return data  # Return the data from the decorator
 
 
-def reset_password_page(environ, request):
-    f = open('front_end/html/forgot_password_page_final.html', 'rb')
+def loading_reset_page(environ, request):
+    f = open('front_end/html/loading_reset_page.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
+
+
+def reset_password_page(request):
+    if request.get('REQUEST_METHOD') == 'POST':
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get the user input
+        password = data.get(b'new_password', [b''])[0].decode('utf-8')
+        confirm_password = data.get(b'confirm_new_password', [b''])[0].decode('utf-8')
+
+        # Get session ID from temp.txt
+        with open('temp.txt', 'r') as file:
+            session_id = file.read()
+
+        # Get email from session
+        email = session[session_id]['username']
+
+        # Reference the database using the email
+        ref_sql = "SELECT * FROM users WHERE email = %s"
+        mycursor.execute(ref_sql, (email,))
+
+        # Check if the email exists
+        user_data = mycursor.fetchone()
+        if user_data:
+            # Check if the passwords match
+            if password == confirm_password:
+                # Hash the password
+                password = hashlib.md5(password.encode('utf-8')).hexdigest()
+
+                # Update the database
+                update_sql = "UPDATE users SET password = %s WHERE email = %s"
+                mycursor.execute(update_sql, (password, email))
+                mydb.commit()
+
+                # Redirect to login page
+                f = open('front_end/html/loading_login_page.html', 'rb')
+                data = f.read()
+                data += generate_js_warning('Password changed successfully!').encode('utf-8')
+                data = data.decode('utf-8')
+                return data.encode('utf-8')
+            else:
+                # Redirect to change password page with warning
+                f = open('front_end/html/forgot_password_page_final.html', 'rb')
+                data = f.read()
+                data += generate_js_warning('Passwords do not match!').encode('utf-8')
+                data = data.decode('utf-8')
+                return data.encode('utf-8')
+        else:
+            # Redirect to login page
+            f = open('front_end/html/login_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Email does not exist! Create account!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+    else:
+        with open('front_end/html/forgot_password_page_final.html', 'rb') as file:
+            data = file.read()
+        return data
+
+
+def loading_login_page(environ, request):
+    f = open('front_end/html/loading_login_page.html', 'rb')
     data = f.read()
     data = data.decode('utf-8')
     return data.encode('utf-8')

@@ -1,6 +1,6 @@
 from waitress import serve
 from model import createTables
-from operations import login_page, signup_page, home_page, forgot_password_page, recovery_page, reset_password_page
+from operations import login_page, signup_page, home_page, forgot_password_page, reset_password_page, recovery_page
 from url import url_patterns
 
 # Port & Thread Variable
