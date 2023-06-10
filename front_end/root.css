@@ -306,6 +306,10 @@ header {
 
 }
 
+.chatbox-message-form-label {
+    flex: 1;
+}
+
 .chat-message-input {
     background: transparent;
     outline: none;

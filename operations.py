@@ -1,7 +1,17 @@
 import hashlib
+import json
 from urllib.parse import parse_qs
 import mysql.connector
 from datetime import date
+import pickle
+import random
+import string
+import nltk
+import numpy as np
+import tensorflow as tf
+from nltk.stem import WordNetLemmatizer
+
+from bot_setup import intents
 
 # Connect to Database try catch
 try:
@@ -19,6 +29,12 @@ except mysql.connector.Error as err:
 
 # session dictionary
 session = {}
+
+# load trained model and other requirements for chat page.
+model = tf.keras.models.load_model('chatbot_model.h5')
+words = pickle.load(open('words.pkl', 'rb'))
+classes = pickle.load(open('classes.pkl', 'rb'))
+lemmatizer = WordNetLemmatizer()
 
 
 def isFieldEmpty(field_value):
@@ -658,10 +674,56 @@ def change_password_page(request):
         return data
 
 
+# chat page
+def clean_message(message):
+    tokens = nltk.word_tokenize(message)
+    tokens = [lemmatizer.lemmatize(word.lower()) for word in tokens if word not in string.punctuation]
+    return tokens
+
+
+def bag_of_words(message, vocab):
+    tokens = clean_message(message)
+    bag = [0] * len(vocab)
+    for w in tokens:
+        for i, word in enumerate(vocab):
+            if word == w:
+                bag[i] = 1
+    return np.array(bag)
+
+
+def predict_class(message, vocab, labels):
+    bow = bag_of_words(message, vocab)
+    result = model.predict(np.array([bow]))[0]
+    ERROR_THRESHOLD = 0.25
+    result = [[i, r] for i, r in enumerate(result) if r > ERROR_THRESHOLD]
+
+    result.sort(key=lambda x: x[1], reverse=True)
+    return_list = []
+    for r in result:
+        return_list.append({'intent': labels[r[0]], 'probability': str(r[1])})
+    return return_list
+
+
+def get_response(intents_list, intents_json):
+    result = ''
+    if len(intents_list) == 0:
+        result = 'Sorry, I do not understand!'
+        return result
+    else:
+        tag = intents_list[0]['intent']
+        list_of_intents = intents_json['intents']
+        for i in list_of_intents:
+            if i['tag'] == tag:
+                result = random.choice(i['responses'])
+                break
+    return result
+
+
 def chat_page(environ, request):
-    with open('front_end/html/chat_page.html', 'rb') as file:
-        data = file.read()
-    return data
+    f = open('front_end/html/chat_page.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
 
 
 # CSS and JS files
