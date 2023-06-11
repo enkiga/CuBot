@@ -720,10 +720,29 @@ def get_response(intents_list, intents_json):
 
 
 def chat_page(environ, request):
-    f = open('front_end/html/chat_page.html', 'rb')
-    data = f.read()
-    data = data.decode('utf-8')
-    return data.encode('utf-8')
+    if request.get('REQUEST_METHOD') == 'POST':
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # get user text from text area
+        user_text = data.get(b'chat_input', [b''])[0].decode('utf-8')
+        response = get_response(predict_class(user_text, words, classes), intents)
+
+        print(user_text)
+        print(response)
+
+        return response.encode('utf-8')
+
+    else:
+        f = open('front_end/html/chat_page.html', 'rb')
+        data = f.read()
+        data = data.decode('utf-8')
+        return data.encode('utf-8')
 
 
 # CSS and JS files
