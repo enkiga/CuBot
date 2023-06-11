@@ -37,6 +37,164 @@
     </div>
 </header>
 
+<div class="chatbox-wrapper">
+    <div class="chatbox-message-wrapper">
+        <div class="chatbox-message-content">
+            <!--            &lt;!&ndash; Bot's response &ndash;&gt;-->
+            <!--            <div class="chatbox-message-item received">-->
+            <!--                <span class="chatbox-message-item-text"></span>-->
+            <!--                <span class="chatbox-message-item-time"></span>-->
+            <!--            </div>-->
+
+            <!--            &lt;!&ndash; User's input &ndash;&gt;-->
+            <!--            <div class="chatbox-message-item sent">-->
+            <!--                <span class="chatbox-message-item-text"></span>-->
+            <!--                <span class="chatbox-message-item-time"></span>-->
+            <!--            </div>-->
+        </div>
+
+        <!-- Message input form -->
+        <div class="chatbox-message-bottom">
+            <form class="chatbox-message-form" id="chatbox_form">
+                <label for="chat_input" class="chatbox-message-form-label">
+                    <textarea rows="1" placeholder="Type message..." class="chat-message-input" id="chat_input"
+                              name="chat_input">
+                    </textarea>
+                </label>
+
+                <button type="submit" class="chatbox-message-submit" id="submitInput">
+                    <i class="bx bxs-send"></i>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const textArea = document.querySelector('.chat-message-input');
+    const chatBoxForm = document.querySelector('.chatbox-message-form');
+
+    textArea.addEventListener('input', function () {
+        let line = textArea.value.split("\n").length;
+
+        if (textArea.rows < 6 || line < 6) {
+            textArea.rows = line;
+        }
+
+        if (textArea.row > 1) {
+            chatBoxForm.style.alignItems = 'flex-end';
+        } else {
+            chatBoxForm.style.alignItems = 'center';
+        }
+    });
+
+    const chatBoxMessageWrapper = document.querySelector('.chatbox-message-content');
+
+    chatBoxForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (isValid(textArea.value)) {
+            getResponse();
+        }
+
+    });
+
+    textArea.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        chatBoxForm.dispatchEvent(new Event('submit'));
+    }
+});
+
+
+    function getTime() {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        // the hour '0' should be '12''
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        return hours + ':' + minutes + ' ' + ampm;
+    }
+
+    //test double data
+    function getBotResponse(input) {
+        // Rock Paper Scissors game
+        if (input === "rock") {
+            return "paper";
+        } else if (input === "paper") {
+            return "scissors";
+        } else if (input === "scissors") {
+            return "rock";
+        }
+
+        // Simple responses
+        if (input === "hello") {
+            return "Hello there!";
+        } else if (input === "goodbye") {
+            return "Talk to you later!";
+        } else if (input === "how are you?") {
+            return "I am doing well, thanks for asking!";
+        } else if (input === "what time is it?") {
+            return getTime();
+        } else {
+            return "Try asking something else!";
+        }
+    }
+
+    function getHardResponse(userText) {
+        let botResponse = getBotResponse(userText);
+
+        let message = `
+        <div class="chatbox-message-item received">
+            <span class="chatbox-message-item-text">${botResponse}</span>
+            <span class="chatbox-message-item-time">${getTime()}</span>
+        </div>
+        `;
+        chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
+        scrollToBottom();
+    }
+
+    function getResponse() {
+        let userText = textArea.value.trim();
+
+        if (isValid(userText)) {
+            let message = `
+        <div class="chatbox-message-item sent">
+            <span class="chatbox-message-item-text">${textArea.value.trim().replace(/\n/g, '<br>\n')}</span>
+            <span class="chatbox-message-item-time">${getTime()}</span>
+        </div>
+        `;
+
+            chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
+            chatBoxForm.style.alignItems = 'center';
+            textArea.rows = 1;
+            textArea.focus();
+            textArea.value = '';
+            scrollToBottom();
+
+            getHardResponse(userText);
+        }
+
+    }
+
+    function scrollToBottom() {
+        chatBoxMessageWrapper.scrollTo(0, chatBoxMessageWrapper.scrollHeight);
+    }
+
+    function isValid(value) {
+        let text = value.replace(/\n/g, '');
+        text = text.replace(/\s/g, '');
+
+        return text.length > 0;
+    }
+
+
+</script>
 
 </body>
 </html>
