@@ -47,6 +47,10 @@
                 </span>
             </div>
 
+            <!--            <div class="chatbox-message-date">-->
+            <!--                <span class="chatbox-message-current-date"></span>-->
+            <!--            </div>-->
+
             <!--            &lt;!&ndash; Bot's response &ndash;&gt;-->
             <!--            <div class="chatbox-message-item received">-->
             <!--                <span class="chatbox-message-item-text"></span>-->
@@ -81,6 +85,7 @@
 <script>
     const textArea = document.querySelector('.chat-message-input');
     const chatBoxForm = document.querySelector('.chatbox-message-form');
+
 
     textArea.addEventListener('input', function () {
         let line = textArea.value.split("\n").length;
@@ -167,6 +172,8 @@
         scrollToBottom();
     }
 
+    let lastDisplayedDate = '';
+
     function getResponse() {
         let userText = textArea.value.trim();
 
@@ -177,6 +184,17 @@
             <span class="chatbox-message-item-time">${getTime()}</span>
         </div>
         `;
+
+            const currentDate = new Date().toLocaleDateString();
+            if (currentDate !== lastDisplayedDate) {
+                const date = `
+                <div class="chatbox-message-date">
+                    <span class="chatbox-message-current-date">${currentDate}</span>
+                </div>
+                `;
+                chatBoxMessageWrapper.insertAdjacentHTML('beforeend', date);
+                lastDisplayedDate = currentDate;
+            }
 
             chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
             chatBoxForm.style.alignItems = 'center';

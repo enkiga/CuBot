@@ -276,6 +276,19 @@ header {
     margin: 50px 0;
 }
 
+.chatbox-message-date {
+    display: flex;
+    justify-content: center;
+    margin: 0 10px 10px 10px;
+    align-items: center;
+    background: var(--amber);
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 15px;
+}
+
 .chatbox-message-item {
     width: auto;
     padding: 12px;
