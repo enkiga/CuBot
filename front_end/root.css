@@ -268,6 +268,14 @@ header {
     display: none; /* Chrome, Safari, and Opera */
 }
 
+.no-message {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark);
+    margin: 50px 0;
+}
+
 .chatbox-message-item {
     width: auto;
     padding: 12px;
