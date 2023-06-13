@@ -719,7 +719,7 @@ def get_response(intents_list, intents_json):
     return result
 
 
-def chat_page(environ, request):
+def chat_page(request):
     if request.get('REQUEST_METHOD') == 'POST':
         try:
             # Get the data from the request
@@ -729,20 +729,29 @@ def chat_page(environ, request):
         data = request['wsgi.input'].read(size)
         data = parse_qs(data)
 
-        # get user text from text area
-        user_text = data.get(b'chat_input', [b''])[0].decode('utf-8')
-        response = get_response(predict_class(user_text, words, classes), intents)
-
+        # Get the user input
+        user_text = data.get(b'user_input', [b''])[0].decode('utf-8')
         print(user_text)
-        print(response)
 
-        return response.encode('utf-8')
+        # Process user text and get response
+        bot_response = get_response(user_text, intents)
+        print(bot_response)
+
+        # Prepare response data
+        response_data = {
+            'user_text': user_text,
+            'bot_response': bot_response
+        }
+        response_body = json.dumps(response_data)
+
+        # Send response
+        return response_body.encode('utf-8')
 
     else:
-        f = open('front_end/html/chat_page.html', 'rb')
-        data = f.read()
-        data = data.decode('utf-8')
-        return data.encode('utf-8')
+        with open('front_end/html/chat_page.html', 'rb') as file:
+            data = file.read()
+
+        return data
 
 
 # CSS and JS files

@@ -66,10 +66,10 @@
 
         <!-- Message input form -->
         <div class="chatbox-message-bottom">
-            <form class="chatbox-message-form" id="chatbox_form">
+            <form class="chatbox-message-form" id="chatbox_form" method="POST">
                 <label for="chat_input" class="chatbox-message-form-label">
                     <textarea rows="1" placeholder="Type message..." class="chat-message-input" id="chat_input"
-                              name="chat_input">
+                              name="user_input">
                     </textarea>
                 </label>
 
@@ -108,7 +108,7 @@
         event.preventDefault();
 
         if (isValid(textArea.value)) {
-            getResponse();
+            getUserInput();
         }
 
     });
@@ -136,51 +136,43 @@
 
     //test double data
     function getBotResponse(input) {
-        // Rock Paper Scissors game
-        if (input === "rock") {
-            return "paper";
-        } else if (input === "paper") {
-            return "scissors";
-        } else if (input === "scissors") {
-            return "rock";
-        }
+        // Make HTTP request to the server to get the response
+        const request = new XMLHttpRequest();
+        request.open('POST', '/chat');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.onload = function () {
+            if (request.status === 200) {
+                const response = JSON.parse(request.responseText);
+                const botResponse = response.bot_response;
 
-        // Simple responses
-        if (input === "hello") {
-            return "Hello there!";
-        } else if (input === "goodbye") {
-            return "Talk to you later!";
-        } else if (input === "how are you?") {
-            return "I am doing well, thanks for asking!";
-        } else if (input === "what time is it?") {
-            return getTime();
-        } else {
-            return "Try asking something else!";
-        }
+                let message = `
+                <div class="chatbox-message-item received">
+                    <span class="chatbox-message-item-text">${botResponse}</span>
+                    <span class="chatbox-message-item-time">${getTime()}</span>
+                </div>
+                `;
+
+                chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
+                scrollToBottom();
+                console.log(botResponse);
+            } else {
+                console.log(`Error ${request.status} ${request.statusText}`);
+            }
+        };
+        const data = JSON.stringify({user_input: input});
+        request.send(data);
     }
 
-    function getHardResponse(userText) {
-        let botResponse = getBotResponse(userText);
-
-        let message = `
-        <div class="chatbox-message-item received">
-            <span class="chatbox-message-item-text">${botResponse}</span>
-            <span class="chatbox-message-item-time">${getTime()}</span>
-        </div>
-        `;
-        chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
-        scrollToBottom();
-    }
 
     let lastDisplayedDate = '';
 
-    function getResponse() {
+    function getUserInput() {
         let userText = textArea.value.trim();
 
         if (isValid(userText)) {
             let message = `
         <div class="chatbox-message-item sent">
-            <span class="chatbox-message-item-text">${textArea.value.trim().replace(/\n/g, '<br>\n')}</span>
+            <span class="chatbox-message-item-text">${userText.replace(/\n/g, '<br>\n')}</span>
             <span class="chatbox-message-item-time">${getTime()}</span>
         </div>
         `;
@@ -204,7 +196,7 @@
             chatBoxNoMessage.style.display = 'none';
             scrollToBottom();
 
-            getHardResponse(userText);
+            getBotResponse(userText);
         }
 
     }
