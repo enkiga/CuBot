@@ -13,6 +13,7 @@ url_patterns = [
     ('/loading_login', loading_login_page),
     ('/change_password', change_password_page),
     ('/chat', chat_page),
+    ('/loading_chat', loading_chat_page),
     ('/profile', profile_page),
     ('/logout', logout),
     ('loading_logout', loading_logout),

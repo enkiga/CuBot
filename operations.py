@@ -11,8 +11,6 @@ import numpy as np
 import tensorflow as tf
 from nltk.stem import WordNetLemmatizer
 
-from bot_setup import intents
-
 # Connect to Database try catch
 try:
     mydb = mysql.connector.connect(
@@ -719,6 +717,13 @@ def get_response(intents_list, intents_json):
     return result
 
 
+def loading_chat_page(environ, request):
+    f = open('front_end/html/loading_chat_page.html', 'rb')
+    data = f.read()
+    data = data.decode('utf-8')
+    return data.encode('utf-8')
+
+
 def chat_page(request):
     if request.get('REQUEST_METHOD') == 'POST':
         try:
@@ -730,16 +735,22 @@ def chat_page(request):
         data = parse_qs(data)
 
         # Get the user input
-        user_text = data.get(b'user_input', [b''])[0].decode('utf-8')
-        print(user_text)
+        user_input = data.get(b'user_input', [b''])[0].decode('utf-8')
+        print(user_input)
 
         # Process user text and get response
-        bot_response = get_response(user_text, intents)
+        ints = predict_class(user_input, words, classes)
+
+        # get intents.json file
+        with open('intents.json') as file:
+            intent = json.load(file)
+
+        bot_response = get_response(ints, intent)
         print(bot_response)
 
         # Prepare response data
         response_data = {
-            'user_text': user_text,
+            'user_input': user_input,
             'bot_response': bot_response
         }
         response_body = json.dumps(response_data)

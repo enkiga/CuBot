@@ -28,7 +28,7 @@
 
     <ul class="navbar">
         <li><a href="/home">Home</a></li>
-        <li><a href="/chat" class="active">Chat Page</a></li>
+        <li><a href="/loading_chat" class="active">Chat Page</a></li>
     </ul>
 
     <div class="profile">
@@ -109,6 +109,7 @@
 
         if (isValid(textArea.value)) {
             getUserInput();
+            setTimeout(getBotResponse, 500, textArea.value);
         }
 
     });
@@ -135,7 +136,7 @@
     }
 
     //test double data
-    function getBotResponse(input) {
+    function getBotResponse(user_input) {
         // Make HTTP request to the server to get the response
         const request = new XMLHttpRequest();
         request.open('POST', '/chat');
@@ -159,7 +160,7 @@
                 console.log(`Error ${request.status} ${request.statusText}`);
             }
         };
-        const data = JSON.stringify({user_input: input});
+        const data = JSON.stringify({user_input: user_input});
         request.send(data);
     }
 
@@ -196,7 +197,7 @@
             chatBoxNoMessage.style.display = 'none';
             scrollToBottom();
 
-            getBotResponse(userText);
+
         }
 
     }
