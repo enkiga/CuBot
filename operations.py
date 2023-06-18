@@ -732,37 +732,34 @@ def chat_page(request):
         except ValueError:
             size = 0
         data = request['wsgi.input'].read(size)
-        data = parse_qs(data)
+        data = json.loads(data)
 
-        # Get the user input
-        user_input = data.get(b'user_input', [b''])[0].decode('utf-8')
-        print(user_input)
+        message = data['message']
 
-        # Process user text and get response
-        ints = predict_class(user_input, words, classes)
-
-        # get intents.json file
         with open('intents.json') as file:
-            intent = json.load(file)
+            intents_json = json.load(file)
 
-        bot_response = get_response(ints, intent)
-        print(bot_response)
+        with open('timetable.json') as file:
+            timetable_json = json.load(file)
 
-        # Prepare response data
-        response_data = {
-            'user_input': user_input,
-            'bot_response': bot_response
-        }
-        response_body = json.dumps(response_data)
+        # combine timetable and intents
+        intents_json['intents'] += timetable_json['intents']
 
-        # Send response
+        intents = predict_class(message, words, classes)
+        response = get_response(intents, intents_json)
+
+        response_body = json.dumps({'response': response})
+
+        print(message)
+        print(response)
+        print('---------------------------------')
         return response_body.encode('utf-8')
 
     else:
         with open('front_end/html/chat_page.html', 'rb') as file:
             data = file.read()
-
-        return data
+        data = data.decode('utf-8')
+        return data.encode('utf-8')
 
 
 # CSS and JS files

@@ -69,8 +69,7 @@
             <form class="chatbox-message-form" id="chatbox_form" method="POST">
                 <label for="chat_input" class="chatbox-message-form-label">
                     <textarea rows="1" placeholder="Type message..." class="chat-message-input" id="chat_input"
-                              name="user_input">
-                    </textarea>
+                              name="user_input"></textarea>
                 </label>
 
                 <button type="submit" class="chatbox-message-submit" id="submitInput">
@@ -83,127 +82,12 @@
 </div>
 
 <script>
-    const textArea = document.querySelector('.chat-message-input');
-    const chatBoxForm = document.querySelector('.chatbox-message-form');
-
-
-    textArea.addEventListener('input', function () {
-        let line = textArea.value.split("\n").length;
-
-        if (textArea.rows < 6 || line < 6) {
-            textArea.rows = line;
-        }
-
-        if (textArea.row > 1) {
-            chatBoxForm.style.alignItems = 'flex-end';
-        } else {
-            chatBoxForm.style.alignItems = 'center';
-        }
-    });
-
-    const chatBoxMessageWrapper = document.querySelector('.chatbox-message-content');
-    const chatBoxNoMessage = document.querySelector('.no-message');
-
-    chatBoxForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        if (isValid(textArea.value)) {
-            getUserInput();
-            setTimeout(getBotResponse, 500, textArea.value);
-        }
-
-    });
-
-    textArea.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            chatBoxForm.dispatchEvent(new Event('submit'));
-        }
-    });
-
-
     function getTime() {
-        let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        // the hour '0' should be '12''
-        hours = hours ? hours : 12;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-
-        return hours + ':' + minutes + ' ' + ampm;
-    }
-
-    //test double data
-    function getBotResponse(user_input) {
-        // Make HTTP request to the server to get the response
-        const request = new XMLHttpRequest();
-        request.open('POST', '/chat');
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.onload = function () {
-            if (request.status === 200) {
-                const response = JSON.parse(request.responseText);
-                const botResponse = response.bot_response;
-
-                let message = `
-                <div class="chatbox-message-item received">
-                    <span class="chatbox-message-item-text">${botResponse}</span>
-                    <span class="chatbox-message-item-time">${getTime()}</span>
-                </div>
-                `;
-
-                chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
-                scrollToBottom();
-                console.log(botResponse);
-            } else {
-                console.log(`Error ${request.status} ${request.statusText}`);
-            }
-        };
-        const data = JSON.stringify({user_input: user_input});
-        request.send(data);
-    }
-
-
-    let lastDisplayedDate = '';
-
-    function getUserInput() {
-        let userText = textArea.value.trim();
-
-        if (isValid(userText)) {
-            let message = `
-        <div class="chatbox-message-item sent">
-            <span class="chatbox-message-item-text">${userText.replace(/\n/g, '<br>\n')}</span>
-            <span class="chatbox-message-item-time">${getTime()}</span>
-        </div>
-        `;
-
-            const currentDate = new Date().toLocaleDateString();
-            if (currentDate !== lastDisplayedDate) {
-                const date = `
-                <div class="chatbox-message-date">
-                    <span class="chatbox-message-current-date">${currentDate}</span>
-                </div>
-                `;
-                chatBoxMessageWrapper.insertAdjacentHTML('beforeend', date);
-                lastDisplayedDate = currentDate;
-            }
-
-            chatBoxMessageWrapper.insertAdjacentHTML('beforeend', message);
-            chatBoxForm.style.alignItems = 'center';
-            textArea.rows = 1;
-            textArea.focus();
-            textArea.value = '';
-            chatBoxNoMessage.style.display = 'none';
-            scrollToBottom();
-
-
-        }
-
-    }
-
-    function scrollToBottom() {
-        chatBoxMessageWrapper.scrollTo(0, chatBoxMessageWrapper.scrollHeight);
+        const date = new Date();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        return `${hours}:${minutes} ${ampm}`;
     }
 
     function isValid(value) {
@@ -213,7 +97,103 @@
         return text.length > 0;
     }
 
+    class Chatbox {
+        constructor() {
+            this.args = {
+                sendButton: document.getElementById('submitInput'),
+                chatBox: document.querySelector('.chatbox-wrapper'),
+            }
+            this.messages = []
+        }
 
+        display() {
+            const {sendButton, chatBox} = this.args
+
+            sendButton.addEventListener('click', () => this.onSendButton(chatBox))
+
+            const node = chatBox.querySelector('.chat-message-input');
+            node.addEventListener('keydown', ({key}) => {
+                if (key === 'Enter' && !key.shiftKey) {
+                    this.onSendButton(chatBox)
+                }
+            });
+        }
+
+        onSendButton(chatbox) {
+            const input = chatbox.querySelector('.chat-message-input');
+            const message = input.value.trim();
+            if (message === '') {
+                return;
+            }
+
+            if (isValid(message)) {
+
+                let msg1 = {
+                    message: message,
+                    time: getTime(),
+                    type: 'sent'
+                }
+                this.messages.push(msg1);
+
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors',
+                    body: JSON.stringify(msg1),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        let msg2 = {
+                            message: data.response,
+                            time: getTime(),
+                            type: 'received'
+                        }
+                        this.messages.push(msg2);
+                        this.updateChatText(chatbox);
+                        input.value = '';
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        this.updateChatText(chatbox);
+                        input.value = '';
+                    });
+            }
+        }
+
+        updateChatText(chatbox) {
+            const chatboxMessageContent = chatbox.querySelector('.chatbox-message-content');
+            chatboxMessageContent.innerHTML = '';
+
+            while (chatboxMessageContent.firstChild) {
+                chatboxMessageContent.removeChild(chatboxMessageContent.firstChild);
+            }
+
+            this.messages.forEach((message) => {
+                const messageItem = document.createElement('div');
+                messageItem.classList.add('chatbox-message-item', message.type);
+                messageItem.innerHTML = `
+                    <span class="chatbox-message-item-text">${message.message}</span>
+                    <span class="chatbox-message-item-time">${message.time}</span>
+                `;
+                chatboxMessageContent.appendChild(messageItem);
+            });
+
+            const noMessage = chatbox.querySelector('.no-message');
+            if (this.messages.length !== 0) {
+                noMessage.style.display = 'none';
+            }
+
+            chatboxMessageContent.scrollTo(0, chatboxMessageContent.scrollHeight)
+
+        }
+
+    }
+
+    const chatbox = new Chatbox();
+    chatbox.display();
 </script>
 
 </body>
