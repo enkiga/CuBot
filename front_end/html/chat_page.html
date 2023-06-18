@@ -112,8 +112,8 @@
             sendButton.addEventListener('click', () => this.onSendButton(chatBox))
 
             const node = chatBox.querySelector('.chat-message-input');
-            node.addEventListener('keydown', ({key}) => {
-                if (key === 'Enter' && !key.shiftKey) {
+            node.addEventListener('keyup', ({key}) => {
+                if (key === 'Enter') {
                     this.onSendButton(chatBox)
                 }
             });
@@ -165,6 +165,7 @@
 
         updateChatText(chatbox) {
             const chatboxMessageContent = chatbox.querySelector('.chatbox-message-content');
+            const input = chatbox.querySelector('.chat-message-input');
             chatboxMessageContent.innerHTML = '';
 
             while (chatboxMessageContent.firstChild) {
@@ -179,6 +180,11 @@
                     <span class="chatbox-message-item-time">${message.time}</span>
                 `;
                 chatboxMessageContent.appendChild(messageItem);
+                input.rows = 1;
+                input.focus();
+                input.value = '';
+
+                chatboxMessageContent.scrollTo(0, chatboxMessageContent.scrollHeight)
             });
 
             const noMessage = chatbox.querySelector('.no-message');
@@ -186,7 +192,6 @@
                 noMessage.style.display = 'none';
             }
 
-            chatboxMessageContent.scrollTo(0, chatboxMessageContent.scrollHeight)
 
         }
 

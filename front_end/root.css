@@ -345,7 +345,10 @@ header {
     outline: none;
     border: none;
     resize: none;
-    flex: 1;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .chat-message-input::-webkit-scrollbar {
