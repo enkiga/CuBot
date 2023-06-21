@@ -1,0 +1,89 @@
+{
+    "intents": [
+        {
+            "tag": "CUEA Hackathon",
+            "patterns": [
+                "When is CUEA Hackathon?",
+                "What event is happening on 2023-04-11?",
+                "At what time is CUEA Hackathon?",
+                "Where is CUEA Hackathon?",
+                "What is CUEA Hackathon about?",
+                "What is happening on 2023-04-11?",
+                "What is happening on 2023-04-11 at 4:00:00?",
+                "Where is CUEA Hackathon happening?"
+            ],
+            "responses": [
+                "CUEA Hackathon is happening on 2023-04-11 at 4:00:00 at Langata. A hackathon is a design sprint-like event; often, in which computer programmers and others involved in software development, including graphic designers, interface designers, project managers, domain experts, and others collaborate intensively on software projects."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "CUEA Open Day",
+            "patterns": [
+                "When is CUEA Open Day?",
+                "What event is happening on 2023-01-12?",
+                "At what time is CUEA Open Day?",
+                "Where is CUEA Open Day?",
+                "What is CUEA Open Day about?",
+                "What is happening on 2023-01-12?",
+                "What is happening on 2023-01-12 at 8:00:00?",
+                "Where is CUEA Open Day happening?"
+            ],
+            "responses": [
+                "CUEA Open Day is happening on 2023-01-12 at 8:00:00 at Langata. An open day (or open evening or open house) is an event held at an institution where its doors are open to the general public, allowing people to look around the institution and learn about it."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "CUEA Career Fair",
+            "patterns": [
+                "When is CUEA Career Fair?",
+                "What event is happening on 2022-10-10?",
+                "At what time is CUEA Career Fair?",
+                "Where is CUEA Career Fair?",
+                "What is CUEA Career Fair about?",
+                "What is happening on 2022-10-10?",
+                "What is happening on 2022-10-10 at 2:00:00?",
+                "Where is CUEA Career Fair happening?"
+            ],
+            "responses": [
+                "CUEA Career Fair is happening on 2022-10-10 at 2:00:00 at Gaba. A career fair, also referred commonly as a career expo or career exhibition, is an event in which employers, recruiters, and schools give information to potential employees. Job seekers attend these while trying to make a good impression to potential coworkers by speaking face-to-face with one another, filling out resumes, and asking questions in attempt to get a good feel on the work needed. Career expositions usually include company or organization tables or booths where resumes can be collect"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "CUEA Sports Day",
+            "patterns": [
+                "When is CUEA Sports Day?",
+                "What event is happening on 2023-03-10?",
+                "At what time is CUEA Sports Day?",
+                "Where is CUEA Sports Day?",
+                "What is CUEA Sports Day about?",
+                "What is happening on 2023-03-10?",
+                "What is happening on 2023-03-10 at 11:00:00?",
+                "Where is CUEA Sports Day happening?"
+            ],
+            "responses": [
+                "CUEA Sports Day is happening on 2023-03-10 at 11:00:00 at Gaba. A sports day, also known as field day, is a day on which people participate in competitive sporting activities, often with the aim of winning trophies or prizes. Though often held at the beginning of summer, many schools hold their sports days in late spring or in autumn, especially in countries where the summer is very harsh. Schools stage many sports days in which children participate in the sporting events. It is usually held in elementary schools, or grades Kindergarten-8th Grade. In schools"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "CUEA Cultural Day",
+            "patterns": [
+                "When is CUEA Cultural Day?",
+                "What event is happening on 2023-02-15?",
+                "At what time is CUEA Cultural Day?",
+                "Where is CUEA Cultural Day?",
+                "What is CUEA Cultural Day about?",
+                "What is happening on 2023-02-15?",
+                "What is happening on 2023-02-15 at 8:00:00?",
+                "Where is CUEA Cultural Day happening?"
+            ],
+            "responses": [
+                "CUEA Cultural Day is happening on 2023-02-15 at 8:00:00 at Langata. A cultural day is a day set aside to celebrate the culture of a people. It is a day to showcase the culture of a people through various activities such as traditional dances, traditional food, traditional clothing, traditional music, etc."
+            ],
+            "context_set": ""
+        }
+    ]
+}
