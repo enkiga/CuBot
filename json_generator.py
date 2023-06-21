@@ -40,7 +40,7 @@ for row in myresult:
 
     # create a dictionary to store the data
     timetable_dict = {
-        'tag': 'timetable',
+        'tag': f'{course_code}',
         'patterns': [
             f'When is {course_code} on my timetable?',
             f'When is {course_title} on my timetable?',

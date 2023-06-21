@@ -1,0 +1,211 @@
+{
+    "intents": [
+        {
+            "tag": "Mr. Kioko",
+            "patterns": [
+                "Give me the details on Mr. Kioko",
+                "Where is Mr. Kioko office?",
+                "What is Mr. Kioko email address?",
+                "What is Mr. Kioko phone number?",
+                "What is Mr. Kioko department?",
+                "What is Mr. Kioko faculty?",
+                "What is Mr. Kioko campus?",
+                "Give me the details of Mr. Kioko office",
+                "Give me the details of Mr. Kioko email address",
+                "Give me the details of Mr. Kioko phone number",
+                "Give me the details of Mr. Kioko department",
+                "Give me the details of Mr. Kioko faculty",
+                "Give me the details of Mr. Kioko campus",
+                "Where is Mr. Kioko office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Kioko:Email: kioko@cuea.edu, Phone: +254722989342, Office: OH 12, Department: Computer Science, Faculty: Science, Campus: Langata."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mr. Mwangi",
+            "patterns": [
+                "Give me the details on Mr. Mwangi",
+                "Where is Mr. Mwangi office?",
+                "What is Mr. Mwangi email address?",
+                "What is Mr. Mwangi phone number?",
+                "What is Mr. Mwangi department?",
+                "What is Mr. Mwangi faculty?",
+                "What is Mr. Mwangi campus?",
+                "Give me the details of Mr. Mwangi office",
+                "Give me the details of Mr. Mwangi email address",
+                "Give me the details of Mr. Mwangi phone number",
+                "Give me the details of Mr. Mwangi department",
+                "Give me the details of Mr. Mwangi faculty",
+                "Give me the details of Mr. Mwangi campus",
+                "Where is Mr. Mwangi office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Mwangi:Email: mwangi@cuea.edu, Phone: +254718273645, Office: OH 15, Department: Computer Science, Faculty: Science, Campus: Langata."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mr. Mirugi",
+            "patterns": [
+                "Give me the details on Mr. Mirugi",
+                "Where is Mr. Mirugi office?",
+                "What is Mr. Mirugi email address?",
+                "What is Mr. Mirugi phone number?",
+                "What is Mr. Mirugi department?",
+                "What is Mr. Mirugi faculty?",
+                "What is Mr. Mirugi campus?",
+                "Give me the details of Mr. Mirugi office",
+                "Give me the details of Mr. Mirugi email address",
+                "Give me the details of Mr. Mirugi phone number",
+                "Give me the details of Mr. Mirugi department",
+                "Give me the details of Mr. Mirugi faculty",
+                "Give me the details of Mr. Mirugi campus",
+                "Where is Mr. Mirugi office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Mirugi:Email: mirugi@cuea.edu, Phone: +254712345678, Office: OH 12, Department: Computer Science, Faculty: Science, Campus: Gaba."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mr. Nichodemus",
+            "patterns": [
+                "Give me the details on Mr. Nichodemus",
+                "Where is Mr. Nichodemus office?",
+                "What is Mr. Nichodemus email address?",
+                "What is Mr. Nichodemus phone number?",
+                "What is Mr. Nichodemus department?",
+                "What is Mr. Nichodemus faculty?",
+                "What is Mr. Nichodemus campus?",
+                "Give me the details of Mr. Nichodemus office",
+                "Give me the details of Mr. Nichodemus email address",
+                "Give me the details of Mr. Nichodemus phone number",
+                "Give me the details of Mr. Nichodemus department",
+                "Give me the details of Mr. Nichodemus faculty",
+                "Give me the details of Mr. Nichodemus campus",
+                "Where is Mr. Nichodemus office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Nichodemus:Email: nichodemus@cuea.edu, Phone: +254777237541, Office: OH 12, Department: Computer Science, Faculty: Science, Campus: Langata."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mrs. Doreen",
+            "patterns": [
+                "Give me the details on Mrs. Doreen",
+                "Where is Mrs. Doreen office?",
+                "What is Mrs. Doreen email address?",
+                "What is Mrs. Doreen phone number?",
+                "What is Mrs. Doreen department?",
+                "What is Mrs. Doreen faculty?",
+                "What is Mrs. Doreen campus?",
+                "Give me the details of Mrs. Doreen office",
+                "Give me the details of Mrs. Doreen email address",
+                "Give me the details of Mrs. Doreen phone number",
+                "Give me the details of Mrs. Doreen department",
+                "Give me the details of Mrs. Doreen faculty",
+                "Give me the details of Mrs. Doreen campus",
+                "Where is Mrs. Doreen office located?"
+            ],
+            "responses": [
+                "Here are the details of Mrs. Doreen:Email: doreen@cuea.edu, Phone: +254722090899, Office: OH 12, Department: Computer Science, Faculty: Science, Campus: Langata."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mr. Wafula",
+            "patterns": [
+                "Give me the details on Mr. Wafula",
+                "Where is Mr. Wafula office?",
+                "What is Mr. Wafula email address?",
+                "What is Mr. Wafula phone number?",
+                "What is Mr. Wafula department?",
+                "What is Mr. Wafula faculty?",
+                "What is Mr. Wafula campus?",
+                "Give me the details of Mr. Wafula office",
+                "Give me the details of Mr. Wafula email address",
+                "Give me the details of Mr. Wafula phone number",
+                "Give me the details of Mr. Wafula department",
+                "Give me the details of Mr. Wafula faculty",
+                "Give me the details of Mr. Wafula campus",
+                "Where is Mr. Wafula office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Wafula:Email: wafula@cuea.edu, Phone: +254718654453, Office: TH 11, Department: Law, Faculty: Law, Campus: Gaba."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mr. Kibet",
+            "patterns": [
+                "Give me the details on Mr. Kibet",
+                "Where is Mr. Kibet office?",
+                "What is Mr. Kibet email address?",
+                "What is Mr. Kibet phone number?",
+                "What is Mr. Kibet department?",
+                "What is Mr. Kibet faculty?",
+                "What is Mr. Kibet campus?",
+                "Give me the details of Mr. Kibet office",
+                "Give me the details of Mr. Kibet email address",
+                "Give me the details of Mr. Kibet phone number",
+                "Give me the details of Mr. Kibet department",
+                "Give me the details of Mr. Kibet faculty",
+                "Give me the details of Mr. Kibet campus",
+                "Where is Mr. Kibet office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Kibet:Email: kibet@cuea.edu, Phone: +254777300929, Office: RH 02, Department: Finance, Faculty: Commerce and Business, Campus: Langata."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Ms. Wangui",
+            "patterns": [
+                "Give me the details on Ms. Wangui",
+                "Where is Ms. Wangui office?",
+                "What is Ms. Wangui email address?",
+                "What is Ms. Wangui phone number?",
+                "What is Ms. Wangui department?",
+                "What is Ms. Wangui faculty?",
+                "What is Ms. Wangui campus?",
+                "Give me the details of Ms. Wangui office",
+                "Give me the details of Ms. Wangui email address",
+                "Give me the details of Ms. Wangui phone number",
+                "Give me the details of Ms. Wangui department",
+                "Give me the details of Ms. Wangui faculty",
+                "Give me the details of Ms. Wangui campus",
+                "Where is Ms. Wangui office located?"
+            ],
+            "responses": [
+                "Here are the details of Ms. Wangui:Email: wangui@cuea.edu, Phone: +254728908809, Office: OH 12, Department: Actuarial Science, Faculty: Science, Campus: Gaba."
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Mr. Chalo",
+            "patterns": [
+                "Give me the details on Mr. Chalo",
+                "Where is Mr. Chalo office?",
+                "What is Mr. Chalo email address?",
+                "What is Mr. Chalo phone number?",
+                "What is Mr. Chalo department?",
+                "What is Mr. Chalo faculty?",
+                "What is Mr. Chalo campus?",
+                "Give me the details of Mr. Chalo office",
+                "Give me the details of Mr. Chalo email address",
+                "Give me the details of Mr. Chalo phone number",
+                "Give me the details of Mr. Chalo department",
+                "Give me the details of Mr. Chalo faculty",
+                "Give me the details of Mr. Chalo campus",
+                "Where is Mr. Chalo office located?"
+            ],
+            "responses": [
+                "Here are the details of Mr. Chalo:Email: chalo@cuea.edu, Phone: +254792788873, Office: TH 12, Department: Finance, Faculty: Commerce and Business, Campus: Langata."
+            ],
+            "context_set": ""
+        }
+    ]
+}

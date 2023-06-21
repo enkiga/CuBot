@@ -1,7 +1,7 @@
 {
     "intents": [
         {
-            "tag": "timetable",
+            "tag": "CS 101",
             "patterns": [
                 "When is CS 101 on my timetable?",
                 "When is Introduction to Computer Science on my timetable?",
@@ -21,7 +21,7 @@
             "context_set": ""
         },
         {
-            "tag": "timetable",
+            "tag": "CS 102",
             "patterns": [
                 "When is CS 102 on my timetable?",
                 "When is Introduction to Database Systems on my timetable?",
@@ -41,7 +41,7 @@
             "context_set": ""
         },
         {
-            "tag": "timetable",
+            "tag": "CS 104",
             "patterns": [
                 "When is CS 104 on my timetable?",
                 "When is Systems Analysis and Design on my timetable?",
@@ -61,7 +61,7 @@
             "context_set": ""
         },
         {
-            "tag": "timetable",
+            "tag": "CS 105",
             "patterns": [
                 "When is CS 105 on my timetable?",
                 "When is Object Oriented Programming on my timetable?",
@@ -81,7 +81,7 @@
             "context_set": ""
         },
         {
-            "tag": "timetable",
+            "tag": "CS 106",
             "patterns": [
                 "When is CS 106 on my timetable?",
                 "When is Mobile Application Development on my timetable?",
