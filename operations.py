@@ -708,7 +708,7 @@ def get_response(intents_list, intents_json):
         result = 'Sorry, I do not understand!'
         return result
     else:
-        tag = intents_list[0]['intent']
+        tag = intents_list[0]['intent'].strip()
         list_of_intents = intents_json['intents']
         for i in list_of_intents:
             if i['tag'] == tag:
@@ -735,6 +735,8 @@ def chat_page(request):
         data = json.loads(data)
 
         message = data['message']
+        time = data['time']
+        chat_date = data['date']
 
         with open('intents.json') as file:
             intents_json = json.load(file)
@@ -742,8 +744,16 @@ def chat_page(request):
         with open('timetable.json') as file:
             timetable_json = json.load(file)
 
+        with open('event.json') as file:
+            event_json = json.load(file)
+
+        with open('lecturer.json') as file:
+            lecturer_json = json.load(file)
+
         # combine timetable and intents
         intents_json['intents'] += timetable_json['intents']
+        intents_json['intents'] += event_json['intents']
+        intents_json['intents'] += lecturer_json['intents']
 
         intents = predict_class(message, words, classes)
         response = get_response(intents, intents_json)
@@ -751,6 +761,8 @@ def chat_page(request):
         response_body = json.dumps({'response': response})
 
         print(message)
+        print(time)
+        print(chat_date)
         print(response)
         print('---------------------------------')
         return response_body.encode('utf-8')

@@ -21,6 +21,14 @@ with open('intents.json') as intents:
 with open('timetable.json') as timetable:
     timetable_data = json.load(timetable)
 
+# Loading events json file
+with open('event.json') as events:
+    events_data = json.load(events)
+
+# Loading lecturer json file
+with open('lecturer.json') as lecturer:
+    lecturer_data = json.load(lecturer)
+
 # Initializing chatbot training
 words = []
 classes = []
@@ -49,8 +57,32 @@ for timetable in timetable_data['intents']:
         if timetable['tag'] not in classes:
             classes.append(timetable['tag'])
 
-# Merging the intents from both files
+# Collecting data from events.json
+for events in events_data['intents']:
+    for pattern in events['patterns']:
+        tokens = nltk.word_tokenize(pattern)
+        words.extend(tokens)
+        data_x.append(pattern)
+        data_y.append(events['tag'])
+
+        if events['tag'] not in classes:
+            classes.append(events['tag'])
+
+# Collecting data from lecturer.json
+for lecturer in lecturer_data['intents']:
+    for pattern in lecturer['patterns']:
+        tokens = nltk.word_tokenize(pattern)
+        words.extend(tokens)
+        data_x.append(pattern)
+        data_y.append(lecturer['tag'])
+
+        if lecturer['tag'] not in classes:
+            classes.append(lecturer['tag'])
+
+# Merging the intents from all files
 data['intents'] += timetable_data['intents']
+data['intents'] += events_data['intents']
+data['intents'] += lecturer_data['intents']
 
 # Initializing lemmatizer to get stem of words
 lemmatizer = WordNetLemmatizer()

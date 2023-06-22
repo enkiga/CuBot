@@ -8,13 +8,13 @@
         "Hey",
         "Good morning",
         "Good afternoon",
-        "Good evening"
+        "Good evening",
+        "How are you"
       ],
       "responses": [
         "Hello! How can I help you?",
         "Hi there! What can I do for you?",
-        "Hey! What's up?",
-        "Good morning! How can I assist you?"
+        "Hey! How can i be of help?"
       ],
       "context_set": ""
     },
@@ -40,11 +40,76 @@
         "What are the payment options?",
         "Can I pay using credit card?",
         "How do I pay my bill?",
-        "Is there an online payment portal?"
+        "Is there an online payment portal?",
+        "How do I pay my fees?",
+        "Which banks can I pay through?"
       ],
       "responses": [
-        "1.PAYMENTS can be made by BANKERS CHEQUES payable to CATHOLIC UNIVERSITY OF EASTERN AFRICA or by Direct Deposit in the University’s accounts in any of the branches of the following banks:\nNCBA A/C No: 6479 000 011 (Galleria Branch)\nCOOPERATIVE BANK OF KENYA A/C No: 01129 0057 22200 (Parliament Branch)\nEQUITY BANK A/C No: 06102 9235 2491 (Ongata Rongai Branch)\nMPESA PAYBILL 100205 (Indicate registration Number as account number)\n2.Foreign Transfers: SWIFT: CITIKENA Routing # 021000089. PLEASE ask your bank to credit the CITI BANK NEW YORK account and advise CITI BANK-NAIROBI of this transfer. For: The Catholic University of Eastern Africa a/c 1 02 473 108 (US Dollar A/C): a/c 1 02 473 141 (Euro A/C): a/c 1 02 473 116 (Pound A/C).\n3.Local Transfers: PLEASE ask your bank to send an I B N (Inter-Bank Transfer) to CITI BANK – NAIROBI For: The Catholic University of Eastern Africa a/c 51 02 473 002 (Ksh. a/c)\n4.Direct deposits in the University account must specify the full name and A/C number of the student who is paying. Payments are to be made within the NORMAL PAYMENT PERIOD (i.e. the first two weeks) of each Semester. Interest of 5% is charged on the remaining balance at the end of each month. This charge is automatically posted to the student account on the first day of the following month.\n5.Other cheques (i.e. personal, Company or Cooperatives cheques) require at least 4 working days to clear before they can be recognized as payment.\n6.Cash payment is prohibited.",
-        "You can check the school website for the mode of fee payment at [{payment_link}] "
+        "Through MPESA, NCBA BANK, COOPERATIVE BANK, EQUITY BANK. Incase of a foreigner you can pay through SWIFT. Cash Payment is prohibited."
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "mpesa",
+      "patterns": [
+        "mpesa",
+        "mpesa paybill",
+        "mpesa till",
+        "mpesa paybill number",
+        "mpesa till number",
+        "mpesa paybill numbers",
+        "mpesa till numbers"
+      ],
+      "responses": [
+        "MPESA PAYBILL: 100205, (Indicate registration Number as account number)"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "ncba",
+      "patterns": [
+        "ncba",
+        "ncba bank",
+        "ncba bank account number"
+      ],
+      "responses": [
+        "NCBA A/C No: 6479 000 011 (Galleria Branch)"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "cooperative",
+      "patterns": [
+        "cooperative",
+        "cooperative bank",
+        "cooperative bank account number"
+      ],
+      "responses": [
+        "COOPERATIVE BANK OF KENYA A/C No: 01129 0057 22200 (Parliament Branch)"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "equity",
+      "patterns": [
+        "equity",
+        "equity bank",
+        "equity bank account number"
+      ],
+      "responses": [
+        "EQUITY BANK A/C No: 06102 9235 2491 (Ongata Rongai Branch)"
+      ],
+      "context_set": ""
+    },
+    {
+      "tag": "swift",
+      "patterns": [
+        "swift",
+        "swift code",
+        "swift codes"
+      ],
+      "responses": [
+        "SWIFT CODE: CITIKENA Routing # 021000089. PLEASE ask your bank to credit the CITI BANK NEW YORK account and advise CITI BANK-NAIROBI of this transfer. For: The Catholic University of Eastern Africa a/c 1 02 473 108 (US Dollar A/C): a/c 1 02 473 141 (Euro A/C): a/c 1 02 473 116 (Pound A/C)."
       ],
       "context_set": ""
     },
@@ -109,9 +174,6 @@
       ],
       "context_set": ""
     }
-  ],
-  "variables": {
-    "payment_link": "https://www.cuea.edu/?page_id=11722"
-  }
+  ]
 }
 

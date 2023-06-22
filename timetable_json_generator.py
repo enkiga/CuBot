@@ -44,15 +44,12 @@ for row in myresult:
         'patterns': [
             f'When is {course_code} on my timetable?',
             f'When is {course_title} on my timetable?',
-            f'Which classes do i have on {course_day}?',
-            f'Which classes do i have on {course_day} by {course_lecturer}?',
-            f'Which classes do i have on {course_day} at {course_time}?',
-            f'Which classes do i have on {course_day} at {course_time} by {course_lecturer}?',
-            f'Which classes are in {course_venue}?',
-            f'Which classes are in {course_venue} by {course_lecturer}?',
-            f'Which classes are in {course_venue} at {course_time}?',
-            f'Which classes are in {course_venue} at {course_time} by {course_lecturer}?',
-            f'Which classes do i have on {course_day} in {course_venue}?',
+            f'Which class do i have on {course_day} at {course_time}?',
+            f'When do i have {course_code}?',
+            f'When do i have {course_title}?',
+            f'When is {course_code}?',
+            f'When is {course_title}?',
+
         ],
         'responses': [
             f'The class for {course_code}: {course_title} is at  {course_time} on {course_day} at {course_venue} '
