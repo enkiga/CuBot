@@ -765,6 +765,7 @@ def chat_page(request):
         print(chat_date)
         print(response)
         print('---------------------------------')
+
         return response_body.encode('utf-8')
 
     else:
