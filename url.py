@@ -7,7 +7,7 @@ url_patterns = [
     ('/home', home_page),
     ('/admin', admin_page),
     ('/admin/users', users_page),
-    ('/admin/training', training_page),
+    ('/admin/timetable', timetable_page),
     ('/signup', signup_page),
     ('/forgot_password', forgot_password_page),
     ('/loading_recovery', loading_recovery_page),

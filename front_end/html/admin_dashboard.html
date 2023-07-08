@@ -31,7 +31,9 @@
     <ul class="navbar">
         <li><a href="/admin" class="active">Dashboard</a></li>
         <li><a href="/admin/users">Users</a></li>
-        <li><a href="/admin/training">Bot Training</a></li>
+        <li><a href="/admin/timetable">Timetable</a></li>
+        <li><a href="/#">Events</a></li>
+        <li><a href="/#">Lecturers</a></li>
     </ul>
 
     <div class="profile">
@@ -39,5 +41,69 @@
         <div class="bx bx-menu" id="menu-icon"></div>
     </div>
 </header>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-content">
+        <div class="cards">
+            <div class="card-users">
+                <div class="box-view">
+                    <span id="user-count">{{Count}}</span>
+                    <h3>Users</h3>
+                </div>
+                <div class="icon-view">
+                    <i class='bx bxs-user'></i>
+                </div>
+            </div>
+
+            <div class="card-users">
+                <div class="box-view">
+                    <span id="conversation-count">{{Count}}</span>
+                    <h3>Conversations</h3>
+                </div>
+                <div class="icon-view">
+                    <i class='bx bxs-message-rounded-detail'></i>
+                </div>
+            </div>
+
+            <div class="card-users">
+                <div class="box-view">
+                    <span id="classes-count">{{Count}}</span>
+                    <h3>Classes</h3>
+                </div>
+                <div class="icon-view">
+                    <i class='bx bxs-book-reader'></i>
+                </div>
+            </div>
+
+            <div class="card-users">
+                <div class="box-view">
+                    <span id="event-count">{{Count}}</span>
+                    <h3>School Events</h3>
+                </div>
+                <div class="icon-view">
+                    <i class='bx bxs-news'></i>
+                </div>
+            </div>
+
+            <div class="card-users">
+                <div class="box-view">
+                    <span id="lecturer-count">{{Count}}</span>
+                    <h3>Lecturers</h3>
+                </div>
+                <div class="icon-view">
+                    <i class='bx bxs-user-detail'></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="dashboard-recent">
+        <div class="recent-logins"></div>
+    </div>
+
+</div>
+<script src="/front_end/root.js"></script>
 </body>
 </html>

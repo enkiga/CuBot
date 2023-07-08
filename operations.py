@@ -208,6 +208,12 @@ def home_page(environ):
 
 @check_for_login
 def admin_page(environ, request):
+    # get tables from database
+    sql = "SHOW TABLES"
+    mycursor.execute(sql)
+    tables = mycursor.fetchall()
+    print(tables)
+
     with open('front_end/html/admin_dashboard.html', 'rb') as file:
         data = file.read()
 
@@ -817,8 +823,8 @@ def users_page(environ, request):
     return data
 
 
-def training_page(environ, request):
-    with open('front_end/html/admin_training.html', 'rb') as file:
+def timetable_page(environ, request):
+    with open('front_end/html/admin_timetables.html', 'rb') as file:
         data = file.read()
     return data
 
