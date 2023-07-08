@@ -3,7 +3,11 @@ from operations import *
 url_patterns = [
     ('/', login_page),
     ('/loading', loading_page),
+    ('/loading_admin', loading_admin_page),
     ('/home', home_page),
+    ('/admin', admin_page),
+    ('/admin/users', users_page),
+    ('/admin/training', training_page),
     ('/signup', signup_page),
     ('/forgot_password', forgot_password_page),
     ('/loading_recovery', loading_recovery_page),

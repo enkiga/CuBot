@@ -34,6 +34,7 @@ def createTables():
         date_joined DATE NOT NULL,
         recovery_question VARCHAR(500) NOT NULL,
         recovery_answer VARCHAR(100) NOT NULL,
+        role VARCHAR(10) DEFAULT 'student' NOT NULL,
         password VARCHAR(50) NOT NULL
     )"""
 
@@ -254,28 +255,6 @@ def createTables():
         },
     ]
 
-    users_sql = "INSERT IGNORE INTO users(full_name, dob, mobile_no, campus, faculty,program, email, school_id, " \
-                "date_joined, recovery_question, recovery_answer, password) VALUES (%(full_name)s, %(dob)s, " \
-                "%(mobile_no)s, %(campus)s, %(faculty)s, %(program)s, %(email)s, %(school_id)s, %(date_joined)s, " \
-                "%(recovery_question)s, %(recovery_answer)s, %(password)s)"
-
-    users_val = [
-        {
-            'full_name': 'John Doe',
-            'dob': '1998-01-01',
-            'mobile_no': '+254721345589',
-            'campus': 'Langata',
-            'faculty': 'Science',
-            'program': 'Computer Science',
-            'email': 'johndoe@cuea.edu',
-            'school_id': '12345678',
-            'date_joined': '2021-01-01',
-            'recovery_question': 'What is your favourite color?',
-            'recovery_answer': 'Blue',
-            'password': '1234567'
-        }
-    ]
-
     # try except block to insert data into the tables
     try:
         for lecturer in lecturer_val:
@@ -284,8 +263,6 @@ def createTables():
             mycursor.execute(timetable_sql, timetable)
         for events in events_val:
             mycursor.execute(events_sql, events)
-        for users in users_val:
-            mycursor.execute(users_sql, users)
 
         print("Data Inserted Successfully")
 

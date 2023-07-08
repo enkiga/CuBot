@@ -100,7 +100,8 @@ def login_page(request):
         mycursor.execute(ref_sql, (email, hashed_password))
 
         # Check if the user exists
-        if mycursor.fetchone():
+        user = mycursor.fetchone()
+        if user:
             # Check if the user is already logged in
             if email in session.values():
                 # Redirect to home page
@@ -110,6 +111,9 @@ def login_page(request):
                 data = data.decode('utf-8')
                 return data.encode('utf-8')
             else:
+                # Get the user role
+                role = user[11]
+
                 # Generate a session ID
                 session_id = hashlib.md5(email.encode('utf-8')).hexdigest()
 
@@ -126,10 +130,17 @@ def login_page(request):
                     file.write(response_headers[1][1].split('=')[1].split(';')[0])
 
             # Redirect to loading page
-            f = open('front_end/html/loading_homepage.html', 'rb')
-            data = f.read()
-            data = data.decode('utf-8')
-            return data.encode('utf-8')
+            if role == 'student':
+                f = open('front_end/html/loading_homepage.html', 'rb')
+                data = f.read()
+                data = data.decode('utf-8')
+                return data.encode('utf-8')
+            elif role == 'admin':
+                f = open('front_end/html/loading_admin_page.html', 'rb')
+                data = f.read()
+                data = data.decode('utf-8')
+                return data.encode('utf-8')
+
         else:
             f = open('front_end/html/login_page.html', 'rb')
             data = f.read()
@@ -147,6 +158,13 @@ def login_page(request):
 @check_for_login
 def loading_page(environ, request):
     with open('front_end/html/loading_page.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+@check_for_login
+def loading_admin_page(environ, request):
+    with open('front_end/html/loading_admin_page.html', 'rb') as file:
         data = file.read()
     return data
 
@@ -188,6 +206,14 @@ def home_page(environ):
         return data
 
 
+@check_for_login
+def admin_page(environ, request):
+    with open('front_end/html/admin_dashboard.html', 'rb') as file:
+        data = file.read()
+
+    return data
+
+
 def signup_page(request):
     if request.get("REQUEST_METHOD") == "POST":
         try:
@@ -226,9 +252,9 @@ def signup_page(request):
 
         # store user data in the database
         signup_sql = "INSERT INTO users (full_name, dob, mobile_no, campus, faculty, program, email, school_id, " \
-                     "date_joined, password, recovery_question, recovery_answer) " \
+                     "date_joined, password, recovery_question, recovery_answer, role) " \
                      "VALUES( %(fullname)s, %(dob)s, %(mobileNo)s, %(campus)s, %(faculty)s, %(program)s, " \
-                     "%(email)s, %(studentID)s, %(joinDate)s, %(hash_password)s, %(question)s, %(answer)s)"
+                     "%(email)s, %(studentID)s, %(joinDate)s, %(hash_password)s, %(question)s, %(answer)s, %(role)s)"
 
         # create a dictionary of the user data
         user_data = {
@@ -243,7 +269,8 @@ def signup_page(request):
             'joinDate': joinDate,
             'hash_password': hash_password,
             'question': question,
-            'answer': answer
+            'answer': answer,
+            'role': 'student'
         }
 
         # check if user data is already in the database
@@ -257,6 +284,15 @@ def signup_page(request):
             data = data.decode('utf-8')
             return data.encode('utf-8')
         else:
+            # Get the count of users table
+            count_sql = "SELECT COUNT(*) FROM users"
+            mycursor.execute(count_sql)
+            count = mycursor.fetchone()[0]
+
+            # Assign the role of admin for first user
+            if count == 0:
+                user_data['role'] = 'admin'
+
             mycursor.execute(signup_sql, user_data)
             mydb.commit()
 
@@ -773,6 +809,18 @@ def chat_page(request):
             data = file.read()
         data = data.decode('utf-8')
         return data.encode('utf-8')
+
+
+def users_page(environ, request):
+    with open('front_end/html/admin_users.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def training_page(environ, request):
+    with open('front_end/html/admin_training.html', 'rb') as file:
+        data = file.read()
+    return data
 
 
 # CSS and JS files
