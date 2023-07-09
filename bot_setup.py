@@ -9,9 +9,9 @@ from keras.layers import Dense, Dropout
 from keras.models import Sequential
 from nltk.stem import WordNetLemmatizer
 
-# nltk.download('punkt')
-# nltk.download('wordnet')
-# nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
 
 # Loading intent json file
 with open('intents.json') as intents:

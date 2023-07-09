@@ -207,15 +207,52 @@ def home_page(environ):
 
 
 @check_for_login
-def admin_page(environ, request):
+def admin_page(environ):
     # get tables from database
     sql = "SHOW TABLES"
     mycursor.execute(sql)
     tables = mycursor.fetchall()
     print(tables)
 
+    # get conversation table count
+    sql = "SELECT COUNT(*) FROM conversations"
+    mycursor.execute(sql)
+    conversations = mycursor.fetchone()[0]
+    print(conversations)
+
+    # get users table count
+    sql = "SELECT COUNT(*) FROM users"
+    mycursor.execute(sql)
+    users = mycursor.fetchone()[0]
+    print(users)
+
+    # get timetable table count
+    sql = "SELECT COUNT(*) FROM timetable"
+    mycursor.execute(sql)
+    timetable = mycursor.fetchone()[0]
+    print(timetable)
+
+    # get events table count
+    sql = "SELECT COUNT(*) FROM events"
+    mycursor.execute(sql)
+    events = mycursor.fetchone()[0]
+    print(events)
+
+    # get lecturers table count
+    sql = "SELECT COUNT(*) FROM lecturers"
+    mycursor.execute(sql)
+    lecturers = mycursor.fetchone()[0]
+    print(lecturers)
+
+    # do a summation of all the counts
+    total = timetable + events + lecturers
+
+    # replace all placeholders with the appropriate counts
     with open('front_end/html/admin_dashboard.html', 'rb') as file:
         data = file.read()
+        data = data.replace(b'{{conversations}}', str(conversations).encode('utf-8'))
+        data = data.replace(b'{{users}}', str(users).encode('utf-8'))
+        data = data.replace(b'{{training_data}}', str(total).encode('utf-8'))
 
     return data
 
@@ -767,6 +804,7 @@ def loading_chat_page(environ, request):
 
 
 def chat_page(request):
+    # get user session id
     if request.get('REQUEST_METHOD') == 'POST':
         try:
             # Get the data from the request
@@ -779,6 +817,10 @@ def chat_page(request):
         message = data['message']
         time = data['time']
         chat_date = data['date']
+
+        # format chat_date to fit sql format
+        chat_date = chat_date.split('/')
+        chat_date = chat_date[2] + '-' + chat_date[1] + '-' + chat_date[0]
 
         with open('intents.json') as file:
             intents_json = json.load(file)
@@ -807,6 +849,37 @@ def chat_page(request):
         print(chat_date)
         print(response)
         print('---------------------------------')
+
+        # store the chat in the conversation table
+        with open('temp.txt', 'r') as file:
+            session_id = file.read()
+
+        if session_id:
+            # check if the session id exist in the session dictionary
+            if session_id in session:
+                session_data = session[session_id]
+
+                # get user from database
+                sql = "SELECT * FROM users WHERE email = %s"
+                mycursor.execute(sql, (session_data['username'],))
+                user = mycursor.fetchone()
+
+                # get user student id
+                user_id = user[7]
+                print(user_id)
+
+                # insert chat into database
+                sql = "INSERT INTO conversations (conversation_no, user_id, message_sent, message_received, " \
+                      "date_sent, time_sent) VALUES (NULL, %(user_id)s, %(message)s, %(response)s, %(chat_date)s, " \
+                      "%(time)s)"
+                val = {'user_id': user_id, 'message': message, 'response': response, 'chat_date': chat_date,
+                       'time': time}
+
+                try:
+                    mycursor.execute(sql, val)
+                    mydb.commit()
+                except mysql.connector.Error as sql_err:
+                    print("Error Inserting Data: {}".format(sql_err))
 
         return response_body.encode('utf-8')
 
@@ -849,6 +922,12 @@ def signup_css(environ, request):
     return data
 
 
+def admin_css(environ, request):
+    with open('front_end/admin.css', 'rb') as file:
+        data = file.read()
+    return data
+
+
 def root_js(environ, request):
     with open('front_end/root.js', 'rb') as file:
         data = file.read()
@@ -857,5 +936,11 @@ def root_js(environ, request):
 
 def signup_js(environ, request):
     with open('front_end/signup.js', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def admin_js(environ, request):
+    with open('front_end/admin.js', 'rb') as file:
         data = file.read()
     return data
