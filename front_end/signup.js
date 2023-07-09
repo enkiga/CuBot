@@ -39,6 +39,10 @@ function inputValidator() {
         alert("Mobile number must start with +254");
         return false;
     }
+    if (mobileNo.length !== 13) {
+        alert("Mobile number must be 13 characters long");
+        return false;
+    }
     if (campus === "") {
         alert("Please enter your campus.");
         return false; // Prevent form submission

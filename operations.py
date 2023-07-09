@@ -937,8 +937,43 @@ def event_page(environ, request):
 
 
 def lecturer_page(environ, request):
+    # get values of the lecturers from the database
+    sql = "SELECT * FROM lecturers"
+    mycursor.execute(sql)
+    lecturers = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in lecturers:
+        name = row[1]
+        email = row[2]
+        phone = row[3]
+        campus = row[4]
+        office = row[5]
+        department = row[6]
+        faculty = row[7]
+
+        table_rows += f'''
+                    <tr>
+                        <td>{name}</td>
+                        <td>{email}</td>
+                        <td>{phone}</td>
+                        <td>{campus}</td>
+                        <td>{office}</td>
+                        <td>{department}</td>
+                        <td>{faculty}</td>
+                        <td>
+                            <button class="view"><i class='bx bx-show'></i></button>
+                            <button class="delete"><i class='bx bx-trash'></i></button>
+                        </td>
+                        
+                    </tr>
+                '''
+
     with open('front_end/html/admin_lecturers.html', 'rb') as file:
         data = file.read()
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
+
     return data
 
 
