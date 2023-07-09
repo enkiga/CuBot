@@ -213,12 +213,6 @@ body {
 }
 
 
-#content nav a {
-    color: var(--white);
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
 #content nav .bx.bx-menu {
     cursor: pointer;
     color: var(--white);
@@ -434,6 +428,179 @@ body {
 /*main*/
 /*content*/
 
+/* Tables */
+.table-container {
+
+    width: auto;
+    margin: 10px 5px;
+    background-color: var(--white);
+    border-radius: 20px;
+}
+
+.table-container .table-operations {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: var(--sun);
+    border-radius: 20px 20px 0 0;
+    border-bottom: 1px solid var(--dark-blood);
+}
+
+.table-container .table-operations .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--dark-blood);
+}
+
+.table-container .table-operations .add-new {
+    background-color: var(--dark-blood);
+    color: var(--hot-sun);
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.table-container .table-operations .add-new:hover {
+    background-color: var(--white);
+    color: var(--dark-blood);
+}
+
+.table-container .table-operations input {
+    outline: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 6px;
+    border: 1px solid var(--hot-sun);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--coal);
+}
+
+.table-container .table-operations input::placeholder {
+    color: var(--coal-snow);
+    font-weight: 400;
+}
+
+.table-container .table-data {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.table-container .table-data table {
+    width: 100%;
+    table-layout: fixed;
+    min-width: 1000px;
+    border-collapse: collapse;
+}
+
+.table-container .table-data table thead th {
+    position: sticky;
+    top: 0;
+    color: var(--dark-blood);
+    font-size: 1rem;
+    background-color: var(--white);
+}
+
+.table-container .table-data table th,
+.table-container .table-data table td {
+    padding: 10px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--coal-snow);
+}
+
+.table-container .table-data table tr:hover {
+    background-color: var(--coal-snow);
+    color: var(--hot-sun);
+    cursor: pointer;
+}
+
+.table-container .table-data table tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.table-container .table-data td button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 1rem;
+    margin: 0 5px;
+}
+
+.table-container .table-data td .view {
+    background-color: var(--cyan);
+    color: var(--white-blue);
+}
+
+.table-container .table-data td .delete {
+    background-color: var(--blood);
+    color: var(--white);
+}
+
+.table-container .table-data td .view:hover,
+.table-container .table-data td .delete:hover {
+    padding: 10px 15px;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px var(--dark-blood);
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px var(--dark-blood);
+}
+.table-container .table-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 30px;
+    background-color: var(--white);
+    border-radius: 0 0 20px 20px;
+}
+
+.table-container .table-pagination i {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: var(--blood);
+    color: var(--dark-blood);
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    margin: 0 5px;
+}
+
+.table-container .table-pagination i:hover {
+    background-color: var(--dark-blood);
+    color: var(--hot-sun);
+}
+
+.table-container .table-pagination .pagination-item {
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark-blood);
+    margin: 0 5px;
+}
+
+.table-container .table-pagination .pagination-item.active {
+    color: var(--dark-blood);
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: var(--hot-sun);
+}
 
 @media screen and (max-width: 768px) {
     #sidebar {

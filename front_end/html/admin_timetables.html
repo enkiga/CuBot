@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cuea Assistant Bot</title>
+
+    <!-- CSS Link-->
+    <link rel="stylesheet" href="/front_end/admin.css">
+    <!-- Box Icon-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Google Fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,33 +16,228 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <!-- Root CSS -->
-    <link rel="stylesheet" href="/front_end/root.css">
-
-    <!-- Box Icon CSS -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>CUEA Bot</title>
 
 </head>
 <body>
-<header>
-    <a href="/loading_admin" class="logo">
-        <i class="bx bxs-bot"></i>
-        <span>Cuea Assistant Bot</span>
+<!--Side Bar-->
+<section id="sidebar">
+    <a href="/admin" class="brand">
+        <i class='bx bxs-bot'></i>
+        <span class="text">CUEA Bot</span>
     </a>
-
-
-    <ul class="navbar">
-        <li><a href="/loading_admin">Dashboard</a></li>
-        <li><a href="/admin/users">Users</a></li>
-        <li><a href="/admin/training" class="active">Bot Training</a></li>
+    <ul class="side-menu top">
+        <li>
+            <a href="/admin">
+                <i class="bx bxs-dashboard"></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/users">
+                <i class='bx bxs-user'></i>
+                <span class="text">Users</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/conversation">
+                <i class='bx bxs-message-rounded-detail'></i>
+                <span class="text">Conversations</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/event">
+                <i class='bx bxs-news'></i>
+                <span class="text">Events</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/lecturer">
+                <i class='bx bxs-user-detail'></i>
+                <span class="text">Lecturers</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="/admin/timetable">
+                <i class='bx bxs-book-reader'></i>
+                <span class="text">Timetable</span>
+            </a>
+        </li>
     </ul>
+    <ul class="side-menu ">
+        <li>
+            <a href="/logout">
+                <i class='bx bx-log-out'></i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
+<!--Side Bar-->
 
-    <div class="profile">
-        <a href="/logout" class="user"><i class='bx bx-log-out'></i>Logout</a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-    </div>
-</header>
+<section id="content">
+    <!-- Navigation Bar -->
 
-<script src="/front_end/root.js"></script>
+    <!-- Content -->
+    <nav>
+        <i class="bx bx-menu"></i>
+    </nav>
+    <!-- Navigation Bar -->
+    <!--Main-->
+    <main>
+        <div class="table-container">
+
+            <!-- Table Operations (Search, Add)-->
+            <div class="table-operations">
+                <span class="title">Your Reports</span>
+                <div class="search">
+                    <label class="search-input">
+                        <input type="text" id="searchInput" placeholder="Search">
+                    </label>
+                    <a href="#" class="add-new">
+                        <i class='bx bx-list-plus'></i>
+                        <span> Add Report</span>
+                    </a>
+                </div>
+            </div>
+            <div class="table-data">
+                <table id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Course Lecturer</th>
+                        <th>Course Venue</th>
+                        <th>Course Day</th>
+                        <th>Course Time</th>
+                        <th>Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {table_rows}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Pagination -->
+            <div id="pagination" class="table-pagination">
+                <i class='bx bxs-chevrons-left'></i>
+                <i class='bx bxs-chevron-left'></i>
+                <span class="pagination-item active">1</span>
+                <span class="pagination-item">2</span>
+                <span class="pagination-item">3</span>
+                <i class='bx bxs-chevron-right'></i>
+                <i class='bx bxs-chevrons-right'></i>
+            </div>
+        </div>
+
+        <script>
+            // Get the table, search input, and pagination elements
+            const dataTable = document.getElementById('dataTable');
+            const searchInput = document.getElementById('searchInput');
+            const pagination = document.getElementById('pagination');
+            let originalTable = dataTable.innerHTML;
+            let rowsPerPage = 5;
+
+            // Function to filter the table rows based on search input
+            function filterTable() {
+                const filterValue = searchInput.value.trim().toLowerCase();
+                const rows = dataTable.getElementsByTagName('tr');
+
+                // Loop through all table rows, hide those that don't match the search query
+                for (let i = 1; i < rows.length; i++) {
+                    const cells = rows[i].getElementsByTagName('td');
+                    let found = false;
+
+                    for (let j = 0; j < cells.length; j++) {
+                        const cellText = cells[j].textContent || cells[j].innerText;
+
+                        if (cellText.toLowerCase().includes(filterValue)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    rows[i].style.display = found ? '' : 'none';
+                }
+
+                // Reset pagination to the first page after filtering
+                showPage(0);
+            }
+
+            // Attach event listener to search input
+            searchInput.addEventListener('input', filterTable);
+            searchInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterTable();
+                }
+            });
+
+            // Function to show the specified page and update the active pagination item
+            function showPage(pageIndex) {
+                const rows = dataTable.getElementsByTagName('tr');
+                const startIndex = pageIndex * rowsPerPage + 1;
+                const endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+                // Loop through all table rows, hide/show based on the current page
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].style.display = i >= startIndex && i < endIndex ? '' : 'none';
+                }
+
+                // Generate pagination items
+                let paginationHTML = '';
+
+                for (let i = 0; i < Math.ceil((rows.length - 1) / rowsPerPage); i++) {
+                    const isActive = i === pageIndex;
+                    paginationHTML += `<span class="pagination-item ${isActive ? 'active' : ''}" onclick="showPage(${i})">${i + 1}</span>`;
+                }
+
+                pagination.innerHTML = paginationHTML;
+            }
+
+            // Show the first page initially
+            showPage(0);
+
+            // Function to restore the original table
+            function restoreTable() {
+                dataTable.innerHTML = originalTable;
+                showPage(0);
+            }
+
+            // Clear search input and restore the original table
+            searchInput.addEventListener('input', function () {
+                if (searchInput.value.trim() === '') {
+                    restoreTable();
+                }
+            });
+
+            // Get all the "view" buttons
+            const viewButtons = document.querySelectorAll('.view');
+
+            // Attach a click event listener to each "view" button
+            viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Get the row content
+                    const row = button.closest('tr');
+                    const courseCode = row.querySelector('td:nth-child(1)').innerText;
+                    const courseTitle = row.querySelector('td:nth-child(2)').innerText;
+                    const lecturer = row.querySelector('td:nth-child(3)').innerText;
+                    const venue = row.querySelector('td:nth-child(4)').innerText;
+                    const day = row.querySelector('td:nth-child(5)').innerText;
+                    const time = row.querySelector('td:nth-child(6)').innerText;
+
+                    // Display the alert with the row content
+                    const message = `Course Code: ${courseCode}\nCourse Title: ${courseTitle}\nLecturer: ${lecturer}\nVenue: ${venue}\nDay: ${day}\nTime: ${time}`;
+                    alert(message);
+                });
+            });
+        </script>
+    </main>
+</section>
+<!-- Content -->
+
+<script src="/front_end/admin.js"></script>
 </body>
 </html>

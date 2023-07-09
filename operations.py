@@ -208,41 +208,30 @@ def home_page(environ):
 
 @check_for_login
 def admin_page(environ):
-    # get tables from database
-    sql = "SHOW TABLES"
-    mycursor.execute(sql)
-    tables = mycursor.fetchall()
-    print(tables)
-
     # get conversation table count
     sql = "SELECT COUNT(*) FROM conversations"
     mycursor.execute(sql)
     conversations = mycursor.fetchone()[0]
-    print(conversations)
 
     # get users table count
     sql = "SELECT COUNT(*) FROM users"
     mycursor.execute(sql)
     users = mycursor.fetchone()[0]
-    print(users)
 
     # get timetable table count
     sql = "SELECT COUNT(*) FROM timetable"
     mycursor.execute(sql)
     timetable = mycursor.fetchone()[0]
-    print(timetable)
 
     # get events table count
     sql = "SELECT COUNT(*) FROM events"
     mycursor.execute(sql)
     events = mycursor.fetchone()[0]
-    print(events)
 
     # get lecturers table count
     sql = "SELECT COUNT(*) FROM lecturers"
     mycursor.execute(sql)
     lecturers = mycursor.fetchone()[0]
-    print(lecturers)
 
     # do a summation of all the counts
     total = timetable + events + lecturers
@@ -897,7 +886,58 @@ def users_page(environ, request):
 
 
 def timetable_page(environ, request):
+    # get values of the timetable from the database in descending order
+    sql = "SELECT * FROM timetable ORDER BY timetable_no DESC"
+    mycursor.execute(sql)
+    timetable = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in timetable:
+        course_code = row[1]
+        course_title = row[2]
+        course_lecturer = row[3]
+        course_venue = row[4]
+        course_day = row[5]
+        course_time = row[6]
+
+        table_rows += f'''
+                    <tr>
+                        <td>{course_code}</td>
+                        <td>{course_title}</td>
+                        <td>{course_lecturer}</td>
+                        <td>{course_venue}</td>
+                        <td>{course_day}</td>
+                        <td>{course_time}</td>
+                        <td>
+                            <button class="view"><i class='bx bx-show'></i></button>
+                            <button class="delete"><i class='bx bx-trash'></i></button>
+                        </td>
+                    </tr>
+                '''
+
     with open('front_end/html/admin_timetables.html', 'rb') as file:
+        data = file.read()
+
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
+
+    return data
+
+
+def conversation_page(environ, request):
+    with open('front_end/html/admin_conversations.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def event_page(environ, request):
+    with open('front_end/html/admin_events.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def lecturer_page(environ, request):
+    with open('front_end/html/admin_lecturers.html', 'rb') as file:
         data = file.read()
     return data
 

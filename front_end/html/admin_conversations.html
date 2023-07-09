@@ -2,9 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS Link-->
+    <link rel="stylesheet" href="/front_end/admin.css">
+    <!-- Box Icon-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <title>CUEA Bot</title>
+
 </head>
 <body>
+<!--Side Bar-->
+<section id="sidebar">
+    <a href="/admin" class="brand">
+        <i class='bx bxs-bot'></i>
+        <span class="text">CUEA Bot</span>
+    </a>
+    <ul class="side-menu top">
+        <li >
+            <a href="/admin">
+                <i class="bx bxs-dashboard"></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/users">
+                <i class='bx bxs-user'></i>
+                <span class="text">Users</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="/admin/conversation">
+                <i class='bx bxs-message-rounded-detail'></i>
+                <span class="text">Conversations</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/event">
+                <i class='bx bxs-news'></i>
+                <span class="text">Events</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/lecturer">
+                <i class='bx bxs-user-detail'></i>
+                <span class="text">Lecturers</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/timetable">
+                <i class='bx bxs-book-reader'></i>
+                <span class="text">Timetable</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu ">
+        <li>
+            <a href="/logout">
+                <i class='bx bx-log-out'></i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
+<!--Side Bar-->
 
+<section id="content">
+    <!-- Navigation Bar -->
+
+    <!-- Content -->
+    <nav>
+        <i class="bx bx-menu"></i>
+    </nav>
+    <!-- Navigation Bar -->
+    <!--Main-->
+    <main>
+
+    </main>
+</section>
+<!-- Content -->
+
+<script src="/front_end/admin.js"></script>
 </body>
 </html>
