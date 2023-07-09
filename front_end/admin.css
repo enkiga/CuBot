@@ -463,6 +463,29 @@ body {
     border-radius: 6px;
 }
 
+.table-container .table-operations .search {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 5px;
+}
+
+.table-container .table-operations .search-button button {
+    background-color: var(--dark-blood);
+    color: var(--hot-sun);
+    padding: 5px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.table-container .table-operations .search-button button:hover {
+    background-color: var(--white);
+    color: var(--dark-blood);
+}
+
 .table-container .table-operations .add-new:hover {
     background-color: var(--white);
     color: var(--dark-blood);
@@ -560,6 +583,7 @@ body {
 .table-container::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 6px var(--dark-blood);
 }
+
 .table-container .table-pagination {
     display: flex;
     align-items: center;

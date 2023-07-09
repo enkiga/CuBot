@@ -880,8 +880,41 @@ def chat_page(request):
 
 
 def users_page(environ, request):
+    # get values of the users from the database
+    sql = "SELECT * FROM users"
+    mycursor.execute(sql)
+    users = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in users:
+        user_id = row[7]
+        user_name = row[0]
+        user_email = row[6]
+        user_phone = row[2]
+        user_campus = row[3]
+        user_faculty = row[4]
+        user_program = row[5]
+
+        table_rows += f'''
+                    <tr>
+                        <td>{user_id}</td>
+                        <td>{user_name}</td>
+                        <td>{user_email}</td>
+                        <td>{user_phone}</td>
+                        <td>{user_campus}</td>
+                        <td>{user_faculty}</td>
+                        <td>{user_program}</td>
+                        <td>
+                            <button class="view"><i class='bx bx-show'></i></button>
+                            <button class="delete"><i class='bx bx-trash'></i></button>
+                        </td>
+                    </tr>
+                '''
+
     with open('front_end/html/admin_users.html', 'rb') as file:
         data = file.read()
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
     return data
 
 
@@ -925,8 +958,36 @@ def timetable_page(environ, request):
 
 
 def conversation_page(environ, request):
+    # get values of the conversations from the database in descending order
+    sql = "SELECT * FROM conversations ORDER BY conversation_no DESC"
+    mycursor.execute(sql)
+    conversations = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in conversations:
+        user = row[1]
+        message_sent = row[2]
+        message_received = row[3]
+        date_sent = row[4]
+        time_sent = row[5]
+
+        table_rows += f'''
+                    <tr>
+                        <td>{user}</td>
+                        <td>{message_sent}</td>
+                        <td>{message_received}</td>
+                        <td>{date_sent}</td>
+                        <td>{time_sent}</td>
+                        <td>
+                            <button class="view"><i class='bx bx-show'></i></button>
+                        </td>
+                    </tr>
+                '''
     with open('front_end/html/admin_conversations.html', 'rb') as file:
         data = file.read()
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
+
     return data
 
 

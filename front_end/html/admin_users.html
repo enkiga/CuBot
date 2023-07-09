@@ -86,7 +86,156 @@
 
     <!--Main-->
     <main>
+        <div class="table-container">
 
+            <!-- Table Operations (Search, Add)-->
+            <div class="table-operations">
+                <span class="title">Lecturers Information</span>
+                <div class="search">
+                    <label class="search-input">
+                        <input type="text" id="searchInput" placeholder="Search">
+                    </label>
+                    <a href="#" class="add-new">
+                        <i class='bx bx-list-plus'></i>
+                        <span> Add Lecturer</span>
+                    </a>
+                </div>
+            </div>
+            <div class="table-data">
+                <table id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Campus</th>
+                        <th>Faculty</th>
+                        <th>Program</th>
+                        <th>Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {table_rows}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Pagination -->
+            <div id="pagination" class="table-pagination">
+                <i class='bx bxs-chevrons-left'></i>
+                <i class='bx bxs-chevron-left'></i>
+                <span class="pagination-item active">1</span>
+                <span class="pagination-item">2</span>
+                <span class="pagination-item">3</span>
+                <i class='bx bxs-chevron-right'></i>
+                <i class='bx bxs-chevrons-right'></i>
+            </div>
+        </div>
+        <script>
+            // Get the table, search input, and pagination elements
+            const dataTable = document.getElementById('dataTable');
+            const searchInput = document.getElementById('searchInput');
+            const pagination = document.getElementById('pagination');
+            let originalTable = dataTable.innerHTML;
+            let rowsPerPage = 5;
+
+            // Function to filter the table rows based on search input
+            function filterTable() {
+                const filterValue = searchInput.value.trim().toLowerCase();
+                const rows = dataTable.getElementsByTagName('tr');
+
+                // Loop through all table rows, hide those that don't match the search query
+                for (let i = 1; i < rows.length; i++) {
+                    const cells = rows[i].getElementsByTagName('td');
+                    let found = false;
+
+                    for (let j = 0; j < cells.length; j++) {
+                        const cellText = cells[j].textContent || cells[j].innerText;
+
+                        if (cellText.toLowerCase().includes(filterValue)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    rows[i].style.display = found ? '' : 'none';
+                }
+
+                // Reset pagination to the first page after filtering
+                showPage(0);
+            }
+
+            // Attach event listener to search input
+            searchInput.addEventListener('input', filterTable);
+            searchInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    filterTable();
+                }
+            });
+
+            // Function to show the specified page and update the active pagination item
+            function showPage(pageIndex) {
+                const rows = dataTable.getElementsByTagName('tr');
+                const startIndex = pageIndex * rowsPerPage + 1;
+                const endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+
+                // Loop through all table rows, hide/show based on the current page
+                for (let i = 1; i < rows.length; i++) {
+                    rows[i].style.display = i >= startIndex && i < endIndex ? '' : 'none';
+                }
+
+                // Generate pagination items
+                let paginationHTML = '';
+
+                for (let i = 0; i < Math.ceil((rows.length - 1) / rowsPerPage); i++) {
+                    const isActive = i === pageIndex;
+                    paginationHTML += `<span class="pagination-item ${isActive ? 'active' : ''}" onclick="showPage(${i})">${i + 1}</span>`;
+                }
+
+                pagination.innerHTML = paginationHTML;
+            }
+
+            // Show the first page initially
+            showPage(0);
+
+            // Function to restore the original table
+            function restoreTable() {
+                dataTable.innerHTML = originalTable;
+                showPage(0);
+            }
+
+            // Clear search input and restore the original table
+            searchInput.addEventListener('input', function () {
+                if (searchInput.value.trim() === '') {
+                    restoreTable();
+                }
+            });
+
+            //Get all the view buttons
+            const viewButtons = document.querySelectorAll('.view');
+
+            // Attach a click event listener to each "view" button
+            viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    //Get Row content
+                    const row = button.closest('tr');
+                    const ID = row.querySelector('td:nth-child( 1)').innerText;
+                    const name = row.querySelector('td:nth-child( 2)').innerText;
+                    const email = row.querySelector('td:nth-child( 3)').innerText;
+                    const mobile = row.querySelector('td:nth-child( 4)').innerText;
+                    const campus = row.querySelector('td:nth-child( 5)').innerText;
+                    const faculty = row.querySelector('td:nth-child( 6)').innerText;
+                    const program = row.querySelector('td:nth-child( 7)').innerText;
+
+                    // Display the alert with the row contents
+                    const message = `SchoolID: ${ID}\nName: ${name}\nEmail: ${email}\nMobile: ${mobile}\nCampus: ${campus}\nFaculty: ${faculty}\nProgram: ${program}`;
+                    alert(message)
+                });
+            });
+        </script>
     </main>
 </section>
 <!-- Content -->
