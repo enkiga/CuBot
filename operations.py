@@ -1097,6 +1097,24 @@ def lecturer_page(environ, request):
     return data
 
 
+def add_lecturer_page(environ, request):
+    with open('front_end/html/add_lecturer.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def add_event_page(environ, request):
+    with open('front_end/html/add_event.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
+def add_timetable_page(environ, request):
+    with open('front_end/html/add_timetable.html', 'rb') as file:
+        data = file.read()
+    return data
+
+
 # CSS and JS files
 
 def root_css(environ, request):
