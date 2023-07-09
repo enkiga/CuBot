@@ -931,8 +931,38 @@ def conversation_page(environ, request):
 
 
 def event_page(environ, request):
+    # get values of the events from the database in descending order
+    sql = "SELECT * FROM events ORDER BY event_date DESC"
+    mycursor.execute(sql)
+    events = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in events:
+        name = row[1]
+        venue = row[2]
+        date = row[3]
+        time = row[4]
+        description = row[5]
+
+        table_rows += f'''
+                    <tr>
+                        <td>{name}</td>
+                        <td>{venue}</td>
+                        <td>{date}</td>
+                        <td>{time}</td>
+                        <td>{description}</td>
+                        <td>
+                            <button class="view"><i class='bx bx-show'></i></button>
+                            <button class="delete"><i class='bx bx-trash'></i></button>
+                        </td>
+                    </tr>
+                '''
+
     with open('front_end/html/admin_events.html', 'rb') as file:
         data = file.read()
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
+
     return data
 
 
