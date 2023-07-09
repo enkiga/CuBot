@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cuea Assistant Bot</title>
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Sign Up Form CSS -->
+    <link rel="stylesheet" href="/front_end/signup.css">
+</head>
+<body>
+<div class="container">
+    <header>Add Lecturer</header>
+
+    <form method="POST" id="form" onsubmit="return inputValidator()">
+        <div class="details personal">
+            <span class="title"> Personal Details</span>
+
+            <div class="fields">
+                <div class="input-field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name">
+                </div>
+
+                <div class="input-field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="john@cuea.edu" name="email">
+                </div>
+
+                <div class="input-field">
+                    <label for="mobileNo">Mobile Number</label>
+                    <input type="text" id="mobileNo" placeholder="+25400000000" name="mobileNo">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="details personal">
+            <span class="title"> Premises Details</span>
+
+            <div class="fields">
+                <div class="input-field">
+                    <label for="campus">Campus</label>
+                    <select id="campus" name="campus">
+                        <OPTION></OPTION>
+                        <option value="GABA">GABA</option>
+                        <option value="LANGATA">LANGATA</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <select id="faculty" name="faculty">
+                        <option></option>
+                        <option value="Faculty of Arts and Social Sciences">Faculty of Arts and Social Sciences</option>
+                        <option value="Faculty of Commerce">Faculty of Business and Economics</option>
+                        <option value="Faculty of Education">Faculty of Education</option>
+                        <option value="Faculty of Law">Faculty of Law</option>
+                        <option value="Faculty of Science">Faculty of Science</option>
+                        <option value="Faculty of Theology">Faculty of Theology</option>
+                        <option value="Faculty of Theology">Faculty of Nursing</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="department">Department</label>
+                    <input type="text" id="department" name="department">
+                </div>
+
+
+                <div class="input-field">
+                    <label for="office">Office</label>
+                    <input type="text" id="office" name="office">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+            <button class="nextBtn">
+                <span class="btnTxt">Continue</span>
+                <i class='bx bxs-chevron-right'></i>
+            </button>
+        </div>
+
+
+    </form>
+</div>
+<script src="/front_end/signup.js"></script>
+</body>
+</html>

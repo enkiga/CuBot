@@ -80,9 +80,10 @@ def createTables():
     CREATE TABLE IF NOT EXISTS events (
         event_no INT AUTO_INCREMENT,
         event_name VARCHAR(100) NOT NULL UNIQUE,
+        event_campus VARCHAR(10) NOT NULL,
         event_venue VARCHAR(100) NOT NULL,
         event_date DATE NOT NULL,
-        event_time TIME NOT NULL,
+        event_time VARCHAR(20) NOT NULL,
         event_description VARCHAR(500) NOT NULL,
         PRIMARY KEY(event_no)
     )"""
@@ -190,16 +191,17 @@ def createTables():
         }
     ]
 
-    events_sql = "INSERT IGNORE INTO events (event_no, event_name, event_venue, event_date, event_time, " \
-                 "event_description) VALUES (NULL,%(event_name)s, %(event_location)s, %(event_date)s, " \
+    events_sql = "INSERT IGNORE INTO events (event_no, event_name, event_campus, event_venue, event_date, event_time, " \
+                 "event_description) VALUES (NULL,%(event_name)s, %(event_campus)s, %(event_venue)s, %(event_date)s, " \
                  "%(event_time)s, %(event_description)s)"
 
     events_val = [
         {
             'event_name': 'CUEA Hackathon',
-            'event_location': 'Langata',
+            'event_campus': 'Langata',
+            'event_venue': 'OH 12',
             'event_date': '2023-04-11',
-            'event_time': '4:00 PM',
+            'event_time': '16:00-18:00',
             'event_description': 'A hackathon is a design sprint-like event; often, in which computer programmers and'
                                  ' others involved in software development, including graphic designers, interface '
                                  'designers, project managers, domain experts, and others collaborate intensively on '
@@ -207,18 +209,20 @@ def createTables():
         },
         {
             'event_name': 'CUEA Open Day',
-            'event_location': 'Langata',
+            'event_campus': 'Langata',
+            'event_venue': 'School Library',
             'event_date': '2023-01-12',
-            'event_time': '8:00 AM',
+            'event_time': '8:00-16:00',
             'event_description': 'An open day (or open evening or open house) is an event held at an institution where '
                                  'its doors are open to the general public, allowing people to look around the '
                                  'institution and learn about it.'
         },
         {
             'event_name': 'CUEA Career Fair',
-            'event_location': 'Gaba',
+            'event_campus': 'Gaba',
+            'event_venue': 'Gaba Main Hall',
             'event_date': '2022-10-10',
-            'event_time': '2:00 PM',
+            'event_time': '14:00-18:00',
             'event_description': 'A career fair, also referred commonly as a career expo or career exhibition, is an '
                                  'event in which employers, recruiters, and schools give information to potential '
                                  'employees. Job seekers attend these while trying to make a good impression to '
@@ -231,9 +235,10 @@ def createTables():
         },
         {
             'event_name': 'CUEA Sports Day',
-            'event_location': 'Gaba',
-            'event_date': '2023-03-10',
-            'event_time': '11:00 AM',
+            'event_campus': 'Gaba',
+            'event_venue': 'Gaba Sports Grounds',
+            'event_date': '2022-09-10',
+            'event_time': '11:00-16:00',
             'event_description': 'A sports day, also known as field day, is a day on which people participate in '
                                  'competitive sporting activities, often with the aim of winning trophies or prizes. '
                                  'Though often held at the beginning of summer, many schools hold their sports days in '
@@ -246,9 +251,10 @@ def createTables():
         },
         {
             'event_name': 'CUEA Cultural Day',
-            'event_location': 'Langata',
-            'event_date': '2023-02-15',
-            'event_time': '8:00 AM',
+            'event_campus': 'Langata',
+            'event_venue': 'Yellow Pages',
+            'event_date': '2022-08-10',
+            'event_time': '8:00-16:00',
             'event_description': 'A cultural day is a day set aside to celebrate the culture of a people. It is a '
                                  'day to showcase the culture of a people through various activities such as '
                                  'traditional dances, traditional food, traditional clothing, traditional music, etc.'

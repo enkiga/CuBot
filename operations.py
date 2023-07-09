@@ -236,12 +236,39 @@ def admin_page(environ):
     # do a summation of all the counts
     total = timetable + events + lecturers
 
+    # get the last five records from the conversations table
+    sql = "SELECT * FROM conversations ORDER BY conversation_no DESC LIMIT 5"
+    mycursor.execute(sql)
+    conversations_data = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in conversations_data:
+        user = row[1]
+        message = row[2]
+        time = str(row[5])
+
+        # show time in hh:mm format instead of the default hh:mm:ss
+        time = time.split(':')[0] + ':' + time.split(':')[1]
+
+        table_rows += f'''
+            <tr>
+                <td>
+                <i class="bx bxs-user"></i>
+                <p>{user}<p>
+                </td>
+                <td>{message}</td>
+                <td>{time}</td>
+            </tr>
+        '''
+
     # replace all placeholders with the appropriate counts
     with open('front_end/html/admin_dashboard.html', 'rb') as file:
         data = file.read()
         data = data.replace(b'{{conversations}}', str(conversations).encode('utf-8'))
         data = data.replace(b'{{users}}', str(users).encode('utf-8'))
         data = data.replace(b'{{training_data}}', str(total).encode('utf-8'))
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
 
     return data
 
@@ -1001,14 +1028,16 @@ def event_page(environ, request):
     table_rows = ''
     for row in events:
         name = row[1]
-        venue = row[2]
-        date = row[3]
-        time = row[4]
-        description = row[5]
+        campus = row[2]
+        venue = row[3]
+        date = row[4]
+        time = row[5]
+        description = row[6]
 
         table_rows += f'''
                     <tr>
                         <td>{name}</td>
+                        <td>{campus}</td>
                         <td>{venue}</td>
                         <td>{date}</td>
                         <td>{time}</td>

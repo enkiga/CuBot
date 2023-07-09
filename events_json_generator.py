@@ -32,10 +32,11 @@ for row in myresult:
     # create parameters for the data
     event_id = row[0]
     event_name = row[1]
-    event_venue = row[2]
-    event_date = row[3]
-    event_time = row[4]
-    event_description = row[5]
+    event_campus = row[2]
+    event_venue = row[3]
+    event_date = row[4]
+    event_time = row[5]
+    event_description = row[6]
 
     # create a dictionary to store the data
     event_dict = {
@@ -47,11 +48,11 @@ for row in myresult:
             f'Where is {event_name}?',
             f'What is {event_name} about?',
             f'What is happening on {event_date}?',
-            f'What is happening on {event_date} at {event_time}?',
+            f'What is happening on {event_date} at {event_campus}?',
             f'Where is {event_name} happening?',
         ],
         'responses': [
-            f'{event_name} is happening on {event_date} at {event_time} at {event_venue}. {event_description}'],
+            f'{event_name} is happening on {event_date} at {event_time} in {event_campus} at {event_venue}. {event_description}'],
         'context_set': ''
     }
 

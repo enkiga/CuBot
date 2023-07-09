@@ -105,6 +105,7 @@
                     <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Campus</th>
                         <th>Venue</th>
                         <th>Date</th>
                         <th>Time</th>
@@ -220,13 +221,14 @@
                     //Get the row content
                     const row = button.closest('tr');
                     const name = row.querySelector('td:nth-child(1)').innerText;
-                    const venue = row.querySelector('td:nth-child(2)').innerText;
-                    const date = row.querySelector('td:nth-child(3)').innerText;
-                    const time = row.querySelector('td:nth-child(4)').innerText;
-                    const description = row.querySelector('td:nth-child(5)').innerText;
+                    const campus = row.querySelector('td:nth-child(2)').innerText;
+                    const venue = row.querySelector('td:nth-child(3)').innerText;
+                    const date = row.querySelector('td:nth-child(4)').innerText;
+                    const time = row.querySelector('td:nth-child(5)').innerText;
+                    const description = row.querySelector('td:nth-child(6)').innerText;
 
                     // Display the alert with the row content
-                    const message = `Name: ${name}\nVenue: ${venue}\nDate: ${date}\nTime: ${time}\nDescription: ${description}`;
+                    const message = `Name: ${name}\nCampus: ${campus}\nVenue: ${venue}\nDate: ${date}\nTime: ${time}\nDescription: ${description}`;
                     alert(message);
                 });
             });

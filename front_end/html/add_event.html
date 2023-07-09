@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cuea Assistant Bot</title>
+
+    <!-- Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Sign Up Form CSS -->
+    <link rel="stylesheet" href="/front_end/signup.css">
+</head>
+<body>
+<div class="container">
+    <header>Add Event</header>
+
+    <form method="POST" id="form" onsubmit="return inputValidator()">
+        <div class="details personal">
+            <span class="title"> Event Info</span>
+
+            <div class="fields">
+                <div class="input-field">
+                    <label for="event-name">Name</label>
+                    <input type="text" id="event-name" name="event-name">
+                </div>
+
+                <div class="input-field">
+                    <label for="campus">Campus</label>
+                    <select id="campus" name="campus">
+                        <OPTION></OPTION>
+                        <option value="GABA">GABA</option>
+                        <option value="LANGATA">LANGATA</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="venue">Venue</label>
+                    <input type="text" id="venue" name="venue">
+                </div>
+
+                <div class="input-field">
+                    <label for="event-date">Date</label>
+                    <input type="date" id="event-date" name="event-date">
+                </div>
+
+                <div class="input-field">
+                    <label for="start-time">Start Time</label>
+                    <input type="time" id="start-time" name="start-time">
+                </div>
+
+                <div class="input-field">
+                    <label for="stop-time">End Time</label>
+                    <input type="time" id="stop-time" name="stop-time">
+                </div>
+
+                <div class="input-field paragraph">
+                    <label for="event-description">Description</label>
+                    <textarea id="event-description" name="event-description"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="buttons">
+            <button class="nextBtn">
+                <span class="btnTxt">Continue</span>
+                <i class='bx bxs-chevron-right'></i>
+            </button>
+        </div>
+
+
+    </form>
+</div>
+<script src="/front_end/signup.js"></script>
+</body>
+</html>

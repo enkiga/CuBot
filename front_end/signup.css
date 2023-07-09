@@ -45,7 +45,7 @@ body {
 .container form {
     margin-top: 20px;
     position: relative;
-    min-height: 700px;
+    max-height: 700px;
     overflow: hidden;
 
 }
@@ -78,6 +78,10 @@ form .fields .input-field {
     margin: 4px 0;
 }
 
+form .fields .input-field.paragraph {
+    width: 100%;
+}
+
 .input-field label {
     font-size: 14px;
     font-weight: 500;
@@ -106,6 +110,19 @@ form .fields .input-field {
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;
+}
+
+.input-field textarea {
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #342E37;
+    border-radius: 5px;
+    border: 1px solid #FCB900;
+    padding: 10px 15px;
+    margin: 8px 0;
+    resize: none;
+    min-height: 100px;
 }
 
 form .fields.recovery .input-field {
