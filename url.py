@@ -9,6 +9,7 @@ url_patterns = [
     ('/admin/users', users_page),
     ('/admin/timetable', timetable_page),
     ('/admin/conversation', conversation_page),
+    ('/admin/conversation/error_message', view_error),
     ('/admin/event', event_page),
     ('/admin/lecturer', lecturer_page),
     ('/admin/lecturer/add_lecturer', add_lecturer_page),

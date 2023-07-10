@@ -1014,6 +1014,41 @@ def conversation_page(environ, request):
     return data
 
 
+def view_error(environ, request):
+    # get values of the conversations with 'Sorry I don't  from the database in descending order
+    sql = "SELECT * FROM conversations WHERE message_received = 'Sorry, I do not understand!' ORDER BY " \
+          "conversation_no DESC"
+    mycursor.execute(sql)
+    conversations = mycursor.fetchall()
+
+    # Generate HTML for table rows dynamically
+    table_rows = ''
+    for row in conversations:
+        user = row[1]
+        message_sent = row[2]
+        message_received = row[3]
+        date_sent = row[4]
+        time_sent = row[5]
+
+        table_rows += f'''
+                        <tr>
+                            <td>{user}</td>
+                            <td>{message_sent}</td>
+                            <td>{message_received}</td>
+                            <td>{date_sent}</td>
+                            <td>{time_sent}</td>
+                            <td>
+                                <button class="view"><i class='bx bx-show'></i></button>
+                            </td>
+                        </tr>
+                    '''
+    with open('front_end/html/admin_conversations.html', 'rb') as file:
+        data = file.read()
+        data = data.replace(b'{table_rows}', table_rows.encode('utf-8'))
+
+    return data
+
+
 def event_page(environ, request):
     # get values of the events from the database in descending order
     sql = "SELECT * FROM events ORDER BY event_date DESC"
@@ -1152,7 +1187,7 @@ def add_lecturer_page(request):
             train_bot()
 
             # Redirect to loading_lecturer_page
-            f = open('front_end/html/loading_lecturer.html', 'rb')
+            f = open('front_end/html/loading_lecturer_page.html.html', 'rb')
             data = f.read()
             data = data.decode('utf-8')
             return data.encode('utf-8')

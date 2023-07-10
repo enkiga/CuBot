@@ -236,6 +236,16 @@
                     alert(message)
                 });
             });
+            const errorConversation = document.getElementById('error-conversations');
+            const allConversation = document.getElementById('all-conversation');
+
+            errorConversation.addEventListener('click', () => {
+                window.location.href = '/admin/conversation/error_message';
+            });
+
+            allConversation.addEventListener('click', () => {
+                window.location.href = '/admin/conversation';
+            });
         </script>
     </main>
 </section>
