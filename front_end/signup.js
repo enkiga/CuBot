@@ -209,3 +209,47 @@ function lecturerValidator() {
     return true;
 
 }
+
+function timetableValidator() {
+    // Personal Details
+    const courseCode = document.getElementById("unit-code").value.trim();
+    const courseName = document.getElementById("unit-name").value.trim();
+    const lecturer = document.getElementById("lecturer-name").value.trim();
+    const day = document.getElementById("day").value.trim();
+    const startTime = document.getElementById("start-time").value.trim();
+    const stopTime = document.getElementById("stop-time").value.trim();
+    const venue = document.getElementById("venue").value.trim();
+
+    if (courseCode === "") {
+        alert("Please enter Course Code.");
+        return false; // Prevent form submission
+    }
+    if (courseName === "") {
+        alert("Please enter Course Name.");
+        return false; // Prevent form submission
+    }
+    if (lecturer === "") {
+        alert("Please enter Lecturer.");
+        return false; // Prevent form submission
+    }
+    if (day === "") {
+        alert("Please enter Day.");
+        return false; // Prevent form submission
+    }
+    if (startTime === "") {
+        alert("Please enter Start Time.");
+        return false; // Prevent form submission
+    }
+    if (stopTime === "") {
+        alert("Please enter Stop Time.");
+        return false; // Prevent form submission
+    }
+    if (venue === "") {
+        alert("Please enter Venue.");
+        return false; // Prevent form submission
+
+
+    }
+    // If all validations pass, the form can be submitted
+    return true;
+}
