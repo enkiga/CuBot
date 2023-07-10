@@ -151,3 +151,61 @@ function eventValidator() {
     // If all validations pass, the form can be submitted
     return true;
 }
+
+
+function lecturerValidator() {
+    // Personal Details
+    const fullName = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const mobileNo = document.getElementById("mobileNo").value.trim();
+
+    // Education Details
+    const campus = document.getElementById("campus").value.trim();
+    const faculty = document.getElementById("faculty").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const office = document.getElementById("office").value.trim();
+
+    if (fullName === "") {
+        alert("Please enter Lecturers Name.");
+        return false; // Prevent form submission
+    }
+    if (email === "") {
+        alert("Please enter Lecturers Email.");
+        return false; // Prevent form submission
+    }
+    if (!email.endsWith("@cuea.edu")) {
+        alert("Please enter a valid school email address");
+        return false;
+    }
+    if (mobileNo === "") {
+        alert("Please enter Lecturers Mobile Number.");
+        return false; // Prevent form submission
+    }
+    if (!mobileNo.startsWith("+254")) {
+        alert("Mobile number must start with +254");
+        return false;
+    }
+    if (mobileNo.length !== 13) {
+        alert("Mobile number must be 13 characters long");
+        return false;
+    }
+    if (campus === "") {
+        alert("Please enter Lecturers Campus.");
+        return false; // Prevent form submission
+    }
+    if (faculty === "") {
+        alert("Please enter Lecturers Faculty.");
+        return false; // Prevent form submission
+    }
+    if (department === "") {
+        alert("Please enter Lecturers Department.");
+        return false; // Prevent form submission
+    }
+    if (office === "") {
+        alert("Please enter Lecturers Office.");
+        return false; // Prevent form submission
+    }
+    // If all validations pass, the form can be submitted
+    return true;
+
+}

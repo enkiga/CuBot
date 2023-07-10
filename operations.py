@@ -1101,7 +1101,7 @@ def lecturer_page(environ, request):
     return data
 
 
-def add_lecturer_page(environ, request):
+def add_lecturer_page(request):
     with open('front_end/html/add_lecturer.html', 'rb') as file:
         data = file.read()
     return data
@@ -1201,7 +1201,7 @@ def loading_lecturer_page(environ, request):
     return data
 
 
-def add_timetable_page(environ, request):
+def add_timetable_page(request):
     with open('front_end/html/add_timetable.html', 'rb') as file:
         data = file.read()
     return data
