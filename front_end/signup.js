@@ -247,8 +247,6 @@ function timetableValidator() {
     if (venue === "") {
         alert("Please enter Venue.");
         return false; // Prevent form submission
-
-
     }
     // If all validations pass, the form can be submitted
     return true;

@@ -1166,6 +1166,7 @@ def add_event_page(request):
 
             # Run event_json_generator.py
             generate_event_json()
+            train_bot()
 
             # Redirect to admin_events page
             f = open('front_end/html/loading_event_page.html', 'rb')
@@ -1183,28 +1184,119 @@ def add_event_page(request):
 def loading_event_page(environ, request):
     with open('front_end/html/loading_event_page.html', 'rb') as file:
         data = file.read()
-        train_bot()
     return data
 
 
 def loading_timetable_page(environ, request):
     with open('front_end/html/loading_timetable_page.html', 'rb') as file:
         data = file.read()
-        train_bot()
     return data
 
 
 def loading_lecturer_page(environ, request):
     with open('front_end/html/loading_lecturer_page.html', 'rb') as file:
         data = file.read()
-        train_bot()
+    train_bot()
+
     return data
 
 
-def add_timetable_page(request):
-    with open('front_end/html/add_timetable.html', 'rb') as file:
-        data = file.read()
-    return data
+def check_lecturers(func):
+    def wrapper(*args, **kwargs):
+        # get lecturers name from database
+        sql = "SELECT lecturer_name FROM lecturers"
+        mycursor.execute(sql)
+        lecturers = mycursor.fetchall()
+
+        # generate html for options
+        options = ''
+        for lecturer in lecturers:
+            options += f"<option value='{lecturer[0]}'>{lecturer[0]}</option>"
+
+        # get the html data
+        html_path = 'front_end/html/add_timetable.html'
+        with open(html_path, 'rb') as file:
+            data = file.read().decode('utf-8')
+            data = data.replace('{lecturers}', options)
+            data = data.encode('utf-8')
+
+        # return the html data
+        return func(data=data, *args, **kwargs)
+
+    return wrapper
+
+
+@check_lecturers
+def add_timetable_page(request, data):
+    if request.get('REQUEST_METHOD') == 'POST':
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        unitCode = data.get(b'unit-code', [b''])[0].decode('utf-8')
+        unitName = data.get(b'unit-name', [b''])[0].decode('utf-8')
+        lecturer = data.get(b'lecturer-name', [b''])[0].decode('utf-8')
+        day = data.get(b'day', [b''])[0].decode('utf-8')
+        startTime = data.get(b'start-time', [b''])[0].decode('utf-8')
+        stopTime = data.get(b'stop-time', [b''])[0].decode('utf-8')
+        venue = data.get(b'venue', [b''])[0].decode('utf-8')
+
+        # Join the start and stop time to a single string time
+        time = startTime + '-' + stopTime
+
+        # Insert the values into the database
+        sql = "INSERT INTO timetable (timetable_no, course_code, course_title, course_lecturer, course_day, " \
+              "course_time, course_venue) VALUES (NULL,%(course_code)s, %(course_title)s, %(course_lecturer)s, " \
+              "%(course_day)s, %(course_time)s, %(course_venue)s)"
+
+        # create dictionary of timetable details
+        timetable_details = {
+            'course_code': unitCode,
+            'course_title': unitName,
+            'course_lecturer': lecturer,
+            'course_day': day,
+            'course_time': time,
+            'course_venue': venue
+        }
+
+        # check if a similar timetable exists
+        ref_sql = "SELECT * FROM timetable WHERE course_code = %(course_code)s AND course_title = %(course_title)s " \
+                  "AND course_lecturer = %(course_lecturer)s AND course_day = %(course_day)s AND course_time = " \
+                  "%(course_time)s AND course_venue = %(course_venue)s"
+        mycursor.execute(ref_sql, timetable_details)
+        timetable = mycursor.fetchone()
+
+        # if timetable exists, return error message
+        if timetable:
+            # Reload the page
+            f = open('front_end/html/add_timetable.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Timetable already exist!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+        else:
+            # execute the sql query
+            mycursor.execute(sql, timetable_details)
+            mydb.commit()
+
+            # Run timetable_json_generator.py
+            generate_timetable_json()
+            train_bot()
+
+            # Redirect to admin_timetable page
+            f = open('front_end/html/loading_timetable_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Timetable added successfully!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+    else:
+        return data
 
 
 # CSS and JS files

@@ -79,6 +79,86 @@
                 "The class for CS 106: Mobile Application Development is at  11:00 AM - 4:00 PM on Monday at TH Lab B by Mr. Kibet"
             ],
             "context_set": ""
+        },
+        {
+            "tag": "CMT 311",
+            "patterns": [
+                "When is CMT 311 on my timetable?",
+                "When is Object Oriented System Analysis & Design on my timetable?",
+                "Which class do i have on FRIDAY at 11:00-16:00?",
+                "When do i have CMT 311?",
+                "When do i have Object Oriented System Analysis & Design?",
+                "When is CMT 311?",
+                "When is Object Oriented System Analysis & Design?"
+            ],
+            "responses": [
+                "The class for CMT 311: Object Oriented System Analysis & Design is at  11:00-16:00 on FRIDAY at TH Lab A by Mr. Kioko"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "MAT 104",
+            "patterns": [
+                "When is MAT 104 on my timetable?",
+                "When is Discrete Math on my timetable?",
+                "Which class do i have on WEDNESDAY at 08:00-11:00?",
+                "When do i have MAT 104?",
+                "When do i have Discrete Math?",
+                "When is MAT 104?",
+                "When is Discrete Math?"
+            ],
+            "responses": [
+                "The class for MAT 104: Discrete Math is at  08:00-11:00 on WEDNESDAY at OH 2 by Ms. Wangui"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "CMT 400",
+            "patterns": [
+                "When is CMT 400 on my timetable?",
+                "When is Research Methodology on my timetable?",
+                "Which class do i have on WEDNESDAY at 14:00-17:00?",
+                "When do i have CMT 400?",
+                "When do i have Research Methodology?",
+                "When is CMT 400?",
+                "When is Research Methodology?"
+            ],
+            "responses": [
+                "The class for CMT 400: Research Methodology is at  14:00-17:00 on WEDNESDAY at RH 2 by Mr. Nichodemus"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "NUR 001",
+            "patterns": [
+                "When is NUR 001 on my timetable?",
+                "When is Introduction to nursing on my timetable?",
+                "Which class do i have on THURSDAY at 08:00-11:00?",
+                "When do i have NUR 001?",
+                "When do i have Introduction to nursing?",
+                "When is NUR 001?",
+                "When is Introduction to nursing?"
+            ],
+            "responses": [
+                "The class for NUR 001: Introduction to nursing is at  08:00-11:00 on THURSDAY at JH Lab 12 by Ms. Wangui"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "GS 100",
+            "patterns": [
+                "When is GS 100 on my timetable?",
+                "When is Christian Ethics on my timetable?",
+                "Which class do i have on FRIDAY at 08:00-11:00?",
+                "When do i have GS 100?",
+                "When do i have Christian Ethics?",
+                "When is GS 100?",
+                "When is Christian Ethics?"
+            ],
+            "responses": [
+                "The class for GS 100: Christian Ethics is at  08:00-11:00 on FRIDAY at OH 01 by Mr. Mwangi"
+            ],
+            "context_set": ""
         }
     ]
 }
