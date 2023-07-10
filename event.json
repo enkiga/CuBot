@@ -152,6 +152,23 @@
                 "Law Faculty Meeting is happening on 2023-07-28 at 08:00-12:00 in LANGATA at School of Law. All Law students avail yourselves"
             ],
             "context_set": ""
+        },
+        {
+            "tag": "Ash Wednesday",
+            "patterns": [
+                "When is Ash Wednesday?",
+                "What event is happening on 2023-07-26?",
+                "At what time is Ash Wednesday?",
+                "Where is Ash Wednesday?",
+                "What is Ash Wednesday about?",
+                "What is happening on 2023-07-26?",
+                "What is happening on 2023-07-26 at GABA?",
+                "Where is Ash Wednesday happening?"
+            ],
+            "responses": [
+                "Ash Wednesday is happening on 2023-07-26 at 08:00-10:00 in GABA at Auditorium. All Catholics avail yourselves\r\n"
+            ],
+            "context_set": ""
         }
     ]
 }

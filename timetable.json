@@ -159,6 +159,22 @@
                 "The class for GS 100: Christian Ethics is at  08:00-11:00 on FRIDAY at OH 01 by Mr. Mwangi"
             ],
             "context_set": ""
+        },
+        {
+            "tag": "CMT 408",
+            "patterns": [
+                "When is CMT 408 on my timetable?",
+                "When is Networking Principles on my timetable?",
+                "Which class do i have on THURSDAY at 11:00-14:00?",
+                "When do i have CMT 408?",
+                "When do i have Networking Principles?",
+                "When is CMT 408?",
+                "When is Networking Principles?"
+            ],
+            "responses": [
+                "The class for CMT 408: Networking Principles is at  11:00-14:00 on THURSDAY at TH 12 by Mr Tonui"
+            ],
+            "context_set": ""
         }
     ]
 }

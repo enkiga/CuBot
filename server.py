@@ -1,8 +1,7 @@
+# from wsgiref.simple_server import make_server
 from waitress import serve
-from model import createTables
-from operations import login_page, signup_page, home_page, forgot_password_page, reset_password_page, recovery_page, \
-    change_password_page, chat_page, admin_page, add_event_page, add_lecturer_page, add_timetable_page
 from url import url_patterns
+from model import createTables
 
 # Port & Thread Variable
 HOST = 'localhost'
@@ -29,67 +28,20 @@ class WebApp:
                 break
 
         if func:
-            if environ.get('PATH_INFO') == '/':
-                response = login_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/signup':
-                response = signup_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/home':
-                response = home_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/admin':
-                response = admin_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/forgot_password':
-                response = forgot_password_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/recovery':
-                response = recovery_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/reset_password':
-                response = reset_password_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/change_password':
-                response = change_password_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/chat':
-                response = chat_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/admin/event/add_event':
-                response = add_event_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/admin/lecturer/add_lecturer':
-                response = add_lecturer_page(environ)
-                response, headers = self.prevent_cache(response)
-            elif environ.get('PATH_INFO') == '/admin/timetable/add_timetable':
-                response = add_timetable_page(environ)
-                response, headers = self.prevent_cache(response)
-            else:
-                response = func(environ, self.session)
-                headers = []
-
-            start_response('200 OK', [('Content-Type', content_type(environ.get('PATH_INFO')))] + headers)
-            return [response]
-
+            start_response('200 OK', [('Content-Type', content_type(environ.get('PATH_INFO')))])
+            data = func(environ)
+            return [data]
         else:
             start_response('404 Not Found', [('Content-Type', content_type(environ.get('PATH_INFO')))])
-            with open('front_end/html/404_error.html', 'rb') as file:
-                data = file.read()
+            data = b''
+            with open('front_end/html/404_error.html', 'rb') as f:
+                data = f.read()
             return [data]
-
-    @staticmethod
-    def prevent_cache(response):
-        headers = [('Cache-Control', 'no-cache, no-store, must-revalidate'),
-                   ('Pragma', 'no-cache'),
-                   ('Expires', '0')]
-        return response, headers
 
 
 app = WebApp()
 createTables()
 
-# Start the server
 if __name__ == '__main__':
     try:
         print(f'serving at http://{HOST}:{PORT}\nPress"ctrl+c" to stop serving')

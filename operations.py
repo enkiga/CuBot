@@ -55,7 +55,7 @@ def generate_js_warning(message):
     return js_script
 
 
-def view_code(environ, request):
+def view_code(environ):
     userAgent = environ.get("HTTP_USER_AGENT")
     return userAgent.encode('utf-8')
 
@@ -186,14 +186,14 @@ def login_page(request):
 
 
 @check_for_login
-def loading_page(environ, request):
+def loading_page(environ):
     with open('front_end/html/loading_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
 @check_for_admin
-def loading_admin_page(environ, request):
+def loading_admin_page(environ):
     with open('front_end/html/loading_admin_page.html', 'rb') as file:
         data = file.read()
     return data
@@ -414,7 +414,7 @@ def signup_page(request):
 
 
 @check_for_login
-def profile_page(environ, request):
+def profile_page(environ):
     # get session id from temp.txt
     with open('temp.txt', 'r') as file:
         session_id = file.read()
@@ -461,7 +461,7 @@ def profile_page(environ, request):
     return data
 
 
-def logout(environ, request):
+def logout(environ):
     # get session id from temp.txt
     with open('temp.txt', 'r') as file:
         session_id = file.read()
@@ -483,7 +483,7 @@ def logout(environ, request):
     return data.encode('utf-8')
 
 
-def loading_logout(environ, request):
+def loading_logout(environ):
     f = open('front_end/html/loading_logout.html', 'rb')
     data = f.read()
     data = data.decode('utf-8')
@@ -547,7 +547,7 @@ def forgot_password_page(request):
         return data.encode('utf-8')
 
 
-def loading_recovery_page(environ, request):
+def loading_recovery_page(environ):
     f = open('front_end/html/loading_recovery_page.html', 'rb')
     data = f.read()
     data = data.decode('utf-8')
@@ -652,7 +652,7 @@ def recovery_page(request, data):
         return data  # Return the data from the decorator
 
 
-def loading_reset_page(environ, request):
+def loading_reset_page(environ):
     f = open('front_end/html/loading_reset_page.html', 'rb')
     data = f.read()
     data = data.decode('utf-8')
@@ -723,7 +723,7 @@ def reset_password_page(request):
         return data
 
 
-def loading_login_page(environ, request):
+def loading_login_page(environ):
     f = open('front_end/html/loading_login_page.html', 'rb')
     data = f.read()
     data = data.decode('utf-8')
@@ -843,7 +843,7 @@ def get_response(intents_list, intents_json):
     return result
 
 
-def loading_chat_page(environ, request):
+def loading_chat_page(environ):
     f = open('front_end/html/loading_chat_page.html', 'rb')
     data = f.read()
     data = data.decode('utf-8')
@@ -933,7 +933,7 @@ def chat_page(request):
 
 
 @check_for_admin
-def users_page(environ, request):
+def users_page(environ):
     # get values of the users from the database
     sql = "SELECT * FROM users"
     mycursor.execute(sql)
@@ -972,7 +972,7 @@ def users_page(environ, request):
 
 
 @check_for_admin
-def timetable_page(environ, request):
+def timetable_page(environ):
     # get values of the timetable from the database in descending order
     sql = "SELECT * FROM timetable ORDER BY timetable_no DESC"
     mycursor.execute(sql)
@@ -1011,7 +1011,7 @@ def timetable_page(environ, request):
 
 
 @check_for_admin
-def conversation_page(environ, request):
+def conversation_page(environ):
     # get values of the conversations from the database in descending order
     sql = "SELECT * FROM conversations ORDER BY conversation_no DESC"
     mycursor.execute(sql)
@@ -1046,7 +1046,7 @@ def conversation_page(environ, request):
 
 
 @check_for_admin
-def view_error(environ, request):
+def view_error(environ):
     # get values of the conversations with 'Sorry I don't  from the database in descending order
     sql = "SELECT * FROM conversations WHERE message_received = 'Sorry, I do not understand!' ORDER BY " \
           "conversation_no DESC"
@@ -1082,7 +1082,7 @@ def view_error(environ, request):
 
 
 @check_for_admin
-def event_page(environ, request):
+def event_page(environ):
     # get values of the events from the database in descending order
     sql = "SELECT * FROM events ORDER BY event_date DESC"
     mycursor.execute(sql)
@@ -1120,7 +1120,7 @@ def event_page(environ, request):
 
 
 @check_for_admin
-def lecturer_page(environ, request):
+def lecturer_page(environ):
     # get values of the lecturers from the database
     sql = "SELECT * FROM lecturers"
     mycursor.execute(sql)
@@ -1309,21 +1309,21 @@ def add_event_page(request):
 
 
 @check_for_admin
-def loading_event_page(environ, request):
+def loading_event_page(environ):
     with open('front_end/html/loading_event_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
 @check_for_admin
-def loading_timetable_page(environ, request):
+def loading_timetable_page(environ):
     with open('front_end/html/loading_timetable_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
 @check_for_admin
-def loading_lecturer_page(environ, request):
+def loading_lecturer_page(environ):
     with open('front_end/html/loading_lecturer_page.html', 'rb') as file:
         data = file.read()
     train_bot()
@@ -1431,43 +1431,43 @@ def add_timetable_page(request, data):
 
 # CSS and JS files
 
-def root_css(environ, request):
+def root_css(environ):
     with open('front_end/root.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def login_css(environ, request):
+def login_css(environ):
     with open('front_end/login.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def signup_css(environ, request):
+def signup_css(environ):
     with open('front_end/signup.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def admin_css(environ, request):
+def admin_css(environ):
     with open('front_end/admin.css', 'rb') as file:
         data = file.read()
     return data
 
 
-def root_js(environ, request):
+def root_js(environ):
     with open('front_end/root.js', 'rb') as file:
         data = file.read()
     return data
 
 
-def signup_js(environ, request):
+def signup_js(environ):
     with open('front_end/signup.js', 'rb') as file:
         data = file.read()
     return data
 
 
-def admin_js(environ, request):
+def admin_js(environ):
     with open('front_end/admin.js', 'rb') as file:
         data = file.read()
     return data
