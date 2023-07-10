@@ -84,6 +84,74 @@
                 "CUEA Cultural Day is happening on 2022-08-10 at 8:00-16:00 in Langata at Yellow Pages. A cultural day is a day set aside to celebrate the culture of a people. It is a day to showcase the culture of a people through various activities such as traditional dances, traditional food, traditional clothing, traditional music, etc."
             ],
             "context_set": ""
+        },
+        {
+            "tag": "School Annual Ceremony",
+            "patterns": [
+                "When is School Annual Ceremony?",
+                "What event is happening on 2023-07-20?",
+                "At what time is School Annual Ceremony?",
+                "Where is School Annual Ceremony?",
+                "What is School Annual Ceremony about?",
+                "What is happening on 2023-07-20?",
+                "What is happening on 2023-07-20 at LANGATA?",
+                "Where is School Annual Ceremony happening?"
+            ],
+            "responses": [
+                "School Annual Ceremony is happening on 2023-07-20 at 08:30-14:45 in LANGATA at Auditorium. We hereby welcome you to celebrate the school annual ceremony in Langata at the school new auditorium"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Science Faculty Meeting",
+            "patterns": [
+                "When is Science Faculty Meeting?",
+                "What event is happening on 2023-07-18?",
+                "At what time is Science Faculty Meeting?",
+                "Where is Science Faculty Meeting?",
+                "What is Science Faculty Meeting about?",
+                "What is happening on 2023-07-18?",
+                "What is happening on 2023-07-18 at GABA?",
+                "Where is Science Faculty Meeting happening?"
+            ],
+            "responses": [
+                "Science Faculty Meeting is happening on 2023-07-18 at 08:40-12:45 in GABA at Student Centre. All Students in the Faculty of science avail themselves for the meeting, and come prepared to ask questions and suggestions on making the faculty the best faculty yet"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "School Of Nursing General Meeting",
+            "patterns": [
+                "When is School Of Nursing General Meeting?",
+                "What event is happening on 2023-08-17?",
+                "At what time is School Of Nursing General Meeting?",
+                "Where is School Of Nursing General Meeting?",
+                "What is School Of Nursing General Meeting about?",
+                "What is happening on 2023-08-17?",
+                "What is happening on 2023-08-17 at LANGATA?",
+                "Where is School Of Nursing General Meeting happening?"
+            ],
+            "responses": [
+                "School Of Nursing General Meeting is happening on 2023-08-17 at 14:00-18:00 in LANGATA at School Hospital. All Students in 3.2 doing nursing to avail for the meeting. Mandatory"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "Law Faculty Meeting",
+            "patterns": [
+                "When is Law Faculty Meeting?",
+                "What event is happening on 2023-07-28?",
+                "At what time is Law Faculty Meeting?",
+                "Where is Law Faculty Meeting?",
+                "What is Law Faculty Meeting about?",
+                "What is happening on 2023-07-28?",
+                "What is happening on 2023-07-28 at LANGATA?",
+                "Where is Law Faculty Meeting happening?"
+            ],
+            "responses": [
+                "Law Faculty Meeting is happening on 2023-07-28 at 08:00-12:00 in LANGATA at School of Law. All Law students avail yourselves"
+            ],
+            "context_set": ""
         }
     ]
 }

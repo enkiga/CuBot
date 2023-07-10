@@ -10,7 +10,6 @@ try:
         password="K1pk0r1r!",
         database="cueabot"
     )
-    print("Connection Successful at Model.py")
     mycursor = mydb.cursor()
 except mysql.connector.Error as err:
     print("Error: ", err)
@@ -96,7 +95,6 @@ def createTables():
         mycursor.execute(lecturersTB)
         mycursor.execute(timetableTB)
         mycursor.execute(eventsTB)
-        print("Tables Created Successfully")
     except mysql.connector.Error as sqlerror:
         print("Error Creating Tables: {}".format(sqlerror))
 
@@ -191,7 +189,7 @@ def createTables():
         }
     ]
 
-    events_sql = "INSERT IGNORE INTO events (event_no, event_name, event_campus, event_venue, event_date, event_time, " \
+    events_sql = "INSERT IGNORE INTO events (event_no, event_name, event_campus, event_venue, event_date, event_time," \
                  "event_description) VALUES (NULL,%(event_name)s, %(event_campus)s, %(event_venue)s, %(event_date)s, " \
                  "%(event_time)s, %(event_description)s)"
 
@@ -269,8 +267,6 @@ def createTables():
             mycursor.execute(timetable_sql, timetable)
         for events in events_val:
             mycursor.execute(events_sql, events)
-
-        print("Data Inserted Successfully")
 
     except mysql.connector.Error as sqlerror:
         print("Error Inserting Data: {}".format(sqlerror))

@@ -21,6 +21,7 @@ function inputValidator() {
     const question = document.getElementById("question").value.trim();
     const answer = document.getElementById("answer").value.trim();
 
+
     // Validation logic goes here
     // Example: Check if the fullName field is empty
     if (fullName === "") {
@@ -98,6 +99,52 @@ function inputValidator() {
     }
     if (answer === "") {
         alert("Please enter your answer.");
+        return false; // Prevent form submission
+    }
+
+    // If all validations pass, the form can be submitted
+    return true;
+}
+
+function eventValidator() {
+    // Event Details
+    const eventName = document.getElementById("event-name").value.trim();
+    const eventDate = document.getElementById("event-date").value.trim();
+    const startTime = document.getElementById("start-time").value.trim();
+    const stopTime = document.getElementById("stop-time").value.trim();
+    const eventVenue = document.getElementById("venue").value.trim();
+    const eventDescription = document.getElementById("event-description").value.trim();
+    const campus = document.getElementById("campus").value.trim();
+
+
+    // Validation logic goes here
+    // Example: Check if the fullName field is empty
+    if (eventName === "") {
+        alert("Please enter the event name.");
+        return false; // Prevent form submission
+    }
+    if (eventDate === "") {
+        alert("Please enter the event date.");
+        return false; // Prevent form submission
+    }
+    if (startTime === "") {
+        alert("Please enter the start time.");
+        return false; // Prevent form submission
+    }
+    if (stopTime === "") {
+        alert("Please enter the stop time.");
+        return false; // Prevent form submission
+    }
+    if (eventVenue === "") {
+        alert("Please enter the event venue.");
+        return false; // Prevent form submission
+    }
+    if (eventDescription === "") {
+        alert("Please enter the event description.");
+        return false; // Prevent form submission
+    }
+    if (campus === "") {
+        alert("Please select campus.");
         return false; // Prevent form submission
     }
 

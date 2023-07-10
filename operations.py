@@ -11,6 +11,11 @@ import numpy as np
 import tensorflow as tf
 from nltk.stem import WordNetLemmatizer
 
+from events_json_generator import generate_event_json
+from timetable_json_generator import generate_timetable_json
+from lecturer_json_generator import generate_lecturer_json
+from bot_setup import train_bot
+
 # Connect to Database try catch
 try:
     mydb = mysql.connector.connect(
@@ -20,7 +25,6 @@ try:
         password="K1pk0r1r!",
         database="cueabot"
     )
-    print("Connection Successful at Operations.py")
     mycursor = mydb.cursor()
 except mysql.connector.Error as err:
     print("Error: ", err)
@@ -1103,8 +1107,82 @@ def add_lecturer_page(environ, request):
     return data
 
 
-def add_event_page(environ, request):
-    with open('front_end/html/add_event.html', 'rb') as file:
+def add_event_page(request):
+    if request.get('REQUEST_METHOD') == 'POST':
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get the values from the data
+        name = data.get(b'event-name', [b''])[0].decode('utf-8')
+        campus = data.get(b'campus', [b''])[0].decode('utf-8')
+        venue = data.get(b'venue', [b''])[0].decode('utf-8')
+        date = data.get(b'event-date', [b''])[0].decode('utf-8')
+        startTime = data.get(b'start-time', [b''])[0].decode('utf-8')
+        stopTime = data.get(b'stop-time', [b''])[0].decode('utf-8')
+        description = data.get(b'event-description', [b''])[0].decode('utf-8')
+
+        # Join the start and stop time to a single string time
+        time = startTime + '-' + stopTime
+
+        # Insert the values into the database
+        sql = "INSERT INTO events (event_no, event_name, event_campus, event_venue, event_date, event_time," \
+              " event_description) VALUES (NULL, %(event_name)s, %(event_campus)s, %(event_venue)s, %(event_date)s, " \
+              "%(event_time)s,%(event_description)s)"
+
+        # create dictionary of event details
+        event_details = {
+            'event_name': name,
+            'event_campus': campus,
+            'event_venue': venue,
+            'event_date': date,
+            'event_time': time,
+            'event_description': description
+        }
+
+        # check if a similar event exists
+        ref_sql = "SELECT * FROM events WHERE event_name = %(event_name)s AND event_campus = %(event_campus)s AND " \
+                  "event_venue = %(event_venue)s AND event_date = %(event_date)s AND event_time = %(event_time)s AND " \
+                  "event_description = %(event_description)s"
+        mycursor.execute(ref_sql, event_details)
+        event = mycursor.fetchone()
+
+        # if event exists, return error message
+        if event:
+            # Redirect to forget password page
+            f = open('front_end/html/add_event.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Event already exist!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+        else:
+            # execute the sql query
+            mycursor.execute(sql, event_details)
+            mydb.commit()
+
+            # Run event_json_generator.py
+            generate_event_json()
+            train_bot()
+
+            # Redirect to admin_events page
+            f = open('front_end/html/loading_event_page.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Event added successfully!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+    else:
+        with open('front_end/html/add_event.html', 'rb') as file:
+            data = file.read()
+        return data
+
+
+def loading_event_page(environ, request):
+    with open('front_end/html/loading_event_page.html', 'rb') as file:
         data = file.read()
     return data
 

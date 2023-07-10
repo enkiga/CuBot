@@ -9,135 +9,138 @@ from keras.layers import Dense, Dropout
 from keras.models import Sequential
 from nltk.stem import WordNetLemmatizer
 
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('stopwords')
 
-# Loading intent json file
-with open('intents.json') as intents:
-    data = json.load(intents)
+# nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('stopwords')
 
-# Loading timetable json file
-with open('timetable.json') as timetable:
-    timetable_data = json.load(timetable)
 
-# Loading events json file
-with open('event.json') as events:
-    events_data = json.load(events)
+def train_bot():
+    # Loading intent json file
+    with open('intents.json') as intents:
+        data = json.load(intents)
 
-# Loading lecturer json file
-with open('lecturer.json') as lecturer:
-    lecturer_data = json.load(lecturer)
+    # Loading timetable json file
+    with open('timetable.json') as timetable:
+        timetable_data = json.load(timetable)
 
-# Initializing chatbot training
-words = []
-classes = []
-data_x = []
-data_y = []
+    # Loading events json file
+    with open('event.json') as events:
+        events_data = json.load(events)
 
-# Collecting data from intents.json
-for intent in data['intents']:
-    for pattern in intent['patterns']:
-        tokens = nltk.word_tokenize(pattern)
-        words.extend(tokens)
-        data_x.append(pattern)
-        data_y.append(intent['tag'])
+    # Loading lecturer json file
+    with open('lecturer.json') as lecturer:
+        lecturer_data = json.load(lecturer)
 
-        if intent['tag'] not in classes:
-            classes.append(intent['tag'])
+    # Initializing chatbot training
+    words = []
+    classes = []
+    data_x = []
+    data_y = []
 
-# Collecting data from timetable.json
-for timetable in timetable_data['intents']:
-    for pattern in timetable['patterns']:
-        tokens = nltk.word_tokenize(pattern)
-        words.extend(tokens)
-        data_x.append(pattern)
-        data_y.append(timetable['tag'])
+    # Collecting data from intents.json
+    for intent in data['intents']:
+        for pattern in intent['patterns']:
+            tokens = nltk.word_tokenize(pattern)
+            words.extend(tokens)
+            data_x.append(pattern)
+            data_y.append(intent['tag'])
 
-        if timetable['tag'] not in classes:
-            classes.append(timetable['tag'])
+            if intent['tag'] not in classes:
+                classes.append(intent['tag'])
 
-# Collecting data from events.json
-for events in events_data['intents']:
-    for pattern in events['patterns']:
-        tokens = nltk.word_tokenize(pattern)
-        words.extend(tokens)
-        data_x.append(pattern)
-        data_y.append(events['tag'])
+    # Collecting data from timetable.json
+    for timetable in timetable_data['intents']:
+        for pattern in timetable['patterns']:
+            tokens = nltk.word_tokenize(pattern)
+            words.extend(tokens)
+            data_x.append(pattern)
+            data_y.append(timetable['tag'])
 
-        if events['tag'] not in classes:
-            classes.append(events['tag'])
+            if timetable['tag'] not in classes:
+                classes.append(timetable['tag'])
 
-# Collecting data from lecturer.json
-for lecturer in lecturer_data['intents']:
-    for pattern in lecturer['patterns']:
-        tokens = nltk.word_tokenize(pattern)
-        words.extend(tokens)
-        data_x.append(pattern)
-        data_y.append(lecturer['tag'])
+    # Collecting data from events.json
+    for events in events_data['intents']:
+        for pattern in events['patterns']:
+            tokens = nltk.word_tokenize(pattern)
+            words.extend(tokens)
+            data_x.append(pattern)
+            data_y.append(events['tag'])
 
-        if lecturer['tag'] not in classes:
-            classes.append(lecturer['tag'])
+            if events['tag'] not in classes:
+                classes.append(events['tag'])
 
-# Merging the intents from all files
-data['intents'] += timetable_data['intents']
-data['intents'] += events_data['intents']
-data['intents'] += lecturer_data['intents']
+    # Collecting data from lecturer.json
+    for lecturer in lecturer_data['intents']:
+        for pattern in lecturer['patterns']:
+            tokens = nltk.word_tokenize(pattern)
+            words.extend(tokens)
+            data_x.append(pattern)
+            data_y.append(lecturer['tag'])
 
-# Initializing lemmatizer to get stem of words
-lemmatizer = WordNetLemmatizer()
+            if lecturer['tag'] not in classes:
+                classes.append(lecturer['tag'])
 
-words = [lemmatizer.lemmatize(word.lower()) for word in words if word not in string.punctuation]
-words = sorted(list(set(words)))
+    # Merging the intents from all files
+    data['intents'] += timetable_data['intents']
+    data['intents'] += events_data['intents']
+    data['intents'] += lecturer_data['intents']
 
-classes = sorted(list(set(classes)))
+    # Initializing lemmatizer to get stem of words
+    lemmatizer = WordNetLemmatizer()
 
-print(len(data_x), "data_X")
-print(len(data_y), "data_Y")
-print(len(classes), "classes", classes)
-print(len(words), "unique lemmatized words", words)
+    words = [lemmatizer.lemmatize(word.lower()) for word in words if word not in string.punctuation]
+    words = sorted(list(set(words)))
 
-pickle.dump(words, open('words.pkl', 'wb'))
-pickle.dump(classes, open('classes.pkl', 'wb'))
+    classes = sorted(list(set(classes)))
 
-training = []
-output_empty = [0] * len(classes)
+    print(len(data_x), "data_X")
+    print(len(data_y), "data_Y")
+    print(len(classes), "classes", classes)
+    print(len(words), "unique lemmatized words", words)
 
-# Creating Bag of Words
-for idx, doc in enumerate(data_x):
-    bow = []
-    text = lemmatizer.lemmatize(doc.lower())
-    for word in words:
-        bow.append(1) if word in text else bow.append(0)
+    pickle.dump(words, open('words.pkl', 'wb'))
+    pickle.dump(classes, open('classes.pkl', 'wb'))
 
-    # mark the index of classes that the current pattern is associated to
-    output_row = list(output_empty)
-    output_row[classes.index(data_y[idx])] = 1
+    training = []
+    output_empty = [0] * len(classes)
 
-    training.append([bow, output_row])
+    # Creating Bag of Words
+    for idx, doc in enumerate(data_x):
+        bow = []
+        text = lemmatizer.lemmatize(doc.lower())
+        for word in words:
+            bow.append(1) if word in text else bow.append(0)
 
-# shuffle the data and convert it to an array
-random.shuffle(training)
-training = np.array(training, dtype=object)
-# split the features and target labels
-train_X = np.array(list(training[:, 0]))
-train_Y = np.array(list(training[:, 1]))
-print("Training data created")
+        # mark the index of classes that the current pattern is associated to
+        output_row = list(output_empty)
+        output_row[classes.index(data_y[idx])] = 1
 
-# Build Neural network
-model = Sequential()
-model.add(Dense(128, input_shape=(len(train_X[0]),), activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(64, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(len(train_Y[0]), activation='softmax'))
+        training.append([bow, output_row])
 
-adam = tf.keras.optimizers.Adam(learning_rate=0.01, weight_decay=1e-6)
-model.compile(loss='categorical_crossentropy', optimizer=adam, metrics=['accuracy'])
+    # shuffle the data and convert it to an array
+    random.shuffle(training)
+    training = np.array(training, dtype=object)
+    # split the features and target labels
+    train_X = np.array(list(training[:, 0]))
+    train_Y = np.array(list(training[:, 1]))
+    print("Training data created")
 
-# fitting and saving the model
-hist = model.fit(np.array(train_X), np.array(train_Y), epochs=200, batch_size=5, verbose=1)
-model.save('chatbot_model.h5', hist)
+    # Build Neural network
+    model = Sequential()
+    model.add(Dense(128, input_shape=(len(train_X[0]),), activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(len(train_Y[0]), activation='softmax'))
 
-print("-----model created-------")
-# print(model.summary())
+    adam = tf.keras.optimizers.Adam(learning_rate=0.01, weight_decay=1e-6)
+    model.compile(loss='categorical_crossentropy', optimizer=adam, metrics=['accuracy'])
+
+    # fitting and saving the model
+    hist = model.fit(np.array(train_X), np.array(train_Y), epochs=200, batch_size=5, verbose=1)
+    model.save('chatbot_model.h5', hist)
+
+    print("-----model created-------")
+    # print(model.summary())

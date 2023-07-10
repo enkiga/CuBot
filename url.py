@@ -17,6 +17,7 @@ url_patterns = [
     ('/signup', signup_page),
     ('/forgot_password', forgot_password_page),
     ('/loading_recovery', loading_recovery_page),
+    ('/loading_event', loading_event_page),
     ('/recovery', recovery_page),
     ('/loading_reset', loading_reset_page),
     ('/reset_password', reset_password_page),

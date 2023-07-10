@@ -1,7 +1,7 @@
 from waitress import serve
 from model import createTables
 from operations import login_page, signup_page, home_page, forgot_password_page, reset_password_page, recovery_page, \
-    change_password_page, chat_page, admin_page
+    change_password_page, chat_page, admin_page, add_event_page
 from url import url_patterns
 
 # Port & Thread Variable
@@ -55,6 +55,9 @@ class WebApp:
                 response, headers = self.prevent_cache(response)
             elif environ.get('PATH_INFO') == '/chat':
                 response = chat_page(environ)
+                response, headers = self.prevent_cache(response)
+            elif environ.get('PATH_INFO') == '/admin/event/add_event':
+                response = add_event_page(environ)
                 response, headers = self.prevent_cache(response)
             else:
                 response = func(environ, self.session)
