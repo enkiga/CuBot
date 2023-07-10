@@ -864,12 +864,6 @@ def chat_page(request):
 
         response_body = json.dumps({'response': response})
 
-        print(message)
-        print(time)
-        print(chat_date)
-        print(response)
-        print('---------------------------------')
-
         # store the chat in the conversation table
         with open('temp.txt', 'r') as file:
             session_id = file.read()
@@ -938,7 +932,6 @@ def users_page(environ, request):
                         <td>{user_program}</td>
                         <td>
                             <button class="view"><i class='bx bx-show'></i></button>
-                            <button class="delete"><i class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 '''
@@ -975,7 +968,6 @@ def timetable_page(environ, request):
                         <td>{course_time}</td>
                         <td>
                             <button class="view"><i class='bx bx-show'></i></button>
-                            <button class="delete"><i class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 '''
@@ -1048,7 +1040,6 @@ def event_page(environ, request):
                         <td>{description}</td>
                         <td>
                             <button class="view"><i class='bx bx-show'></i></button>
-                            <button class="delete"><i class='bx bx-trash'></i></button>
                         </td>
                     </tr>
                 '''
@@ -1088,7 +1079,6 @@ def lecturer_page(environ, request):
                         <td>{faculty}</td>
                         <td>
                             <button class="view"><i class='bx bx-show'></i></button>
-                            <button class="delete"><i class='bx bx-trash'></i></button>
                         </td>
                         
                     </tr>
@@ -1102,9 +1092,75 @@ def lecturer_page(environ, request):
 
 
 def add_lecturer_page(request):
-    with open('front_end/html/add_lecturer.html', 'rb') as file:
-        data = file.read()
-    return data
+    if request.get('REQUEST_METHOD') == 'POST':
+        try:
+            # Get the data from the request
+            size = int(request.get('CONTENT_LENGTH', 0))
+        except ValueError:
+            size = 0
+        data = request['wsgi.input'].read(size)
+        data = parse_qs(data)
+
+        # Get the values from the data
+        name = data.get(b'name', [b''])[0].decode('utf-8')
+        email = data.get(b'email', [b''])[0].decode('utf-8')
+        phone = data.get(b'mobileNo', [b''])[0].decode('utf-8')
+        campus = data.get(b'campus', [b''])[0].decode('utf-8')
+        office = data.get(b'office', [b''])[0].decode('utf-8')
+        department = data.get(b'department', [b''])[0].decode('utf-8')
+        faculty = data.get(b'faculty', [b''])[0].decode('utf-8')
+
+        # Insert the values into the database
+        sql = "INSERT INTO lecturers (lecturer_no, lecturer_name, lecturer_email, lecturer_phone, lecturer_campus," \
+              "lecturer_office, lecturer_department, lecturer_faculty) VALUES (NULL, %(lecturer_name)s, " \
+              "%(lecturer_email)s, %(lecturer_phone)s, %(lecturer_campus)s, %(lecturer_office)s, " \
+              "%(lecturer_department)s, %(lecturer_faculty)s)"
+
+        # create a dictionary of the values
+        lecturer_details = {
+            'lecturer_name': name,
+            'lecturer_email': email,
+            'lecturer_phone': phone,
+            'lecturer_campus': campus,
+            'lecturer_office': office,
+            'lecturer_department': department,
+            'lecturer_faculty': faculty
+        }
+
+        # check if the lecturer already exists based on their name, email and, phone number
+        ref_sql = "SELECT * FROM lecturers WHERE lecturer_name = %(lecturer_name)s " \
+                  "AND lecturer_email = %(lecturer_email)s AND lecturer_phone = %(lecturer_phone)s"
+        mycursor.execute(ref_sql, lecturer_details)
+        lecturer = mycursor.fetchone()
+
+        # if lecturer exist display error message
+        if lecturer:
+            # Redirect to forget password page
+            f = open('front_end/html/add_lecturer.html', 'rb')
+            data = f.read()
+            data += generate_js_warning('Lecturer already exist!').encode('utf-8')
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+        else:
+            # insert the lecturer details into the database
+            mycursor.execute(sql, lecturer_details)
+            mydb.commit()
+
+            # Run Lecturer_json_generator
+            generate_lecturer_json()
+            train_bot()
+
+            # Redirect to loading_lecturer_page
+            f = open('front_end/html/loading_lecturer.html', 'rb')
+            data = f.read()
+            data = data.decode('utf-8')
+            return data.encode('utf-8')
+
+    else:
+        with open('front_end/html/add_lecturer.html', 'rb') as file:
+            data = file.read()
+        return data
 
 
 def add_event_page(request):
