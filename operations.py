@@ -1166,7 +1166,6 @@ def add_event_page(request):
 
             # Run event_json_generator.py
             generate_event_json()
-            train_bot()
 
             # Redirect to admin_events page
             f = open('front_end/html/loading_event_page.html', 'rb')
@@ -1184,6 +1183,21 @@ def add_event_page(request):
 def loading_event_page(environ, request):
     with open('front_end/html/loading_event_page.html', 'rb') as file:
         data = file.read()
+        train_bot()
+    return data
+
+
+def loading_timetable_page(environ, request):
+    with open('front_end/html/loading_timetable_page.html', 'rb') as file:
+        data = file.read()
+        train_bot()
+    return data
+
+
+def loading_lecturer_page(environ, request):
+    with open('front_end/html/loading_lecturer_page.html', 'rb') as file:
+        data = file.read()
+        train_bot()
     return data
 
 
