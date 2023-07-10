@@ -74,6 +74,32 @@ def check_for_login(func):
     return wrapper
 
 
+def check_for_admin(func):
+    def wrapper(*args, **kwargs):
+        # check if the user is logged in from temp.txt
+        with open('temp.txt', 'r') as f:
+            email = f.read()
+        if email:
+            # get user email from session
+            user_email = session[email]['username']
+
+            # check if user is admin
+            sql = "SELECT * FROM users WHERE email = %s"
+            val = (user_email,)
+            mycursor.execute(sql, val)
+            result = mycursor.fetchall()[0]
+            role = result[11]
+
+            if role == 'admin':
+                return func(*args, **kwargs)
+            else:
+                return home_page(*args, **kwargs)
+        else:
+            return login_page(*args, **kwargs)
+
+    return wrapper
+
+
 def login_page(request):
     if request.get('REQUEST_METHOD') == 'POST':
         try:
@@ -166,7 +192,7 @@ def loading_page(environ, request):
     return data
 
 
-@check_for_login
+@check_for_admin
 def loading_admin_page(environ, request):
     with open('front_end/html/loading_admin_page.html', 'rb') as file:
         data = file.read()
@@ -210,7 +236,7 @@ def home_page(environ):
         return data
 
 
-@check_for_login
+@check_for_admin
 def admin_page(environ):
     # get conversation table count
     sql = "SELECT COUNT(*) FROM conversations"
@@ -374,8 +400,8 @@ def signup_page(request):
             with open('temp.txt', 'w') as file:
                 file.write(response_headers[1][1].split('=')[1].split(';')[0])
 
-            # Redirect to home page
-            f = open('front_end/html/loading_homepage.html', 'rb')
+            # Redirect to login page
+            f = open('front_end/html/login_page.html', 'rb')
             data = f.read()
             data = data.decode('utf-8')
             return data.encode('utf-8')
@@ -387,6 +413,7 @@ def signup_page(request):
         return data
 
 
+@check_for_login
 def profile_page(environ, request):
     # get session id from temp.txt
     with open('temp.txt', 'r') as file:
@@ -823,6 +850,7 @@ def loading_chat_page(environ, request):
     return data.encode('utf-8')
 
 
+@check_for_login
 def chat_page(request):
     # get user session id
     if request.get('REQUEST_METHOD') == 'POST':
@@ -904,6 +932,7 @@ def chat_page(request):
         return data.encode('utf-8')
 
 
+@check_for_admin
 def users_page(environ, request):
     # get values of the users from the database
     sql = "SELECT * FROM users"
@@ -942,6 +971,7 @@ def users_page(environ, request):
     return data
 
 
+@check_for_admin
 def timetable_page(environ, request):
     # get values of the timetable from the database in descending order
     sql = "SELECT * FROM timetable ORDER BY timetable_no DESC"
@@ -980,6 +1010,7 @@ def timetable_page(environ, request):
     return data
 
 
+@check_for_admin
 def conversation_page(environ, request):
     # get values of the conversations from the database in descending order
     sql = "SELECT * FROM conversations ORDER BY conversation_no DESC"
@@ -1014,6 +1045,7 @@ def conversation_page(environ, request):
     return data
 
 
+@check_for_admin
 def view_error(environ, request):
     # get values of the conversations with 'Sorry I don't  from the database in descending order
     sql = "SELECT * FROM conversations WHERE message_received = 'Sorry, I do not understand!' ORDER BY " \
@@ -1049,6 +1081,7 @@ def view_error(environ, request):
     return data
 
 
+@check_for_admin
 def event_page(environ, request):
     # get values of the events from the database in descending order
     sql = "SELECT * FROM events ORDER BY event_date DESC"
@@ -1086,6 +1119,7 @@ def event_page(environ, request):
     return data
 
 
+@check_for_admin
 def lecturer_page(environ, request):
     # get values of the lecturers from the database
     sql = "SELECT * FROM lecturers"
@@ -1126,6 +1160,7 @@ def lecturer_page(environ, request):
     return data
 
 
+@check_for_admin
 def add_lecturer_page(request):
     if request.get('REQUEST_METHOD') == 'POST':
         try:
@@ -1198,6 +1233,7 @@ def add_lecturer_page(request):
         return data
 
 
+@check_for_admin
 def add_event_page(request):
     if request.get('REQUEST_METHOD') == 'POST':
         try:
@@ -1272,18 +1308,21 @@ def add_event_page(request):
         return data
 
 
+@check_for_admin
 def loading_event_page(environ, request):
     with open('front_end/html/loading_event_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
+@check_for_admin
 def loading_timetable_page(environ, request):
     with open('front_end/html/loading_timetable_page.html', 'rb') as file:
         data = file.read()
     return data
 
 
+@check_for_admin
 def loading_lecturer_page(environ, request):
     with open('front_end/html/loading_lecturer_page.html', 'rb') as file:
         data = file.read()
