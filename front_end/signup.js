@@ -28,9 +28,34 @@ function inputValidator() {
         alert("Please enter your full name.");
         return false; // Prevent form submission
     }
+    // full name does not contain numbers
+    if (fullName.match(/\d+/g)) {
+        alert("Full name must not contain numbers");
+        return false;
+    }
+    // full name does not contain special characters
+    if (fullName.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/)) {
+        alert("Full name must not contain special characters");
+        return false;
+    }
+    // full name must be more than 5 characters
+    if (fullName.length < 5) {
+        alert("Full name must be more than 5 characters");
+        return false;
+    }
     if (dob === "") {
         alert("Please enter your date of birth.");
         return false; // Prevent form submission
+    }
+    // dob must be in the past
+    if (new Date(dob) > new Date()) {
+        alert("Date of birth must be in the past");
+        return false;
+    }
+    // dob cannot be 00/00/0000
+    if (dob === "00/00/0000") {
+        alert("Please enter a valid date of birth");
+        return false;
     }
     if (mobileNo === "") {
         alert("Please enter your mobile number.");
