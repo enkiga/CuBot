@@ -124,13 +124,19 @@
 
             <!-- Table Pagination -->
             <div id="pagination" class="table-pagination">
-                <i class='bx bxs-chevrons-left'></i>
-                <i class='bx bxs-chevron-left'></i>
-                <span class="pagination-item active">1</span>
-                <span class="pagination-item">2</span>
-                <span class="pagination-item">3</span>
-                <i class='bx bxs-chevron-right'></i>
-                <i class='bx bxs-chevrons-right'></i>
+                <!-- Add the back and forward icons with appropriate classes -->
+                <i class='bx bxs-chevron-left' onclick="previousPage()"></i>
+                <i class='bx bxs-chevron-left' onclick="previousBlock()"></i>
+                <!-- The following span will be dynamically updated with pagination items -->
+                <span id="paginationItems">
+        <!-- Default initial items without ellipses and block arrows -->
+        <span class="pagination-item active">1</span>
+        <span class="pagination-item">2</span>
+        <span class="pagination-item">3</span>
+        <span class="pagination-item">4</span>
+    </span>
+                <i class='bx bxs-chevron-right' onclick="nextBlock()"></i>
+                <i class='bx bxs-chevron-right' onclick="nextPage()"></i>
             </div>
         </div>
         <script>
@@ -138,6 +144,7 @@
             const dataTable = document.getElementById('dataTable');
             const pagination = document.getElementById('pagination');
             let rowsPerPage = 5;
+            let currentPage = 0; // Current page index
 
             // Function to show the specified page and update the active pagination item
             function showPage(pageIndex) {
@@ -150,19 +157,93 @@
                     rows[i].style.display = i >= startIndex && i < endIndex ? '' : 'none';
                 }
 
+                // Update the current page
+                currentPage = pageIndex;
+
                 // Generate pagination items
                 let paginationHTML = '';
 
-                for (let i = 0; i < Math.ceil((rows.length - 1) / rowsPerPage); i++) {
-                    const isActive = i === pageIndex;
-                    paginationHTML += `<span class="pagination-item ${isActive ? 'active' : ''}" onclick="showPage(${i})">${i + 1}</span>`;
+                // Helper function to add pagination items
+                function addPaginationItem(page, isActive) {
+                    paginationHTML += `<span class="pagination-item ${isActive ? 'active' : ''}" onclick="showPage(${page})">${page + 1}</span>`;
+                }
+
+                const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
+
+                if (totalPages <= 4) {
+                    // Show all pages without ellipses
+                    for (let i = 0; i < totalPages; i++) {
+                        addPaginationItem(i, i === pageIndex);
+                    }
+                } else {
+                    // Show ellipses and back/forward icons
+
+                    // Show the first page
+                    addPaginationItem(0, 0 === pageIndex);
+
+                    // Show the second page if not already displayed
+                    if (pageIndex > 0 && pageIndex !== 1) {
+                        paginationHTML += '<span class="pagination-ellipsis">...</span>';
+                        addPaginationItem(pageIndex - 1, false);
+                    }
+
+                    // Show the current page (centered)
+                    if (pageIndex > 1 && pageIndex < totalPages - 1) {
+                        addPaginationItem(pageIndex, true);
+                    }
+
+                    // Show the second to last page if not already displayed
+                    if (pageIndex !== totalPages - 1 && pageIndex < totalPages - 2) {
+                        addPaginationItem(pageIndex + 1, false);
+                        paginationHTML += '<span class="pagination-ellipsis">...</span>';
+                    }
+
+                    // Show the last page
+                    addPaginationItem(totalPages - 1, totalPages - 1 === pageIndex);
                 }
 
                 pagination.innerHTML = paginationHTML;
             }
 
-            // Show the first page initially
+            // Function to go to the previous page
+            function previousPage() {
+                if (currentPage > 0) {
+                    showPage(currentPage - 1);
+                }
+            }
+
+            // Function to go to the next page
+            function nextPage() {
+                const rows = dataTable.getElementsByTagName('tr');
+                const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
+                if (currentPage < totalPages - 1) {
+                    showPage(currentPage + 1);
+                }
+            }
+
+            // Function to go to the previous block (jump back 4 pages)
+            function previousBlock() {
+                if (currentPage >= 4) {
+                    showPage(currentPage - 4);
+                } else {
+                    showPage(0);
+                }
+            }
+
+            // Function to go to the next block (jump forward 4 pages)
+            function nextBlock() {
+                const rows = dataTable.getElementsByTagName('tr');
+                const totalPages = Math.ceil((rows.length - 1) / rowsPerPage);
+                if (currentPage < totalPages - 4) {
+                    showPage(currentPage + 4);
+                } else {
+                    showPage(totalPages - 1);
+                }
+            }
+
+            // Initial pagination rendering
             showPage(0);
+
             //Get all the view buttons
             const viewButtons = document.querySelectorAll('.view');
 

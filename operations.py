@@ -362,10 +362,10 @@ def signup_page(request):
             'role': 'student'
         }
 
-        # check if user data is already in the database
-        ref_sql = "SELECT * FROM users WHERE email = %s AND school_id = %s AND mobile_no = %s"
-        mycursor.execute(ref_sql, (email, studentID, mobileNo))
-
+        # check if user data is already in the database checking email and student id and mobile number
+        check_sql = "SELECT * FROM users WHERE email = %(email)s OR school_id = %(studentID)s OR mobile_no = %(mobileNo)s"
+        mycursor.execute(check_sql, user_data)
+        
         if mycursor.fetchone():
             f = open('front_end/html/signup_page.html', 'rb')
             data = f.read()
