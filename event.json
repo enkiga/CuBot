@@ -169,6 +169,23 @@
                 "Ash Wednesday is happening on 2023-07-26 at 08:00-10:00 in GABA at Auditorium. All Catholics avail yourselves\r\n"
             ],
             "context_set": ""
+        },
+        {
+            "tag": "Board Meeting",
+            "patterns": [
+                "When is Board Meeting?",
+                "What event is happening on 2023-07-29?",
+                "At what time is Board Meeting?",
+                "Where is Board Meeting?",
+                "What is Board Meeting about?",
+                "What is happening on 2023-07-29?",
+                "What is happening on 2023-07-29 at GABA?",
+                "Where is Board Meeting happening?"
+            ],
+            "responses": [
+                "Board Meeting is happening on 2023-07-29 at 08:00-12:00 in GABA at School Library. All Student heads converge for the meeting"
+            ],
+            "context_set": ""
         }
     ]
 }

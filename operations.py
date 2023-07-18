@@ -365,7 +365,7 @@ def signup_page(request):
         # check if user data is already in the database checking email and student id and mobile number
         check_sql = "SELECT * FROM users WHERE email = %(email)s OR school_id = %(studentID)s OR mobile_no = %(mobileNo)s"
         mycursor.execute(check_sql, user_data)
-        
+
         if mycursor.fetchone():
             f = open('front_end/html/signup_page.html', 'rb')
             data = f.read()
@@ -400,8 +400,8 @@ def signup_page(request):
             with open('temp.txt', 'w') as file:
                 file.write(response_headers[1][1].split('=')[1].split(';')[0])
 
-            # Redirect to login page
-            f = open('front_end/html/login_page.html', 'rb')
+            # Redirect to home page
+            f = open('front_end/html/loading_homepage.html', 'rb')
             data = f.read()
             data = data.decode('utf-8')
             return data.encode('utf-8')
