@@ -7,7 +7,7 @@ try:
         host="localhost",
         port="3306",
         user="root",
-        password="K1pk0r1r!",
+        password="",
         database="cueabot"
     )
     mycursor = mydb.cursor()

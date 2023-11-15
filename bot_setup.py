@@ -10,9 +10,9 @@ from keras.models import Sequential
 from nltk.stem import WordNetLemmatizer
 
 
-# nltk.download('punkt')
-# nltk.download('wordnet')
-# nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
 
 
 def train_bot():
